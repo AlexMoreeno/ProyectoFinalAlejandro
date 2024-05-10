@@ -117,6 +117,8 @@ public class PantallaRegistrar extends javax.swing.JFrame {
         cambiarColorCampo(ApellidoTEXT, Color.BLACK);
         cambiarColorCampo(contraTEXT, Color.BLACK);
     }
+    public void Prueba(){
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
