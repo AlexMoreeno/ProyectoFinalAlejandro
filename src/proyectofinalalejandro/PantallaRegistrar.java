@@ -110,7 +110,7 @@ public class PantallaRegistrar extends javax.swing.JFrame {
         ApellidoTEXT.setText("");
         contraTEXT.setText("");
         TipoUsuario.clearSelection();
-
+        //prueba
 
         cambiarColorCampo(correoTEXT, Color.BLACK);
         cambiarColorCampo(nombreTEXT, Color.BLACK);
