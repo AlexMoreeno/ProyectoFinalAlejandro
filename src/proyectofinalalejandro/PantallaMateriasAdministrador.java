@@ -36,6 +36,15 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        PantallasMenu = new javax.swing.JMenu();
+        InicioDeSesion = new javax.swing.JMenuItem();
+        administradorVER = new javax.swing.JMenuItem();
+        Alumnos = new javax.swing.JMenuItem();
+        Profesores = new javax.swing.JMenuItem();
+        SalirMenu = new javax.swing.JMenuItem();
+        AjustesMenu = new javax.swing.JMenu();
+        CambiarContra = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,6 +74,70 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
         jButton4.setText("Eliminar");
         jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 110, -1, -1));
 
+        PantallasMenu.setText("Pantallas");
+
+        InicioDeSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/login.png"))); // NOI18N
+        InicioDeSesion.setText("Inicio de Sesion");
+        InicioDeSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InicioDeSesionActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(InicioDeSesion);
+
+        administradorVER.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/admin.png"))); // NOI18N
+        administradorVER.setText("Administrador");
+        administradorVER.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                administradorVERActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(administradorVER);
+
+        Alumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/alumno.png"))); // NOI18N
+        Alumnos.setText("Alumnos");
+        Alumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AlumnosActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(Alumnos);
+
+        Profesores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/profesor.png"))); // NOI18N
+        Profesores.setText("Profesores");
+        Profesores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProfesoresActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(Profesores);
+
+        SalirMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/Salir (1).png"))); // NOI18N
+        SalirMenu.setText("Salir");
+        SalirMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalirMenuActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(SalirMenu);
+
+        jMenuBar1.add(PantallasMenu);
+
+        AjustesMenu.setText("Ajustes");
+
+        CambiarContra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/candado.png"))); // NOI18N
+        CambiarContra.setText("Cambiar Contraseña");
+        CambiarContra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CambiarContraActionPerformed(evt);
+            }
+        });
+        AjustesMenu.add(CambiarContra);
+
+        jMenuBar1.add(AjustesMenu);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,6 +161,40 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void InicioDeSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InicioDeSesionActionPerformed
+        PantallaInicioSesión a = new PantallaInicioSesión();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_InicioDeSesionActionPerformed
+
+    private void ProfesoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfesoresActionPerformed
+        PantallaProfesoresAdministrador a = new PantallaProfesoresAdministrador();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ProfesoresActionPerformed
+
+    private void SalirMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirMenuActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_SalirMenuActionPerformed
+
+    private void CambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContraActionPerformed
+        PantallaCambiarContra a = new PantallaCambiarContra();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CambiarContraActionPerformed
+
+    private void AlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlumnosActionPerformed
+        PantallaAlumnosAdministrador a = new PantallaAlumnosAdministrador();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_AlumnosActionPerformed
+
+    private void administradorVERActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_administradorVERActionPerformed
+        PantallaPrincipalAdministrador a = new PantallaPrincipalAdministrador();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_administradorVERActionPerformed
 
     /**
      * @param args the command line arguments
@@ -125,12 +232,21 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu AjustesMenu;
+    private javax.swing.JMenuItem Alumnos;
+    private javax.swing.JMenuItem CambiarContra;
+    private javax.swing.JMenuItem InicioDeSesion;
+    private javax.swing.JMenu PantallasMenu;
+    private javax.swing.JMenuItem Profesores;
+    private javax.swing.JMenuItem SalirMenu;
+    private javax.swing.JMenuItem administradorVER;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JList<String> jList1;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

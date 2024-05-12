@@ -30,7 +30,14 @@ public class PantallaPrincipalProfesor extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        EncontrarAlumnoss = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        PantallasMenu = new javax.swing.JMenu();
+        InicioDeSesion = new javax.swing.JMenuItem();
+        EncontrarAlumnos = new javax.swing.JMenuItem();
+        SalirMenu = new javax.swing.JMenuItem();
+        AjustesMenu = new javax.swing.JMenu();
+        CambiarContra = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,7 +51,7 @@ public class PantallaPrincipalProfesor extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 110, Short.MAX_VALUE)
+            .addGap(0, 116, Short.MAX_VALUE)
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -56,13 +63,64 @@ public class PantallaPrincipalProfesor extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, -1, -1));
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 30, -1, -1));
 
         jLabel1.setText("Administrar Alumnos");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, -1, -1));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, -1, -1));
 
-        jButton3.setText("Encontrar Alumnos");
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
+        EncontrarAlumnoss.setText("Encontrar Alumnos");
+        EncontrarAlumnoss.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EncontrarAlumnossActionPerformed(evt);
+            }
+        });
+        jPanel2.add(EncontrarAlumnoss, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
+
+        PantallasMenu.setText("Pantallas");
+
+        InicioDeSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/login.png"))); // NOI18N
+        InicioDeSesion.setText("Inicio de Sesion");
+        InicioDeSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InicioDeSesionActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(InicioDeSesion);
+
+        EncontrarAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/alumno.png"))); // NOI18N
+        EncontrarAlumnos.setText("Encontrar Alumnos");
+        EncontrarAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EncontrarAlumnosActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(EncontrarAlumnos);
+
+        SalirMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/Salir (1).png"))); // NOI18N
+        SalirMenu.setText("Salir");
+        SalirMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalirMenuActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(SalirMenu);
+
+        jMenuBar1.add(PantallasMenu);
+
+        AjustesMenu.setText("Ajustes");
+
+        CambiarContra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/candado.png"))); // NOI18N
+        CambiarContra.setText("Cambiar Contraseña");
+        CambiarContra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CambiarContraActionPerformed(evt);
+            }
+        });
+        AjustesMenu.add(CambiarContra);
+
+        jMenuBar1.add(AjustesMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -72,13 +130,12 @@ public class PantallaPrincipalProfesor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -91,6 +148,34 @@ public class PantallaPrincipalProfesor extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void EncontrarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EncontrarAlumnosActionPerformed
+        PantallaSecundariaProfesor a = new PantallaSecundariaProfesor();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_EncontrarAlumnosActionPerformed
+
+    private void InicioDeSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InicioDeSesionActionPerformed
+        PantallaInicioSesión a = new PantallaInicioSesión();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_InicioDeSesionActionPerformed
+
+    private void SalirMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirMenuActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_SalirMenuActionPerformed
+
+    private void CambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContraActionPerformed
+        PantallaCambiarContra a = new PantallaCambiarContra();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CambiarContraActionPerformed
+
+    private void EncontrarAlumnossActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EncontrarAlumnossActionPerformed
+        PantallaSecundariaProfesor a = new PantallaSecundariaProfesor();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_EncontrarAlumnossActionPerformed
 
     /**
      * @param args the command line arguments
@@ -128,9 +213,16 @@ public class PantallaPrincipalProfesor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu AjustesMenu;
+    private javax.swing.JMenuItem CambiarContra;
+    private javax.swing.JMenuItem EncontrarAlumnos;
+    private javax.swing.JButton EncontrarAlumnoss;
+    private javax.swing.JMenuItem InicioDeSesion;
+    private javax.swing.JMenu PantallasMenu;
+    private javax.swing.JMenuItem SalirMenu;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables

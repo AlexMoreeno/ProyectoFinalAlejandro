@@ -133,7 +133,7 @@ public class PantallaRegistrar extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         correoTEXT = new javax.swing.JTextField();
         nombreTEXT = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        registroBoton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         ApellidoTEXT = new javax.swing.JTextField();
@@ -154,13 +154,13 @@ public class PantallaRegistrar extends javax.swing.JFrame {
         nombreTEXT.setPreferredSize(new java.awt.Dimension(115, 20));
         jPanel1.add(nombreTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 330, -1));
 
-        jButton1.setText("Registrar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        registroBoton.setText("Registrar");
+        registroBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                registroBotonActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
+        jPanel1.add(registroBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
 
         jButton2.setText("Reiniciar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -214,9 +214,12 @@ public class PantallaRegistrar extends javax.swing.JFrame {
         Reiniciar();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void registroBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroBotonActionPerformed
     registrarUsuario(nombreTEXT, ApellidoTEXT, correoTEXT, contraTEXT, TipoUsuario);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    PantallaInicioSesión a = new PantallaInicioSesión();
+    a.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_registroBotonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -260,11 +263,11 @@ public class PantallaRegistrar extends javax.swing.JFrame {
     private javax.swing.ButtonGroup TipoUsuario;
     private javax.swing.JTextField contraTEXT;
     private javax.swing.JTextField correoTEXT;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField nombreTEXT;
+    private javax.swing.JButton registroBoton;
     // End of variables declaration//GEN-END:variables
 
 

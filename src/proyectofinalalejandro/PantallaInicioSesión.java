@@ -129,7 +129,6 @@ public void Reiniciar(){
         inicioSe = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        cambiarContra = new javax.swing.JButton();
         contraTEXT = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -173,14 +172,6 @@ public void Reiniciar(){
         jLabel1.setText("DAME CLASES");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, 210, -1));
 
-        cambiarContra.setText("Cambiar Contraseña");
-        cambiarContra.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cambiarContraActionPerformed(evt);
-            }
-        });
-        jPanel1.add(cambiarContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, -1, -1));
-
         contraTEXT.setText("jPasswordField1");
         jPanel1.add(contraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 330, 30));
 
@@ -190,7 +181,7 @@ public void Reiniciar(){
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 210, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 210, -1, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/good_LogoSINFONDO.png"))); // NOI18N
         jLabel3.setText("jLabel3");
@@ -216,12 +207,6 @@ public void Reiniciar(){
     private void inicioSeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioSeActionPerformed
        intentoIniciarSesion1();
     }//GEN-LAST:event_inicioSeActionPerformed
-
-    private void cambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiarContraActionPerformed
-        PantallaCambiarContra a = new PantallaCambiarContra();
-        a.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_cambiarContraActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         PantallaRegistrar a = new PantallaRegistrar();
@@ -265,7 +250,6 @@ public void Reiniciar(){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cambiarContra;
     private javax.swing.JPasswordField contraTEXT;
     private javax.swing.JTextField emailTEXT;
     private javax.swing.JButton inicioSe;

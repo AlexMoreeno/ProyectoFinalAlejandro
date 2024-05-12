@@ -29,7 +29,14 @@ public class PantallaPrincipalAlumno extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        EnocntrarProfesorr = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        PantallasMenu = new javax.swing.JMenu();
+        InicioDeSesion = new javax.swing.JMenuItem();
+        EncontrarProfesores = new javax.swing.JMenuItem();
+        SalirMenu = new javax.swing.JMenuItem();
+        AjustesMenu = new javax.swing.JMenu();
+        CambiarContra = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -42,8 +49,59 @@ public class PantallaPrincipalAlumno extends javax.swing.JFrame {
         jButton1.setText("Desapuntarse");
         jPanel2.add(jButton1, new java.awt.GridBagConstraints());
 
-        jButton2.setText("Encontrar Profesor");
-        jPanel2.add(jButton2, new java.awt.GridBagConstraints());
+        EnocntrarProfesorr.setText("Encontrar Profesor");
+        EnocntrarProfesorr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EnocntrarProfesorrActionPerformed(evt);
+            }
+        });
+        jPanel2.add(EnocntrarProfesorr, new java.awt.GridBagConstraints());
+
+        PantallasMenu.setText("Pantallas");
+
+        InicioDeSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/login.png"))); // NOI18N
+        InicioDeSesion.setText("Inicio de Sesion");
+        InicioDeSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InicioDeSesionActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(InicioDeSesion);
+
+        EncontrarProfesores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/profesor.png"))); // NOI18N
+        EncontrarProfesores.setText("Encontrar Profesores");
+        EncontrarProfesores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EncontrarProfesoresActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(EncontrarProfesores);
+
+        SalirMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/Salir (1).png"))); // NOI18N
+        SalirMenu.setText("Salir");
+        SalirMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalirMenuActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(SalirMenu);
+
+        jMenuBar1.add(PantallasMenu);
+
+        AjustesMenu.setText("Ajustes");
+
+        CambiarContra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/candado.png"))); // NOI18N
+        CambiarContra.setText("Cambiar Contraseña");
+        CambiarContra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CambiarContraActionPerformed(evt);
+            }
+        });
+        AjustesMenu.add(CambiarContra);
+
+        jMenuBar1.add(AjustesMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,6 +128,34 @@ public class PantallaPrincipalAlumno extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void EncontrarProfesoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EncontrarProfesoresActionPerformed
+    PantallaSecundariaAlumno a = new PantallaSecundariaAlumno();
+    a.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_EncontrarProfesoresActionPerformed
+
+    private void InicioDeSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InicioDeSesionActionPerformed
+    PantallaInicioSesión a = new PantallaInicioSesión();
+    a.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_InicioDeSesionActionPerformed
+
+    private void SalirMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirMenuActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_SalirMenuActionPerformed
+
+    private void CambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContraActionPerformed
+    PantallaCambiarContra a = new PantallaCambiarContra();
+    a.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_CambiarContraActionPerformed
+
+    private void EnocntrarProfesorrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnocntrarProfesorrActionPerformed
+    PantallaSecundariaAlumno a = new PantallaSecundariaAlumno();
+    a.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_EnocntrarProfesorrActionPerformed
 
     /**
      * @param args the command line arguments
@@ -107,8 +193,15 @@ public class PantallaPrincipalAlumno extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu AjustesMenu;
+    private javax.swing.JMenuItem CambiarContra;
+    private javax.swing.JMenuItem EncontrarProfesores;
+    private javax.swing.JButton EnocntrarProfesorr;
+    private javax.swing.JMenuItem InicioDeSesion;
+    private javax.swing.JMenu PantallasMenu;
+    private javax.swing.JMenuItem SalirMenu;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables

@@ -34,10 +34,6 @@ public class PantallaSecundariaAlumno extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -45,6 +41,13 @@ public class PantallaSecundariaAlumno extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        PantallasMenu = new javax.swing.JMenu();
+        InicioDeSesion = new javax.swing.JMenuItem();
+        VerProfesores = new javax.swing.JMenuItem();
+        SalirMenu = new javax.swing.JMenuItem();
+        AjustesMenu = new javax.swing.JMenu();
+        CambiarContra = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,37 +66,17 @@ public class PantallaSecundariaAlumno extends javax.swing.JFrame {
         jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 180, -1));
 
         jButton1.setText("Filtrar");
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
-
-        jLabel3.setText("Curso Academico");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, -1, -1));
-
-        CursoAcademico.add(jRadioButton1);
-        jRadioButton1.setText("Primaria");
-        jPanel2.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, -1, -1));
-
-        CursoAcademico.add(jRadioButton2);
-        jRadioButton2.setText("Secundaria");
-        jPanel2.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, -1, -1));
-
-        CursoAcademico.add(jRadioButton3);
-        jRadioButton3.setText("Universidad");
-        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton3ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 50, -1, -1));
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
         jButton2.setText("Reiniciar");
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, -1, -1));
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, -1, -1));
 
         jButton3.setText("Contratar");
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 110, -1, -1));
+        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 80, -1, -1));
 
         jLabel4.setText("Materia");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
-        jPanel2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 180, -1));
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, -1, -1));
+        jPanel2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 30, 180, -1));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Materias"));
         jPanel3.setLayout(new java.awt.BorderLayout());
@@ -101,6 +84,52 @@ public class PantallaSecundariaAlumno extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jList2);
 
         jPanel3.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        PantallasMenu.setText("Pantallas");
+
+        InicioDeSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/login.png"))); // NOI18N
+        InicioDeSesion.setText("Inicio de Sesion");
+        InicioDeSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InicioDeSesionActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(InicioDeSesion);
+
+        VerProfesores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/profesor.png"))); // NOI18N
+        VerProfesores.setText("Ver profesores");
+        VerProfesores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VerProfesoresActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(VerProfesores);
+
+        SalirMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/Salir (1).png"))); // NOI18N
+        SalirMenu.setText("Salir");
+        SalirMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalirMenuActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(SalirMenu);
+
+        jMenuBar1.add(PantallasMenu);
+
+        AjustesMenu.setText("Ajustes");
+
+        CambiarContra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/candado.png"))); // NOI18N
+        CambiarContra.setText("Cambiar Contraseña");
+        CambiarContra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CambiarContraActionPerformed(evt);
+            }
+        });
+        AjustesMenu.add(CambiarContra);
+
+        jMenuBar1.add(AjustesMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,9 +160,27 @@ public class PantallaSecundariaAlumno extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton3ActionPerformed
+    private void VerProfesoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerProfesoresActionPerformed
+        PantallaPrincipalAlumno a = new PantallaPrincipalAlumno();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_VerProfesoresActionPerformed
+
+    private void InicioDeSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InicioDeSesionActionPerformed
+        PantallaInicioSesión a = new PantallaInicioSesión();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_InicioDeSesionActionPerformed
+
+    private void SalirMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirMenuActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_SalirMenuActionPerformed
+
+    private void CambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContraActionPerformed
+        PantallaCambiarContra a = new PantallaCambiarContra();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CambiarContraActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,21 +219,24 @@ public class PantallaSecundariaAlumno extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu AjustesMenu;
+    private javax.swing.JMenuItem CambiarContra;
     private javax.swing.ButtonGroup CursoAcademico;
+    private javax.swing.JMenuItem InicioDeSesion;
+    private javax.swing.JMenu PantallasMenu;
+    private javax.swing.JMenuItem SalirMenu;
+    private javax.swing.JMenuItem VerProfesores;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jList2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField2;

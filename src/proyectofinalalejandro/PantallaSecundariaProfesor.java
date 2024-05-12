@@ -34,6 +34,13 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
         jList2 = new javax.swing.JList<>();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        PantallasMenu = new javax.swing.JMenu();
+        InicioDeSesion = new javax.swing.JMenuItem();
+        VerAlumnos = new javax.swing.JMenuItem();
+        SalirMenu = new javax.swing.JMenuItem();
+        AjustesMenu = new javax.swing.JMenu();
+        CambiarContra = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,6 +63,52 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
 
         jButton1.setText("Contactar");
         jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, -1, 30));
+
+        PantallasMenu.setText("Pantallas");
+
+        InicioDeSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/login.png"))); // NOI18N
+        InicioDeSesion.setText("Inicio de Sesion");
+        InicioDeSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InicioDeSesionActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(InicioDeSesion);
+
+        VerAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/alumno.png"))); // NOI18N
+        VerAlumnos.setText("Ver Alumnos");
+        VerAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VerAlumnosActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(VerAlumnos);
+
+        SalirMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/Salir (1).png"))); // NOI18N
+        SalirMenu.setText("Salir");
+        SalirMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalirMenuActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(SalirMenu);
+
+        jMenuBar1.add(PantallasMenu);
+
+        AjustesMenu.setText("Ajustes");
+
+        CambiarContra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/candado.png"))); // NOI18N
+        CambiarContra.setText("Cambiar Contraseña");
+        CambiarContra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CambiarContraActionPerformed(evt);
+            }
+        });
+        AjustesMenu.add(CambiarContra);
+
+        jMenuBar1.add(AjustesMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,11 +133,33 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void VerAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerAlumnosActionPerformed
+        PantallaPrincipalProfesor a = new PantallaPrincipalProfesor();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_VerAlumnosActionPerformed
+
+    private void InicioDeSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InicioDeSesionActionPerformed
+        PantallaInicioSesión a = new PantallaInicioSesión();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_InicioDeSesionActionPerformed
+
+    private void SalirMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirMenuActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_SalirMenuActionPerformed
+
+    private void CambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContraActionPerformed
+        PantallaCambiarContra a = new PantallaCambiarContra();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CambiarContraActionPerformed
 
     /**
      * @param args the command line arguments
@@ -122,9 +197,16 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu AjustesMenu;
+    private javax.swing.JMenuItem CambiarContra;
+    private javax.swing.JMenuItem InicioDeSesion;
+    private javax.swing.JMenu PantallasMenu;
+    private javax.swing.JMenuItem SalirMenu;
+    private javax.swing.JMenuItem VerAlumnos;
     private javax.swing.JButton jButton1;
     private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jList2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

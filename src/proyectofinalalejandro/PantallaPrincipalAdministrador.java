@@ -29,14 +29,34 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        Alumnoss2 = new javax.swing.JButton();
+        Profesores2 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        Materias2 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        MostrarAlumnos = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        MostrarProfesores = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        MostrarMaterias = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        MostrarTotales = new javax.swing.JTextField();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        PantallasMenu = new javax.swing.JMenu();
+        InicioDeSesion = new javax.swing.JMenuItem();
+        Alumnos = new javax.swing.JMenuItem();
+        Profesores = new javax.swing.JMenuItem();
+        Materias = new javax.swing.JMenuItem();
+        SalirMenu = new javax.swing.JMenuItem();
+        AjustesMenu = new javax.swing.JMenu();
+        CambiarContra = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Administrador"));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Alumnos");
@@ -44,73 +64,183 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
         jLabel1.setMaximumSize(new java.awt.Dimension(59, 20));
         jLabel1.setMinimumSize(new java.awt.Dimension(59, 20));
         jLabel1.setPreferredSize(new java.awt.Dimension(59, 20));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 100, 65));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Materias");
         jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 100, 65));
 
-        jButton1.setText("Acceder");
+        Alumnoss2.setText("Acceder");
+        Alumnoss2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Alumnoss2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Alumnoss2, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 45, -1, -1));
 
-        jButton2.setText("Acceder");
-
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Adiministrador");
+        Profesores2.setText("Acceder");
+        Profesores2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Profesores2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Profesores2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, -1, -1));
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Profesores");
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 100, 65));
 
-        jButton3.setText("Acceder");
+        Materias2.setText("Acceder");
+        Materias2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Materias2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Materias2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 210, -1, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(12, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jButton1)
-                        .addGap(103, 103, 103)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)
-                        .addGap(54, 54, 54))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(212, 212, 212))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addGap(18, 18, 18))
-        );
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos"));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 540, 240));
+        jLabel3.setText("Alumnos Totales");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 24, -1, -1));
+        jPanel2.add(MostrarAlumnos, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 46, 157, -1));
+
+        jLabel5.setText("Profesores Totales");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 74, -1, -1));
+        jPanel2.add(MostrarProfesores, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 102, 157, -1));
+
+        jLabel6.setText("Materias Totales");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 130, -1, -1));
+        jPanel2.add(MostrarMaterias, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 158, 157, -1));
+
+        jLabel7.setText("Usuarios Totales");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 186, -1, -1));
+        jPanel2.add(MostrarTotales, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 208, 157, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(313, 18, 220, 250));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 540, 280));
+
+        PantallasMenu.setText("Pantallas");
+
+        InicioDeSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/login.png"))); // NOI18N
+        InicioDeSesion.setText("Inicio de Sesion");
+        InicioDeSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InicioDeSesionActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(InicioDeSesion);
+
+        Alumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/alumno.png"))); // NOI18N
+        Alumnos.setText("Alumnos");
+        Alumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AlumnosActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(Alumnos);
+
+        Profesores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/profesor.png"))); // NOI18N
+        Profesores.setText("Profesores");
+        Profesores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProfesoresActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(Profesores);
+
+        Materias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/Libros.png"))); // NOI18N
+        Materias.setText("Materias");
+        Materias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MateriasActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(Materias);
+
+        SalirMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/Salir (1).png"))); // NOI18N
+        SalirMenu.setText("Salir");
+        SalirMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalirMenuActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(SalirMenu);
+
+        jMenuBar1.add(PantallasMenu);
+
+        AjustesMenu.setText("Ajustes");
+
+        CambiarContra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/candado.png"))); // NOI18N
+        CambiarContra.setText("Cambiar Contraseña");
+        CambiarContra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CambiarContraActionPerformed(evt);
+            }
+        });
+        AjustesMenu.add(CambiarContra);
+
+        jMenuBar1.add(AjustesMenu);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ProfesoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfesoresActionPerformed
+         PantallaProfesoresAdministrador a = new PantallaProfesoresAdministrador();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ProfesoresActionPerformed
+
+    private void InicioDeSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InicioDeSesionActionPerformed
+        PantallaInicioSesión a = new PantallaInicioSesión();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_InicioDeSesionActionPerformed
+
+    private void SalirMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirMenuActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_SalirMenuActionPerformed
+
+    private void CambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContraActionPerformed
+        PantallaCambiarContra a = new PantallaCambiarContra();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CambiarContraActionPerformed
+
+    private void AlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlumnosActionPerformed
+        PantallaAlumnosAdministrador a = new PantallaAlumnosAdministrador();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_AlumnosActionPerformed
+
+    private void Alumnoss2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Alumnoss2ActionPerformed
+        PantallaAlumnosAdministrador a = new PantallaAlumnosAdministrador();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Alumnoss2ActionPerformed
+
+    private void Profesores2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Profesores2ActionPerformed
+        PantallaProfesoresAdministrador a = new PantallaProfesoresAdministrador();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Profesores2ActionPerformed
+
+    private void Materias2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Materias2ActionPerformed
+        PantallaMateriasAdministrador a = new PantallaMateriasAdministrador();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Materias2ActionPerformed
+
+    private void MateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MateriasActionPerformed
+        PantallaMateriasAdministrador a = new PantallaMateriasAdministrador();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_MateriasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,13 +278,30 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JMenu AjustesMenu;
+    private javax.swing.JMenuItem Alumnos;
+    private javax.swing.JButton Alumnoss2;
+    private javax.swing.JMenuItem CambiarContra;
+    private javax.swing.JMenuItem InicioDeSesion;
+    private javax.swing.JMenuItem Materias;
+    private javax.swing.JButton Materias2;
+    private javax.swing.JTextField MostrarAlumnos;
+    private javax.swing.JTextField MostrarMaterias;
+    private javax.swing.JTextField MostrarProfesores;
+    private javax.swing.JTextField MostrarTotales;
+    private javax.swing.JMenu PantallasMenu;
+    private javax.swing.JMenuItem Profesores;
+    private javax.swing.JButton Profesores2;
+    private javax.swing.JMenuItem SalirMenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }
