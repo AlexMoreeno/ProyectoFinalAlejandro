@@ -4,43 +4,481 @@
  */
 package proyectofinalalejandro;
 
+import java.awt.Color;
+import java.awt.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableRowSorter;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Random;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Aleja
  */
 public class PantallaSecundariaAlumno extends javax.swing.JFrame {
-
-    /**
-     * Creates new form PantallaPrincipalAlumno
-     */
+    String bbdd = "jdbc:hsqldb:hsql://localhost/";
+    Connection con = null;
+    private String[] datos;
+    String nombre1 = "";
+    int FilSelect ;
+    Connection conet;
+  
     public PantallaSecundariaAlumno() {
         initComponents();
+        try {
+             Class.forName("org.hsqldb.jdbc.JDBCDriver");
+             con = DriverManager.getConnection(bbdd, "SA", "SA");
+        if (con!= null) {
+             System.out.println("Connection created successfully");
+        }else{
+             System.out.println("Problem with creating connection");
+        }
+        } catch (ClassNotFoundException | SQLException e) {
+             e.printStackTrace(System.out);
+            }
+        ActualizarTablaProfesores(con);
+        ActualizarTablaMaterias(con);
+    }
+   DefaultTableModel tmProfesores = new DefaultTableModel() {
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return false;
+    }
+};
+
+public void ActualizarTablaProfesores(Connection con) {
+    try {
+        String sql = "SELECT * FROM usuarios WHERE tipo = 'profesor'";
+        java.sql.Statement statement = con.createStatement();
+        ResultSet resultado = statement.executeQuery(sql);
+
+        // Limpiar cualquier contenido anterior en el modelo de la tabla
+        DefaultTableModel tmProfesores = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        tmProfesores.addColumn("Id");
+        tmProfesores.addColumn("Nombre");
+        tmProfesores.addColumn("Apellidos");
+        tmProfesores.addColumn("Email");
+        tmProfesores.addColumn("Clave");
+        tmProfesores.addColumn("Tipo");
+
+        // Iterar sobre el resultado y agregar filas al modelo de la tabla
+        while(resultado.next()) {
+            String id = resultado.getString("ID");
+            String nombre = resultado.getString("NOMBRE");
+            String apellidos = resultado.getString("APELLIDOS");
+            String email = resultado.getString("EMAIL");
+            String clave = resultado.getString("CLAVE");
+            String tipo = resultado.getString("TIPO");
+
+
+            // Agregar fila al modelo de la tabla
+            Object[] fila = {id, nombre, apellidos, email, clave, tipo};
+            tmProfesores.addRow(fila);
+        }
+
+        // Configurar la tabla para usar el modelo de tabla tmProfesores
+        TablaProfesores.setModel(tmProfesores);
+
+        // Ocultar las columnas del id, clave y tipo
+        TableColumnModel columnModel = TablaProfesores.getColumnModel();
+        columnModel.getColumn(0).setMinWidth(0);
+        columnModel.getColumn(0).setMaxWidth(0);
+        columnModel.getColumn(4).setMinWidth(0);
+        columnModel.getColumn(4).setMaxWidth(0);
+        columnModel.getColumn(5).setMinWidth(0);
+        columnModel.getColumn(5).setMaxWidth(0);
+
+    } catch(Exception e) {
+        e.printStackTrace();
+    }
+}
+ public void ActualizarTablaMaterias(Connection con) {
+    DefaultTableModel tm = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+
+    TablaMaterias.setModel(tm);
+
+    try {
+        String sql = "SELECT * FROM materias";
+        java.sql.Statement statement = con.createStatement();
+        var resultado = statement.executeQuery(sql);
+
+        // Agregar nombres de columnas al modelo de la tabla
+        tm.addColumn("Id");
+        tm.addColumn("Nombre");
+        tm.addColumn("IdNivel");
+        
+
+        // Iterar sobre el resultado y agregar filas al modelo de la tabla
+        while(resultado.next()) {
+            String id = resultado.getString("ID");
+            String nombre = resultado.getString("NOMBRE");
+            String idNivel = resultado.getString("ID_NIVEL"); // Cambio aquí
+
+            // Agregar fila al modelo de la tabla
+            Object[] fila = {id, nombre, idNivel};
+            tm.addRow(fila);
+        }
+
+        // Ocultar las columnas de Id, Clave y Tipo
+        TableColumnModel columnModel = TablaMaterias.getColumnModel();
+        columnModel.getColumn(0).setMinWidth(0);
+        columnModel.getColumn(0).setMaxWidth(0);
+        columnModel.getColumn(2).setMinWidth(0);
+        columnModel.getColumn(2).setMaxWidth(0);
+
+
+    } catch(Exception e) {
+        e.printStackTrace();
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+    private void filtrarPorApellido(String apellidos) {
+        DefaultTableModel modelo = new DefaultTableModel() {};
+
+        String consultaSQL = "SELECT nombre, apellidos, email " +
+                            "FROM usuarios " +
+                            "WHERE tipo = 'profesor'";
+        if (!apellidos.isEmpty()) {
+            consultaSQL += " AND apellidos LIKE '%" + apellidos + "%'";
+        }
+        consultaSQL += " LIMIT 2";
+
+        try {
+            Statement statement = con.createStatement();
+            ResultSet resultado = statement.executeQuery(consultaSQL);
+
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Apellidos");
+            modelo.addColumn("Email");
+
+            while (resultado.next()) {
+                String nombre = resultado.getString("nombre");
+                String apellidosResultado = resultado.getString("apellidos");
+                String email = resultado.getString("email");
+                modelo.addRow(new Object[]{nombre, apellidosResultado, email});
+            }
+
+            TablaProfesores.setModel(modelo);
+
+            if (!apellidos.isEmpty()) {
+                obtenerMateriasAleatorias();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    private void obtenerMateriasAleatorias() {
+        DefaultTableModel tm = new DefaultTableModel() {};
+
+        String consultaSQL = "SELECT nombre FROM materias ORDER BY RAND() LIMIT 2";
+
+        try {
+            Statement statement = con.createStatement();
+            ResultSet resultado = statement.executeQuery(consultaSQL);
+
+            ArrayList<String> materias = new ArrayList<>();
+            while (resultado.next()) {
+                materias.add(resultado.getString("nombre"));
+            }
+
+            tm.addColumn("Nombre");
+
+            for (String nombreMateria : materias) {
+                tm.addRow(new Object[]{nombreMateria});
+            }
+
+            TablaMaterias.setModel(tm);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void filtrarPorApellidoYMateria(String apellidos, String materia) {
+        DefaultTableModel modeloProfesores = new DefaultTableModel() {};
+        DefaultTableModel modeloMaterias = new DefaultTableModel() {};
+
+        String consultaSQLProfesores = "SELECT nombre, apellidos, email " +
+                                        "FROM usuarios " +
+                                        "WHERE tipo = 'profesor'";
+        if (!apellidos.isEmpty()) {
+            consultaSQLProfesores += " AND apellidos LIKE '%" + apellidos + "%'";
+        }
+        if (!materia.isEmpty() && apellidos.isEmpty()) {
+            consultaSQLProfesores += " ORDER BY RAND() LIMIT 2";
+        } else {
+            consultaSQLProfesores += " LIMIT 2";
+        }
+
+        try {
+            Statement statement = con.createStatement();
+            ResultSet resultadoProfesores = statement.executeQuery(consultaSQLProfesores);
+
+            modeloProfesores.addColumn("Nombre");
+            modeloProfesores.addColumn("Apellidos");
+            modeloProfesores.addColumn("Email");
+
+            while (resultadoProfesores.next()) {
+                String nombre = resultadoProfesores.getString("nombre");
+                String apellidosProfesor = resultadoProfesores.getString("apellidos");
+                String email = resultadoProfesores.getString("email");
+                modeloProfesores.addRow(new Object[]{nombre, apellidosProfesor, email});
+            }
+
+            TablaProfesores.setModel(modeloProfesores);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String consultaSQLMaterias = "SELECT nombre FROM materias";
+        if (!materia.isEmpty()) {
+            consultaSQLMaterias += " WHERE nombre LIKE '%" + materia + "%'";
+        }
+        consultaSQLMaterias += " LIMIT 2";
+
+        try {
+            Statement statement = con.createStatement();
+            ResultSet resultadoMaterias = statement.executeQuery(consultaSQLMaterias);
+
+            modeloMaterias.addColumn("Nombre");
+
+            while (resultadoMaterias.next()) {
+                String nombreMateria = resultadoMaterias.getString("nombre");
+                modeloMaterias.addRow(new Object[]{nombreMateria});
+            }
+            TablaMaterias.setModel(modeloMaterias);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+ /* PRUEBAS DE BUCLES CASI AL 100% 
+ private void filtrarPorApellido(String apellidos) {
+    DefaultTableModel modelo = new DefaultTableModel() {};
+
+    String consultaSQL = "SELECT nombre, apellidos, email " +
+                        "FROM usuarios " +
+                        "WHERE tipo = 'profesor'";
+    if (!apellidos.isEmpty()) {
+        consultaSQL += " AND apellidos LIKE '%" + apellidos + "%'";
+    }
+    consultaSQL += " LIMIT 2";
+
+    try {
+        Statement statement = con.createStatement();
+        ResultSet resultado = statement.executeQuery(consultaSQL);
+
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellidos");
+        modelo.addColumn("Email");
+
+        while (resultado.next()) {
+            String nombre = resultado.getString("nombre");
+            String apellidosResultado = resultado.getString("apellidos");
+            String email = resultado.getString("email");
+            modelo.addRow(new Object[]{nombre, apellidosResultado, email});
+        }
+
+        TablaProfesores.setModel(modelo);
+
+        if (!apellidos.isEmpty()) {
+            obtenerMateriasAleatorias();
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+private void obtenerMateriasAleatorias() {
+    DefaultTableModel tm = new DefaultTableModel() {};
+
+    String consultaSQL = "SELECT nombre FROM materias ORDER BY RAND() LIMIT 2";
+
+    try {
+        Statement statement = con.createStatement();
+        ResultSet resultado = statement.executeQuery(consultaSQL);
+
+        ArrayList<String> materias = new ArrayList<>();
+        while (resultado.next()) {
+            materias.add(resultado.getString("nombre"));
+        }
+
+        tm.addColumn("Nombre");
+
+        for (String nombreMateria : materias) {
+            tm.addRow(new Object[]{nombreMateria});
+        }
+
+        TablaMaterias.setModel(tm);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+private void filtrarPorApellidoYMateria(String apellidos, String materia) {
+    DefaultTableModel modeloProfesores = new DefaultTableModel() {};
+    DefaultTableModel modeloMaterias = new DefaultTableModel() {};
+
+    String consultaSQLProfesores = "SELECT nombre, apellidos, email " +
+                                    "FROM usuarios " +
+                                    "WHERE tipo = 'profesor'";
+    if (!apellidos.isEmpty()) {
+        consultaSQLProfesores += " AND apellidos LIKE '%" + apellidos + "%'";
+    }
+    consultaSQLProfesores += " LIMIT 2";
+
+    try {
+        Statement statement = con.createStatement();
+        ResultSet resultadoProfesores = statement.executeQuery(consultaSQLProfesores);
+
+        modeloProfesores.addColumn("Nombre");
+        modeloProfesores.addColumn("Apellidos");
+        modeloProfesores.addColumn("Email");
+
+        while (resultadoProfesores.next()) {
+            String nombre = resultadoProfesores.getString("nombre");
+            String apellidosProfesor = resultadoProfesores.getString("apellidos");
+            String email = resultadoProfesores.getString("email");
+            modeloProfesores.addRow(new Object[]{nombre, apellidosProfesor, email});
+        }
+
+        TablaProfesores.setModel(modeloProfesores);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    String consultaSQLMaterias = "SELECT nombre FROM materias";
+    if (!materia.isEmpty()) {
+        consultaSQLMaterias += " WHERE nombre LIKE '%" + materia + "%'";
+    }
+    consultaSQLMaterias += " LIMIT 2";
+
+    try {
+        Statement statement = con.createStatement();
+        ResultSet resultadoMaterias = statement.executeQuery(consultaSQLMaterias);
+
+        modeloMaterias.addColumn("Nombre");
+
+        while (resultadoMaterias.next()) {
+            String nombreMateria = resultadoMaterias.getString("nombre");
+            modeloMaterias.addRow(new Object[]{nombreMateria});
+        }
+
+        TablaMaterias.setModel(modeloMaterias);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}*/
+    public void insertarProfesorDesdeTabla(Connection con) {
+        int filaSeleccionada = TablaProfesores.getSelectedRow();
+    
+    if (filaSeleccionada != -1) {
+        try {
+            // Obtener los datos de la fila seleccionada, teniendo en cuenta las columnas ocultas
+            String id = (String) TablaProfesores.getValueAt(filaSeleccionada, 0);
+            String nombre = (String) TablaProfesores.getValueAt(filaSeleccionada, 1);
+            String apellidos = (String) TablaProfesores.getValueAt(filaSeleccionada, 2);
+            String email = (String) TablaProfesores.getValueAt(filaSeleccionada, 3);
+            String clave = (String) TablaProfesores.getValueAt(filaSeleccionada, 4);
+            String tipo = (String) TablaProfesores.getValueAt(filaSeleccionada, 5);
+            
+            System.out.println("Nombre: " + nombre + ", Apellidos: " + apellidos + ", Email: " + email);
+
+            // Insertar en la tabla de usuarios sin incluir las columnas ocultas
+            String sqlInsert = "INSERT INTO profesorescontratados (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
+                try (var insertStatement = con.prepareStatement(sqlInsert)) {
+                    insertStatement.setString(1, nombre);
+                    insertStatement.setString(2, apellidos);
+                    insertStatement.setString(3, email);
+                    insertStatement.setString(4, clave);
+                    insertStatement.setString(5, tipo);
+                    int rowsInserted = insertStatement.executeUpdate();
+                    System.out.println("Filas insertadas en profesorescontratados: " + rowsInserted);
+                }
+
+            // Eliminar la fila de la tabla de profesorescontratados
+            String sqlDelete = "DELETE FROM usuarios WHERE id = ? AND nombre = ? AND apellidos = ? AND email = ? AND clave = ? AND tipo = ?";
+                try (var deleteStatement = con.prepareStatement(sqlDelete)) {
+                    deleteStatement.setString(1, id);
+                    deleteStatement.setString(2, nombre);
+                    deleteStatement.setString(3, apellidos);
+                    deleteStatement.setString(4, email);
+                    deleteStatement.setString(5, clave);
+                    deleteStatement.setString(6, tipo);
+                    int rowsDeleted = deleteStatement.executeUpdate();
+                    System.out.println("Filas eliminadas de usuarios: " + rowsDeleted);
+                }
+
+            // Actualizar la tabla después de realizar los cambios
+            ActualizarTablaProfesores(con);
+            JOptionPane.showMessageDialog(null, "Se ha eliminado al profesor de tu lista", "Profesor Eliminado", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+   }
+////////////////////////////////////////////////////////////////////////////////////////////////
+    public void Reiniciar() {
+        // Establecer el texto vacío en los JTextField
+        ApellidoTEXT.setText("");
+        MateriaTEXT.setText("");
+
+        try {
+            
+            ActualizarTablaProfesores(con);
+            ActualizarTablaMaterias(con);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         CursoAcademico = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        TablaProfesores = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        ApellidoTEXT = new javax.swing.JTextField();
+        FiltrarBoton = new javax.swing.JButton();
+        ReiniciarBoton = new javax.swing.JButton();
+        ContratarBoton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        MateriaTEXT = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        TablaMaterias = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         PantallasMenu = new javax.swing.JMenu();
         InicioDeSesion = new javax.swing.JMenuItem();
@@ -54,36 +492,75 @@ public class PantallaSecundariaAlumno extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Tabla Profesores"));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setViewportView(jList1);
+        TablaProfesores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Nombre", "Apellidos", "Email", "Contraseña", "Tipo"
+            }
+        ));
+        jScrollPane2.setViewportView(TablaProfesores);
 
-        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setText("Apellido Profesor");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
-        jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 180, -1));
+        jPanel2.add(ApellidoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 180, -1));
 
-        jButton1.setText("Filtrar");
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
+        FiltrarBoton.setText("Filtrar");
+        FiltrarBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FiltrarBotonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(FiltrarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
-        jButton2.setText("Reiniciar");
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, -1, -1));
+        ReiniciarBoton.setText("Reiniciar");
+        ReiniciarBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReiniciarBotonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, -1, -1));
 
-        jButton3.setText("Contratar");
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 80, -1, -1));
+        ContratarBoton.setText("Contratar");
+        ContratarBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ContratarBotonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(ContratarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 80, -1, -1));
 
         jLabel4.setText("Materia");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, -1, -1));
-        jPanel2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 30, 180, -1));
+        jPanel2.add(MateriaTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 30, 180, -1));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Materias"));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane2.setViewportView(jList2);
+        TablaMaterias.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Id", "Nombre"
+            }
+        ));
+        jScrollPane4.setViewportView(TablaMaterias);
 
-        jPanel3.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        jPanel3.add(jScrollPane4, java.awt.BorderLayout.CENTER);
 
         PantallasMenu.setText("Pantallas");
 
@@ -149,9 +626,9 @@ public class PantallaSecundariaAlumno extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -181,6 +658,28 @@ public class PantallaSecundariaAlumno extends javax.swing.JFrame {
         a.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_CambiarContraActionPerformed
+
+    private void ReiniciarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReiniciarBotonActionPerformed
+    Reiniciar();
+    }//GEN-LAST:event_ReiniciarBotonActionPerformed
+
+    private void FiltrarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FiltrarBotonActionPerformed
+     String apellidos = ApellidoTEXT.getText();
+    String materia = MateriaTEXT.getText();
+
+    // Verificar si solo se escribió en el JTextField de apellidos
+    if (!apellidos.isEmpty() && materia.isEmpty()) {
+        filtrarPorApellido(apellidos);
+        return; // Detener la ejecución sin realizar ninguna acción en la tabla de materias
+    }
+    
+    // Si se escribió en ambos campos o solo en el campo de materias, continuar con la búsqueda en materias
+    filtrarPorApellidoYMateria(apellidos, materia);
+    }//GEN-LAST:event_FiltrarBotonActionPerformed
+
+    private void ContratarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContratarBotonActionPerformed
+       insertarProfesorDesdeTabla(con);
+    }//GEN-LAST:event_ContratarBotonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,26 +719,26 @@ public class PantallaSecundariaAlumno extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu AjustesMenu;
+    private javax.swing.JTextField ApellidoTEXT;
     private javax.swing.JMenuItem CambiarContra;
+    private javax.swing.JButton ContratarBoton;
     private javax.swing.ButtonGroup CursoAcademico;
+    private javax.swing.JButton FiltrarBoton;
     private javax.swing.JMenuItem InicioDeSesion;
+    private javax.swing.JTextField MateriaTEXT;
     private javax.swing.JMenu PantallasMenu;
+    private javax.swing.JButton ReiniciarBoton;
     private javax.swing.JMenuItem SalirMenu;
+    private javax.swing.JTable TablaMaterias;
+    private javax.swing.JTable TablaProfesores;
     private javax.swing.JMenuItem VerProfesores;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JScrollPane jScrollPane4;
     // End of variables declaration//GEN-END:variables
 }

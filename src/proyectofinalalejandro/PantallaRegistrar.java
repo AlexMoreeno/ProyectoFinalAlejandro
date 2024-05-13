@@ -184,6 +184,11 @@ public class PantallaRegistrar extends javax.swing.JFrame {
 
         TipoUsuario.add(Profesor);
         Profesor.setText("Profesor");
+        Profesor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProfesorActionPerformed(evt);
+            }
+        });
         jPanel1.add(Profesor, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, -1, -1));
 
         contraTEXT.setText("Contraseña");
@@ -220,6 +225,10 @@ public class PantallaRegistrar extends javax.swing.JFrame {
     a.setVisible(true);
     this.dispose();
     }//GEN-LAST:event_registroBotonActionPerformed
+
+    private void ProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfesorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ProfesorActionPerformed
 
     /**
      * @param args the command line arguments
