@@ -421,7 +421,7 @@ public void insertarProfesorDesdeTabla(Connection con) {
             }
 
             ActualizarTablaProfesores(con);
-            JOptionPane.showMessageDialog(null, "Se ha contratado al profesor", "Profesor Contratado", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Se ha contratado al profesor", "Profesor Eliminado", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             e.printStackTrace();
         }

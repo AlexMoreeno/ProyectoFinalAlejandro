@@ -40,64 +40,69 @@ public class PantallaRegistrar extends javax.swing.JFrame {
              e.printStackTrace(System.out);
             }
     }
-     public void registrarUsuario(JTextField nombreTEXT, JTextField ApellidoTEXT, JTextField correoTEXT, JTextField contraTEXT, ButtonGroup TipoUsuario) {
-        String nombre = nombreTEXT.getText();
-        String apellido = ApellidoTEXT.getText();
-        String correo = correoTEXT.getText();
-        String clave = contraTEXT.getText();
+    public void registrarUsuario(JTextField nombreTEXT, JTextField ApellidoTEXT, JTextField correoTEXT, JTextField contraTEXT, ButtonGroup TipoUsuario) {
+    String nombre = nombreTEXT.getText();
+    String apellido = ApellidoTEXT.getText();
+    String correo = correoTEXT.getText();
+    String clave = contraTEXT.getText();
 
-        String tipo = "";
-        for (Enumeration<AbstractButton> buttons = TipoUsuario.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-            if (button.isSelected()) {
-                tipo = button.getActionCommand().toLowerCase();
-                break;
-            }
-        }
-
-        if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || clave.isEmpty() || tipo.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
-        
-            if (nombre.isEmpty()) {
-                cambiarColorCampo(nombreTEXT, Color.RED);
-            }
-            if (apellido.isEmpty()) {
-                cambiarColorCampo(ApellidoTEXT, Color.RED);
-            }
-            if (correo.isEmpty()) {
-                cambiarColorCampo(correoTEXT, Color.RED);
-            }
-            if (clave.isEmpty()) {
-                cambiarColorCampo(contraTEXT, Color.RED);
-            }
-            if (tipo.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Por favor, seleccione el tipo de usuario (alumno o profesor).", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            return;
-        }
-
-        try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
-            String consulta = "INSERT INTO usuarios (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
-
-            try (java.sql.PreparedStatement statement = conec.prepareStatement(consulta)) {
-                statement.setString(1, nombre);
-                statement.setString(2, apellido);
-                statement.setString(3, correo);
-                statement.setString(4, clave);
-                statement.setString(5, tipo);
-
-                int filasInsertadas = statement.executeUpdate();
-
-                if (filasInsertadas > 0) {
-                    JOptionPane.showMessageDialog(null, "Usuario registrado exitosamente.");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al registrar el usuario.");
-                }
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
+    String tipo = "";
+    for (Enumeration<AbstractButton> buttons = TipoUsuario.getElements(); buttons.hasMoreElements();) {
+        AbstractButton button = buttons.nextElement();
+        if (button.isSelected()) {
+            tipo = button.getActionCommand().toLowerCase();
+            break;
         }
     }
+
+    if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || clave.isEmpty() || tipo.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+
+        if (nombre.isEmpty()) {
+            cambiarColorCampo(nombreTEXT, Color.RED);
+        }
+        if (apellido.isEmpty()) {
+            cambiarColorCampo(ApellidoTEXT, Color.RED);
+        }
+        if (correo.isEmpty()) {
+            cambiarColorCampo(correoTEXT, Color.RED);
+        }
+        if (clave.isEmpty()) {
+            cambiarColorCampo(contraTEXT, Color.RED);
+        }
+        if (tipo.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione el tipo de usuario (alumno o profesor).", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return;
+    }
+
+    try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
+        String consulta;
+        if (tipo.equals("alumno")) {
+            consulta = "INSERT INTO usuarios (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
+        } else {
+            consulta = "INSERT INTO profesoresNOACEPTADOS (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
+        }
+
+        try (java.sql.PreparedStatement statement = conec.prepareStatement(consulta)) {
+            statement.setString(1, nombre);
+            statement.setString(2, apellido);
+            statement.setString(3, correo);
+            statement.setString(4, clave);
+            statement.setString(5, tipo);
+
+            int filasInsertadas = statement.executeUpdate();
+
+            if (filasInsertadas > 0) {
+                JOptionPane.showMessageDialog(null, "Usuario registrado exitosamente.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al registrar el usuario.");
+            }
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
+    }
+}
 
 
     private void cambiarColorCampo(JTextField campo, Color color) {
@@ -140,6 +145,7 @@ public class PantallaRegistrar extends javax.swing.JFrame {
         Alumno = new javax.swing.JRadioButton();
         Profesor = new javax.swing.JRadioButton();
         contraTEXT = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -148,11 +154,11 @@ public class PantallaRegistrar extends javax.swing.JFrame {
 
         correoTEXT.setText("Correo electronico");
         correoTEXT.setPreferredSize(new java.awt.Dimension(115, 20));
-        jPanel1.add(correoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 330, -1));
+        jPanel1.add(correoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 330, 30));
 
         nombreTEXT.setText("Nombre");
         nombreTEXT.setPreferredSize(new java.awt.Dimension(115, 20));
-        jPanel1.add(nombreTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 330, -1));
+        jPanel1.add(nombreTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 330, 30));
 
         registroBoton.setText("Registrar");
         registroBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -176,7 +182,7 @@ public class PantallaRegistrar extends javax.swing.JFrame {
 
         ApellidoTEXT.setText("Apellido");
         ApellidoTEXT.setPreferredSize(new java.awt.Dimension(115, 20));
-        jPanel1.add(ApellidoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 330, -1));
+        jPanel1.add(ApellidoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 330, 30));
 
         TipoUsuario.add(Alumno);
         Alumno.setText("Alumno");
@@ -193,7 +199,15 @@ public class PantallaRegistrar extends javax.swing.JFrame {
 
         contraTEXT.setText("Contraseña");
         contraTEXT.setPreferredSize(new java.awt.Dimension(115, 20));
-        jPanel1.add(contraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 330, -1));
+        jPanel1.add(contraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 330, 30));
+
+        jButton1.setText("Volver");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -221,14 +235,17 @@ public class PantallaRegistrar extends javax.swing.JFrame {
 
     private void registroBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroBotonActionPerformed
     registrarUsuario(nombreTEXT, ApellidoTEXT, correoTEXT, contraTEXT, TipoUsuario);
-    PantallaInicioSesión a = new PantallaInicioSesión();
-    a.setVisible(true);
-    this.dispose();
     }//GEN-LAST:event_registroBotonActionPerformed
 
     private void ProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfesorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ProfesorActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        PantallaInicioSesión a = new PantallaInicioSesión();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -272,6 +289,7 @@ public class PantallaRegistrar extends javax.swing.JFrame {
     private javax.swing.ButtonGroup TipoUsuario;
     private javax.swing.JTextField contraTEXT;
     private javax.swing.JTextField correoTEXT;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

@@ -310,7 +310,7 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
     }//GEN-LAST:event_Alumnoss2ActionPerformed
 
     private void Profesores2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Profesores2ActionPerformed
-        PantallaProfesoresAdministrador a = new PantallaProfesoresAdministrador();
+        PantallaProfesoresElegir a = new PantallaProfesoresElegir();
         a.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_Profesores2ActionPerformed

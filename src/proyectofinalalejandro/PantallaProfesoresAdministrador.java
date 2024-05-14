@@ -4,19 +4,335 @@
  */
 package proyectofinalalejandro;
 
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+
 /**
  *
  * @author Aleja
  */
 public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
-
-    /**
-     * Creates new form PantallaProfesoresAdministrador
-     */
+        String bbdd = "jdbc:hsqldb:hsql://localhost/";
+        Connection con = null;
+        private String[] datos;
+        String nombre1 = "";
+        int FilSelect ;
+        Connection conet;
     public PantallaProfesoresAdministrador() {
         initComponents();
+        try {
+             Class.forName("org.hsqldb.jdbc.JDBCDriver");
+             con = DriverManager.getConnection(bbdd, "SA", "SA");
+        if (con!= null) {
+             System.out.println("Connection created successfully");
+        }else{
+             System.out.println("Problem with creating connection");
+        }
+        } catch (ClassNotFoundException | SQLException e) {
+             e.printStackTrace(System.out);
+            }
+        ActualizarTablaProfesores(con);
+    }
+        public void ActualizarTablaProfesores(Connection con) {
+        try {
+            String sql = "SELECT * FROM usuarios WHERE tipo = 'profesor'";
+            java.sql.Statement statement = con.createStatement();
+            ResultSet resultado = statement.executeQuery(sql);
+
+            DefaultTableModel tmProfesores = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+
+            tmProfesores.addColumn("Id");
+            tmProfesores.addColumn("Nombre");
+            tmProfesores.addColumn("Apellidos");
+            tmProfesores.addColumn("Email");
+            tmProfesores.addColumn("Clave");
+            tmProfesores.addColumn("Tipo");
+
+            while (resultado.next()) {
+                String id = resultado.getString("ID");
+                String nombre = resultado.getString("NOMBRE");
+                String apellidos = resultado.getString("APELLIDOS");
+                String email = resultado.getString("EMAIL");
+                String clave = resultado.getString("CLAVE");
+                String tipo = resultado.getString("TIPO");
+
+                Object[] fila = {id, nombre, apellidos, email, clave, tipo};
+                tmProfesores.addRow(fila);
+            }
+
+            TablaProfesores.setModel(tmProfesores);
+
+            TableColumnModel columnModel = TablaProfesores.getColumnModel();
+            columnModel.getColumn(0).setMinWidth(0);
+            columnModel.getColumn(0).setMaxWidth(0);
+            columnModel.getColumn(5).setMinWidth(0);
+            columnModel.getColumn(5).setMaxWidth(0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void registrarProfesor(JTextField nombreTEXT, JTextField ApellidoTEXT, JTextField correoTEXT, JTextField contraTEXT) {
+    String nombre = nombreTEXT.getText();
+    String apellido = ApellidoTEXT.getText();
+    String correo = correoTEXT.getText();
+    String clave = contraTEXT.getText();
+
+    String tipo = "profesor"; // Tipo de usuario ahora será "profesor"
+
+    if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || clave.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+
+        if (nombre.isEmpty()) {
+            cambiarColorCampo(nombreTEXT, Color.RED);
+        }
+        if (apellido.isEmpty()) {
+            cambiarColorCampo(ApellidoTEXT, Color.RED);
+        }
+        if (correo.isEmpty()) {
+            cambiarColorCampo(correoTEXT, Color.RED);
+        }
+        if (clave.isEmpty()) {
+            cambiarColorCampo(contraTEXT, Color.RED);
+        }
+        return;
     }
 
+    if (clave.length() < 5) {
+        JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 5 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+        cambiarColorCampo(contraTEXT, Color.RED);
+        return;
+    }
+
+    try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
+        String consulta = "INSERT INTO usuarios (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
+
+        try (java.sql.PreparedStatement statement = conec.prepareStatement(consulta)) {
+            statement.setString(1, nombre);
+            statement.setString(2, apellido);
+            statement.setString(3, correo);
+            statement.setString(4, clave);
+            statement.setString(5, tipo);
+
+            int filasInsertadas = statement.executeUpdate();
+
+            if (filasInsertadas > 0) {
+                JOptionPane.showMessageDialog(null, "Profesor registrado exitosamente.");
+                
+                // Cambiar color de los campos a negro
+                cambiarColorCampo(contraTEXT, Color.BLACK);
+                cambiarColorCampo(nombreTEXT, Color.BLACK);
+                cambiarColorCampo(ApellidoTEXT, Color.BLACK);
+                cambiarColorCampo(correoTEXT, Color.BLACK);
+
+                // Llamar a ActualizarTablaProfesores
+                ActualizarTablaProfesores(conec);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al registrar el profesor.");
+            }
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
+    }
+}
+    /////////////////////////////////////////
+        public void eliminarProfesor(JTable tabla) {
+        int filaSeleccionada = tabla.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Obtener los datos de la fila seleccionada
+        String nombre = tabla.getValueAt(filaSeleccionada, 1).toString();
+        String apellido = tabla.getValueAt(filaSeleccionada, 2).toString();
+        String correo = tabla.getValueAt(filaSeleccionada, 3).toString();
+        String clave = tabla.getValueAt(filaSeleccionada, 4).toString();
+
+        try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
+            String consulta = "DELETE FROM usuarios WHERE nombre = ? AND apellidos = ? AND email = ? AND clave = ? AND tipo = 'profesor'";
+
+            try (java.sql.PreparedStatement statement = conec.prepareStatement(consulta)) {
+                statement.setString(1, nombre);
+                statement.setString(2, apellido);
+                statement.setString(3, correo);
+                statement.setString(4, clave);
+
+                int filasEliminadas = statement.executeUpdate();
+
+                if (filasEliminadas > 0) {
+                    JOptionPane.showMessageDialog(null, "Profesor eliminado exitosamente.");
+
+                    // Mostrar ventana emergente con los datos del profesor eliminado
+                    JOptionPane.showMessageDialog(null, "Nombre: " + nombre + "\nApellido: " + apellido + "\nCorreo: " + correo);
+
+                    // Llamar a ActualizarTablaProfesores
+                    ActualizarTablaProfesores(conec);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar el profesor.");
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
+        }
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////
+    private void cambiarColorCampo(JTextField campo, Color color) {
+        campo.setBorder(BorderFactory.createLineBorder(color));
+    }
+    /////////////////////////////////////////////////////////////////////////////////////
+    public void buscarProfesor(JTextField nombreTEXT, JTextField apellidoTEXT, JTextField emailTEXT, JTextField contraTEXT, JTable tabla) {
+    String nombre = nombreTEXT.getText();
+    String apellido = apellidoTEXT.getText();
+    String correo = emailTEXT.getText();
+    String clave = contraTEXT.getText();
+
+    String consulta = "SELECT * FROM usuarios WHERE 1=1";
+    if (!nombre.isEmpty()) {
+        consulta += " AND nombre LIKE '" + nombre + "%'";
+    }
+    if (!apellido.isEmpty()) {
+        consulta += " AND apellidos LIKE '" + apellido + "%'";
+    }
+    if (!correo.isEmpty()) {
+        consulta += " AND email LIKE '" + correo + "%'";
+    }
+    if (!clave.isEmpty()) {
+        consulta += " AND clave LIKE '" + clave + "%'";
+    }
+
+    try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA");
+         Statement statement = conec.createStatement();
+         ResultSet resultSet = statement.executeQuery(consulta)) {
+
+        // Obtener el modelo de la tabla
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+
+        // Limpiar la tabla
+        model.setRowCount(0);
+
+        // Rellenar la tabla con los resultados de la consulta
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String nombreResultado = resultSet.getString("nombre");
+            String apellidosResultado = resultSet.getString("apellidos");
+            String emailResultado = resultSet.getString("email");
+            String claveResultado = resultSet.getString("clave");
+            String tipoResultado = resultSet.getString("tipo");
+
+            model.addRow(new Object[]{id, nombreResultado, apellidosResultado, emailResultado, claveResultado, tipoResultado});
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
+    }
+}
+    public void Reiniciar(){
+           EmailTEXT.setText("");
+           NombreTEXT.setText("");
+           ApellidooTEXT.setText("");
+           ContraTEXT.setText("");
+           ActualizarTablaProfesores(con);
+           cambiarColorCampo(EmailTEXT, Color.BLACK);
+           cambiarColorCampo(NombreTEXT, Color.BLACK);
+           cambiarColorCampo(ApellidooTEXT, Color.BLACK);
+           cambiarColorCampo(ContraTEXT, Color.BLACK);
+       }
+    
+    ///////////////////////////////////////////////////////////
+   public void cargarDatosProfesor(Connection con) {
+    try {
+        int filaSeleccionada = TablaProfesores.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            String idSeleccionado = TablaProfesores.getValueAt(filaSeleccionada, 0).toString();
+            String sqlSelect = "SELECT * FROM usuarios WHERE ID = '" + idSeleccionado + "'";
+            Statement statement = con.createStatement();
+            ResultSet resultado = statement.executeQuery(sqlSelect);
+
+            if (resultado.next()) {
+                String nombre = resultado.getString("NOMBRE");
+                String apellido = resultado.getString("APELLIDOS");
+                String correo = resultado.getString("EMAIL");
+                String clave = resultado.getString("CLAVE");
+
+                // Asignar datos a los JTextField
+                NombreTEXT.setText(nombre);
+                ApellidooTEXT.setText(apellido);
+                EmailTEXT.setText(correo);
+                ContraTEXT.setText(clave);
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+   ///////////////////////////////////////////////////////////
+    public void editarProfesor(Connection con, JTextField nombreTEXT, JTextField ApellidoTEXT, JTextField correoTEXT, JTextField contraTEXT) {
+     String nombre = nombreTEXT.getText();
+     String apellido = ApellidoTEXT.getText();
+     String correo = correoTEXT.getText();
+     String clave = contraTEXT.getText();
+
+     int filaSeleccionada = TablaProfesores.getSelectedRow();
+     if (filaSeleccionada == -1) {
+         JOptionPane.showMessageDialog(null, "Por favor, seleccione un profesor para editar.", "Error", JOptionPane.ERROR_MESSAGE);
+         return;
+     }
+
+     String idSeleccionado = TablaProfesores.getValueAt(filaSeleccionada, 0).toString();
+
+     if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || clave.isEmpty()) {
+         JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+         return;
+     }
+
+     if (clave.length() < 5) {
+         JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 5 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+         return;
+     }
+
+     try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
+         String consulta = "UPDATE usuarios SET nombre = '" + nombre + "', apellidos = '" + apellido + "', email = '" + correo + "', clave = '" + clave + "' WHERE ID = '" + idSeleccionado + "'";
+
+         try (Statement statement = conec.createStatement()) {
+             int filasActualizadas = statement.executeUpdate(consulta);
+
+             if (filasActualizadas > 0) {
+                 JOptionPane.showMessageDialog(null, "Registro modificado.");
+
+                 nombreTEXT.setText("");
+                 ApellidoTEXT.setText("");
+                 correoTEXT.setText("");
+                 contraTEXT.setText("");
+
+                 cargarDatosProfesor(con);
+                 ActualizarTablaProfesores(conec);
+             } else {
+                 JOptionPane.showMessageDialog(null, "Error al actualizar el profesor.");
+             }
+         }
+     } catch (SQLException e) {
+         JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
+     }
+ }
+   ///////////////////////////////////////////////////////////
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,21 +343,22 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        TablaProfesores = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        NombreTEXT = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        ApellidooTEXT = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        EmailTEXT = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        ContraTEXT = new javax.swing.JTextField();
+        BuscarBoton = new javax.swing.JButton();
+        ReiniciarBoton = new javax.swing.JButton();
+        AnadirBoton = new javax.swing.JButton();
+        EliminarBoton = new javax.swing.JButton();
+        Editar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         PantallasMenu = new javax.swing.JMenu();
         InicioDeSesion = new javax.swing.JMenuItem();
@@ -57,40 +374,86 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Profesores"));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setViewportView(jList1);
+        TablaProfesores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Nombre", "Apellidos", "Email", "Contraseña", "Tipo"
+            }
+        ));
+        TablaProfesores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TablaProfesoresMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(TablaProfesores);
 
-        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Formulario"));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setText("Nombre");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-        jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 320, -1));
+        jPanel2.add(NombreTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 320, -1));
 
         jLabel3.setText("Apellido");
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, -1, -1));
-        jPanel2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 40, 320, -1));
+        jPanel2.add(ApellidooTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 40, 320, -1));
 
         jLabel4.setText("Email");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
-        jPanel2.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 320, -1));
+        jPanel2.add(EmailTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 320, -1));
 
         jLabel5.setText("Contraseña");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, -1, -1));
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, 320, -1));
+        jPanel2.add(ContraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, 320, -1));
 
-        jButton1.setText("Buscar");
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
+        BuscarBoton.setText("Buscar");
+        BuscarBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarBotonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(BuscarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
 
-        jButton2.setText("Reiniciar");
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, -1, -1));
+        ReiniciarBoton.setText("Reiniciar");
+        ReiniciarBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReiniciarBotonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, -1, -1));
 
-        jButton3.setText("Añadir");
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 130, -1, -1));
+        AnadirBoton.setText("Añadir");
+        AnadirBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AnadirBotonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(AnadirBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 130, -1, -1));
 
-        jButton4.setText("Eliminar");
-        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 130, -1, -1));
+        EliminarBoton.setText("Eliminar");
+        EliminarBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarBotonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(EliminarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 130, -1, -1));
+
+        Editar.setText("Editar");
+        Editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(Editar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 130, -1, -1));
 
         PantallasMenu.setText("Pantallas");
 
@@ -214,6 +577,32 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_administradorVERActionPerformed
 
+    private void BuscarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarBotonActionPerformed
+       buscarProfesor(NombreTEXT, ApellidooTEXT, EmailTEXT,ContraTEXT, TablaProfesores);
+    }//GEN-LAST:event_BuscarBotonActionPerformed
+
+    private void ReiniciarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReiniciarBotonActionPerformed
+       Reiniciar();
+    }//GEN-LAST:event_ReiniciarBotonActionPerformed
+
+    private void AnadirBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnadirBotonActionPerformed
+      registrarProfesor(NombreTEXT, ApellidooTEXT, EmailTEXT, ContraTEXT);
+      ActualizarTablaProfesores(con);
+    }//GEN-LAST:event_AnadirBotonActionPerformed
+
+    private void EliminarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarBotonActionPerformed
+      eliminarProfesor(TablaProfesores);
+      ActualizarTablaProfesores(con);
+    }//GEN-LAST:event_EliminarBotonActionPerformed
+
+    private void TablaProfesoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaProfesoresMouseClicked
+        cargarDatosProfesor(con);
+    }//GEN-LAST:event_TablaProfesoresMouseClicked
+
+    private void EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarActionPerformed
+       editarProfesor(con, NombreTEXT, ApellidooTEXT, EmailTEXT, ContraTEXT);
+    }//GEN-LAST:event_EditarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -252,28 +641,29 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu AjustesMenu;
     private javax.swing.JMenuItem Alumnos;
+    private javax.swing.JButton AnadirBoton;
+    private javax.swing.JTextField ApellidooTEXT;
+    private javax.swing.JButton BuscarBoton;
     private javax.swing.JMenuItem CambiarContra;
+    private javax.swing.JTextField ContraTEXT;
+    private javax.swing.JButton Editar;
+    private javax.swing.JButton EliminarBoton;
+    private javax.swing.JTextField EmailTEXT;
     private javax.swing.JMenuItem InicioDeSesion;
     private javax.swing.JMenuItem Materias;
+    private javax.swing.JTextField NombreTEXT;
     private javax.swing.JMenu PantallasMenu;
+    private javax.swing.JButton ReiniciarBoton;
     private javax.swing.JMenuItem SalirMenu;
+    private javax.swing.JTable TablaProfesores;
     private javax.swing.JMenuItem administradorVER;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables
 }

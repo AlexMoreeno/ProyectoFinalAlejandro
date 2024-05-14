@@ -49,25 +49,33 @@ public class PantallaInicioSesión extends javax.swing.JFrame {
         iniciarSesion(correo, contrasena);
     }
     private void iniciarSesion(String correo, String contrasena) {
-    
     try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
         
-        String consulta = "SELECT id, nombre, apellidos, tipo FROM usuarios WHERE email = '" + correo + "' AND clave = '" + contrasena + "'";
-        
-        try (Statement statement = conec.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(consulta);
+        // Primero, comprobar si el correo y contraseña están en la tabla profesoresNOACEPTADOS
+        String consultaNoAceptados = "SELECT id FROM profesoresNOACEPTADOS WHERE email = '" + correo + "' AND clave = '" + contrasena + "'";
+        try (Statement statementNoAceptados = conec.createStatement()) {
+            ResultSet resultSetNoAceptados = statementNoAceptados.executeQuery(consultaNoAceptados);
             
-            if (resultSet.next()) {
-               
-                int idUsuario = resultSet.getInt("id");
-                String nombre = resultSet.getString("nombre");
-                String apellidos = resultSet.getString("apellidos");
-                String tipo = resultSet.getString("tipo");
+            if (resultSetNoAceptados.next()) {
+                // Si existe en profesoresNOACEPTADOS, mostrar mensaje y salir
+                JOptionPane.showMessageDialog(null, "Espere ser admitido.");
+                return;
+            }
+        }
+
+        // Si no está en profesoresNOACEPTADOS, comprobar en usuarios
+        String consultaUsuarios = "SELECT id, nombre, apellidos, tipo FROM usuarios WHERE email = '" + correo + "' AND clave = '" + contrasena + "'";
+        try (Statement statementUsuarios = conec.createStatement()) {
+            ResultSet resultSetUsuarios = statementUsuarios.executeQuery(consultaUsuarios);
+            
+            if (resultSetUsuarios.next()) {
+                int idUsuario = resultSetUsuarios.getInt("id");
+                String nombre = resultSetUsuarios.getString("nombre");
+                String apellidos = resultSetUsuarios.getString("apellidos");
+                String tipo = resultSetUsuarios.getString("tipo");
                 
-              
                 JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso \nNombre: " + nombre + " " + apellidos + "\nTipo: " + tipo);
                 
-              
                 switch (tipo) {
                     case "alumno":
                         abrirAlumnoPantalla();
@@ -83,16 +91,13 @@ public class PantallaInicioSesión extends javax.swing.JFrame {
                         break;
                 }
             } else {
-              
                 JOptionPane.showMessageDialog(null, "Correo o contraseña incorrectos.");
             }
         }
     } catch (SQLException e) {
-       
         JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
     }
 }
-
 
 private void abrirAlumnoPantalla() {
         PantallaPrincipalAlumno a = new PantallaPrincipalAlumno();
