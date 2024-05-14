@@ -4,17 +4,102 @@
  */
 package proyectofinalalejandro;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 /**
  *
  * @author Aleja
  */
 public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
+    String bbdd = "jdbc:hsqldb:hsql://localhost/";
+    Connection con = null;
+    private String[] datos;
+    String nombre1 = "";
+    int FilSelect;
+    Connection conet;
 
-    /**
-     * Creates new form PantallaPrincipalAdministrador
-     */
     public PantallaPrincipalAdministrador() {
         initComponents();
+        try {
+            Class.forName("org.hsqldb.jdbc.JDBCDriver");
+            con = DriverManager.getConnection(bbdd, "SA", "SA");
+            if (con != null) {
+                System.out.println("Connection created successfully");
+            } else {
+                System.out.println("Problem with creating connection");
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        // Obtener y mostrar los datos en los JTextField
+         try {
+            // Obtener el número de usuarios por tipo
+            int numeroAlumnos = obtenerNumeroAlumnos(con);
+            int numeroProfesores = obtenerNumeroProfesores(con);
+            int numeroMaterias = obtenerNumeroMaterias(con);
+            int numeroTotales = obtenerTotalUsuarios(con);
+
+            // Mostrar los resultados en los JTextFields
+            MostrarAlumnos.setText(String.valueOf(numeroAlumnos));
+            MostrarProfesores.setText(String.valueOf(numeroProfesores));
+            MostrarMaterias.setText(String.valueOf(numeroMaterias));
+            MostrarTotales.setText(String.valueOf(numeroTotales));
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static int obtenerTotalUsuarios(Connection con) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM usuarios";
+        try (Statement statement = con.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+    // Método para obtener el número de usuarios con el tipo 'alumno'
+    public static int obtenerNumeroAlumnos(Connection con) throws SQLException {
+        return obtenerUsuariosPorTipo(con, "alumno");
+    }
+
+    // Método para obtener el número de usuarios con el tipo 'profesor'
+    public static int obtenerNumeroProfesores(Connection con) throws SQLException {
+        return obtenerUsuariosPorTipo(con, "profesor");
+    }
+
+    // Método para obtener el número de materias
+    public static int obtenerNumeroMaterias(Connection con) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM materias";
+        try (Statement statement = con.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+    // Método para obtener el número de usuarios por tipo
+    public static int obtenerUsuariosPorTipo(Connection con, String tipo) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM usuarios WHERE tipo = '" + tipo + "'";
+        try (Statement statement = con.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        }
+        return 0;
     }
 
     /**
@@ -304,4 +389,5 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
+
 }

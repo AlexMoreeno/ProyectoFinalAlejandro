@@ -61,7 +61,6 @@ public void ActualizarTablaProfesores(Connection con) {
         java.sql.Statement statement = con.createStatement();
         ResultSet resultado = statement.executeQuery(sql);
 
-        // Limpiar cualquier contenido anterior en el modelo de la tabla
         DefaultTableModel tmProfesores = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -76,8 +75,7 @@ public void ActualizarTablaProfesores(Connection con) {
         tmProfesores.addColumn("Clave");
         tmProfesores.addColumn("Tipo");
 
-        // Iterar sobre el resultado y agregar filas al modelo de la tabla
-        while(resultado.next()) {
+        while (resultado.next()) {
             String id = resultado.getString("ID");
             String nombre = resultado.getString("NOMBRE");
             String apellidos = resultado.getString("APELLIDOS");
@@ -85,16 +83,12 @@ public void ActualizarTablaProfesores(Connection con) {
             String clave = resultado.getString("CLAVE");
             String tipo = resultado.getString("TIPO");
 
-
-            // Agregar fila al modelo de la tabla
             Object[] fila = {id, nombre, apellidos, email, clave, tipo};
             tmProfesores.addRow(fila);
         }
 
-        // Configurar la tabla para usar el modelo de tabla tmProfesores
         TablaProfesores.setModel(tmProfesores);
 
-        // Ocultar las columnas del id, clave y tipo
         TableColumnModel columnModel = TablaProfesores.getColumnModel();
         columnModel.getColumn(0).setMinWidth(0);
         columnModel.getColumn(0).setMaxWidth(0);
@@ -103,7 +97,7 @@ public void ActualizarTablaProfesores(Connection con) {
         columnModel.getColumn(5).setMinWidth(0);
         columnModel.getColumn(5).setMaxWidth(0);
 
-    } catch(Exception e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
 }
@@ -122,32 +116,26 @@ public void ActualizarTablaProfesores(Connection con) {
         java.sql.Statement statement = con.createStatement();
         var resultado = statement.executeQuery(sql);
 
-        // Agregar nombres de columnas al modelo de la tabla
         tm.addColumn("Id");
         tm.addColumn("Nombre");
         tm.addColumn("IdNivel");
-        
 
-        // Iterar sobre el resultado y agregar filas al modelo de la tabla
-        while(resultado.next()) {
+        while (resultado.next()) {
             String id = resultado.getString("ID");
             String nombre = resultado.getString("NOMBRE");
-            String idNivel = resultado.getString("ID_NIVEL"); // Cambio aquí
+            String idNivel = resultado.getString("ID_NIVEL");
 
-            // Agregar fila al modelo de la tabla
             Object[] fila = {id, nombre, idNivel};
             tm.addRow(fila);
         }
 
-        // Ocultar las columnas de Id, Clave y Tipo
         TableColumnModel columnModel = TablaMaterias.getColumnModel();
         columnModel.getColumn(0).setMinWidth(0);
         columnModel.getColumn(0).setMaxWidth(0);
         columnModel.getColumn(2).setMinWidth(0);
         columnModel.getColumn(2).setMaxWidth(0);
 
-
-    } catch(Exception e) {
+    } catch (Exception e) {
         e.printStackTrace();
     }
 }
@@ -181,7 +169,7 @@ public void ActualizarTablaProfesores(Connection con) {
             TablaProfesores.setModel(modelo);
 
             if (!apellidos.isEmpty()) {
-                obtenerMateriasAleatorias();
+                obtenerMaterias();
             }
 
         } catch (Exception e) {
@@ -189,7 +177,7 @@ public void ActualizarTablaProfesores(Connection con) {
         }
     }
 
-    private void obtenerMateriasAleatorias() {
+    private void obtenerMaterias() {
         DefaultTableModel tm = new DefaultTableModel() {};
 
         String consultaSQL = "SELECT nombre FROM materias ORDER BY RAND() LIMIT 2";
@@ -395,12 +383,11 @@ private void filtrarPorApellidoYMateria(String apellidos, String materia) {
         e.printStackTrace();
     }
 }*/
-    public void insertarProfesorDesdeTabla(Connection con) {
-        int filaSeleccionada = TablaProfesores.getSelectedRow();
+public void insertarProfesorDesdeTabla(Connection con) {
+    int filaSeleccionada = TablaProfesores.getSelectedRow();
     
     if (filaSeleccionada != -1) {
         try {
-            // Obtener los datos de la fila seleccionada, teniendo en cuenta las columnas ocultas
             String id = (String) TablaProfesores.getValueAt(filaSeleccionada, 0);
             String nombre = (String) TablaProfesores.getValueAt(filaSeleccionada, 1);
             String apellidos = (String) TablaProfesores.getValueAt(filaSeleccionada, 2);
@@ -410,49 +397,43 @@ private void filtrarPorApellidoYMateria(String apellidos, String materia) {
             
             System.out.println("Nombre: " + nombre + ", Apellidos: " + apellidos + ", Email: " + email);
 
-            // Insertar en la tabla de usuarios sin incluir las columnas ocultas
             String sqlInsert = "INSERT INTO profesorescontratados (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
-                try (var insertStatement = con.prepareStatement(sqlInsert)) {
-                    insertStatement.setString(1, nombre);
-                    insertStatement.setString(2, apellidos);
-                    insertStatement.setString(3, email);
-                    insertStatement.setString(4, clave);
-                    insertStatement.setString(5, tipo);
-                    int rowsInserted = insertStatement.executeUpdate();
-                    System.out.println("Filas insertadas en profesorescontratados: " + rowsInserted);
-                }
+            try (var insertStatement = con.prepareStatement(sqlInsert)) {
+                insertStatement.setString(1, nombre);
+                insertStatement.setString(2, apellidos);
+                insertStatement.setString(3, email);
+                insertStatement.setString(4, clave);
+                insertStatement.setString(5, tipo);
+                int rowsInserted = insertStatement.executeUpdate();
+                System.out.println("Filas insertadas en profesorescontratados: " + rowsInserted);
+            }
 
-            // Eliminar la fila de la tabla de profesorescontratados
             String sqlDelete = "DELETE FROM usuarios WHERE id = ? AND nombre = ? AND apellidos = ? AND email = ? AND clave = ? AND tipo = ?";
-                try (var deleteStatement = con.prepareStatement(sqlDelete)) {
-                    deleteStatement.setString(1, id);
-                    deleteStatement.setString(2, nombre);
-                    deleteStatement.setString(3, apellidos);
-                    deleteStatement.setString(4, email);
-                    deleteStatement.setString(5, clave);
-                    deleteStatement.setString(6, tipo);
-                    int rowsDeleted = deleteStatement.executeUpdate();
-                    System.out.println("Filas eliminadas de usuarios: " + rowsDeleted);
-                }
+            try (var deleteStatement = con.prepareStatement(sqlDelete)) {
+                deleteStatement.setString(1, id);
+                deleteStatement.setString(2, nombre);
+                deleteStatement.setString(3, apellidos);
+                deleteStatement.setString(4, email);
+                deleteStatement.setString(5, clave);
+                deleteStatement.setString(6, tipo);
+                int rowsDeleted = deleteStatement.executeUpdate();
+                System.out.println("Filas eliminadas de usuarios: " + rowsDeleted);
+            }
 
-            // Actualizar la tabla después de realizar los cambios
             ActualizarTablaProfesores(con);
-            JOptionPane.showMessageDialog(null, "Se ha eliminado al profesor de tu lista", "Profesor Eliminado", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Se ha contratado al profesor", "Profesor Contratado", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     } else {
         JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.", "Error", JOptionPane.ERROR_MESSAGE);
     }
-   }
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////
     public void Reiniciar() {
-        // Establecer el texto vacío en los JTextField
         ApellidoTEXT.setText("");
         MateriaTEXT.setText("");
-
         try {
-            
             ActualizarTablaProfesores(con);
             ActualizarTablaMaterias(con);
             
@@ -615,7 +596,7 @@ private void filtrarPorApellidoYMateria(String apellidos, String materia) {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -664,16 +645,12 @@ private void filtrarPorApellidoYMateria(String apellidos, String materia) {
     }//GEN-LAST:event_ReiniciarBotonActionPerformed
 
     private void FiltrarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FiltrarBotonActionPerformed
-     String apellidos = ApellidoTEXT.getText();
+    String apellidos = ApellidoTEXT.getText();
     String materia = MateriaTEXT.getText();
-
-    // Verificar si solo se escribió en el JTextField de apellidos
     if (!apellidos.isEmpty() && materia.isEmpty()) {
         filtrarPorApellido(apellidos);
-        return; // Detener la ejecución sin realizar ninguna acción en la tabla de materias
+        return; 
     }
-    
-    // Si se escribió en ambos campos o solo en el campo de materias, continuar con la búsqueda en materias
     filtrarPorApellidoYMateria(apellidos, materia);
     }//GEN-LAST:event_FiltrarBotonActionPerformed
 

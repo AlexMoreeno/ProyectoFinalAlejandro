@@ -4,17 +4,245 @@
  */
 package proyectofinalalejandro;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+
 /**
  *
  * @author Aleja
  */
 public class PantallaSecundariaProfesor extends javax.swing.JFrame {
-
-    /**
-     * Creates new form PantallaSecundariaProfesor
-     */
+        String bbdd = "jdbc:hsqldb:hsql://localhost/";
+        Connection con = null;
+        private String[] datos;
+        String nombre1 = "";
+        int FilSelect ;
+        Connection conet;
     public PantallaSecundariaProfesor() {
         initComponents();
+        try {
+             Class.forName("org.hsqldb.jdbc.JDBCDriver");
+             con = DriverManager.getConnection(bbdd, "SA", "SA");
+        if (con!= null) {
+             System.out.println("Connection created successfully");
+        }else{
+             System.out.println("Problem with creating connection");
+        }
+        } catch (ClassNotFoundException | SQLException e) {
+             e.printStackTrace(System.out);
+            }
+        ActualizarTablaAlumnos(con);
+        ActualizarTablaMaterias(con);
+    }
+    public void ActualizarTablaAlumnos(Connection con) {
+    try {
+        String sql = "SELECT * FROM usuarios WHERE tipo = 'alumno'";
+        java.sql.Statement statement = con.createStatement();
+        ResultSet resultado = statement.executeQuery(sql);
+
+        DefaultTableModel tmProfesores = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        tmProfesores.addColumn("Id");
+        tmProfesores.addColumn("Nombre");
+        tmProfesores.addColumn("Apellidos");
+        tmProfesores.addColumn("Email");
+        tmProfesores.addColumn("Clave");
+        tmProfesores.addColumn("Tipo");
+
+        while (resultado.next()) {
+            String id = resultado.getString("ID");
+            String nombre = resultado.getString("NOMBRE");
+            String apellidos = resultado.getString("APELLIDOS");
+            String email = resultado.getString("EMAIL");
+            String clave = resultado.getString("CLAVE");
+            String tipo = resultado.getString("TIPO");
+
+            Object[] fila = {id, nombre, apellidos, email, clave, tipo};
+            tmProfesores.addRow(fila);
+        }
+
+        TablaAlumnos.setModel(tmProfesores);
+
+        TableColumnModel columnModel = TablaAlumnos.getColumnModel();
+        columnModel.getColumn(0).setMinWidth(0);
+        columnModel.getColumn(0).setMaxWidth(0);
+        columnModel.getColumn(4).setMinWidth(0);
+        columnModel.getColumn(4).setMaxWidth(0);
+        columnModel.getColumn(5).setMinWidth(0);
+        columnModel.getColumn(5).setMaxWidth(0);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+    public void ActualizarTablaMaterias(Connection con) {
+    DefaultTableModel tm = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+
+    TablaMaterias.setModel(tm);
+
+    try {
+        String sql = "SELECT * FROM materias";
+        java.sql.Statement statement = con.createStatement();
+        var resultado = statement.executeQuery(sql);
+
+        tm.addColumn("Id");
+        tm.addColumn("Nombre");
+        tm.addColumn("IdNivel");
+
+        while (resultado.next()) {
+            String id = resultado.getString("ID");
+            String nombre = resultado.getString("NOMBRE");
+            String idNivel = resultado.getString("ID_NIVEL");
+
+            Object[] fila = {id, nombre, idNivel};
+            tm.addRow(fila);
+        }
+
+        TableColumnModel columnModel = TablaMaterias.getColumnModel();
+        columnModel.getColumn(0).setMinWidth(0);
+        columnModel.getColumn(0).setMaxWidth(0);
+        columnModel.getColumn(2).setMinWidth(0);
+        columnModel.getColumn(2).setMaxWidth(0);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+    private void filtrarPorApellidoAlumno(String apellidos) {
+        DefaultTableModel modelo = new DefaultTableModel() {};
+
+        String consultaSQL = "SELECT nombre, apellidos, email " +
+                            "FROM usuarios " +
+                            "WHERE tipo = 'alumno'";
+        if (!apellidos.isEmpty()) {
+            consultaSQL += " AND apellidos LIKE '%" + apellidos + "%'";
+        }
+        consultaSQL += " LIMIT 2";
+
+        try {
+            Statement statement = con.createStatement();
+            ResultSet resultado = statement.executeQuery(consultaSQL);
+
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Apellidos");
+            modelo.addColumn("Email");
+
+            while (resultado.next()) {
+                String nombre = resultado.getString("nombre");
+                String apellidosResultado = resultado.getString("apellidos");
+                String email = resultado.getString("email");
+                modelo.addRow(new Object[]{nombre, apellidosResultado, email});
+            }
+
+            TablaAlumnos.setModel(modelo);
+
+            if (!apellidos.isEmpty()) {
+                obtenerMaterias();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void obtenerMaterias() {
+        DefaultTableModel tm = new DefaultTableModel() {};
+
+        String consultaSQL = "SELECT nombre FROM materias ORDER BY RAND() LIMIT 2";
+
+        try {
+            Statement statement = con.createStatement();
+            ResultSet resultado = statement.executeQuery(consultaSQL);
+
+            ArrayList<String> materias = new ArrayList<>();
+            while (resultado.next()) {
+                materias.add(resultado.getString("nombre"));
+            }
+
+            tm.addColumn("Nombre");
+
+            for (String nombreMateria : materias) {
+                tm.addRow(new Object[]{nombreMateria});
+            }
+
+            TablaMaterias.setModel(tm);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+        public void insertarAlumnoDesdeTabla(Connection con) {
+        int filaSeleccionada = TablaAlumnos.getSelectedRow();
+
+        if (filaSeleccionada != -1) {
+            try {
+                String id = (String) TablaAlumnos.getValueAt(filaSeleccionada, 0);
+                String nombre = (String) TablaAlumnos.getValueAt(filaSeleccionada, 1);
+                String apellidos = (String) TablaAlumnos.getValueAt(filaSeleccionada, 2);
+                String email = (String) TablaAlumnos.getValueAt(filaSeleccionada, 3);
+                String clave = (String) TablaAlumnos.getValueAt(filaSeleccionada, 4);
+                String tipo = (String) TablaAlumnos.getValueAt(filaSeleccionada, 5);
+
+                System.out.println("Nombre: " + nombre + ", Apellidos: " + apellidos + ", Email: " + email);
+
+                String sqlInsert = "INSERT INTO alumnoscontratados (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
+                try (var insertStatement = con.prepareStatement(sqlInsert)) {
+                    insertStatement.setString(1, nombre);
+                    insertStatement.setString(2, apellidos);
+                    insertStatement.setString(3, email);
+                    insertStatement.setString(4, clave);
+                    insertStatement.setString(5, tipo);
+                    int rowsInserted = insertStatement.executeUpdate();
+                    System.out.println("Filas insertadas en alumnoscontratados: " + rowsInserted);
+                }
+
+                String sqlDelete = "DELETE FROM usuarios WHERE id = ? AND nombre = ? AND apellidos = ? AND email = ? AND clave = ? AND tipo = ?";
+                try (var deleteStatement = con.prepareStatement(sqlDelete)) {
+                    deleteStatement.setString(1, id);
+                    deleteStatement.setString(2, nombre);
+                    deleteStatement.setString(3, apellidos);
+                    deleteStatement.setString(4, email);
+                    deleteStatement.setString(5, clave);
+                    deleteStatement.setString(6, tipo);
+                    int rowsDeleted = deleteStatement.executeUpdate();
+                    System.out.println("Filas eliminadas de usuarios: " + rowsDeleted);
+                }
+
+                ActualizarTablaAlumnos(con);
+                JOptionPane.showMessageDialog(null, "Se ha añadadido el alumno a tu lista", "Alumno Escogido", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    public void Reiniciar() {
+        ApellidoTEXT.setText("");
+        try {
+            ActualizarTablaAlumnos(con);
+            ActualizarTablaMaterias(con);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -27,13 +255,17 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        TablaAlumnos = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        TablaMaterias = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        ApellidoTEXT = new javax.swing.JTextField();
+        FiltrarBotón = new javax.swing.JButton();
+        ContactarBoton = new javax.swing.JButton();
+        ReiniciarBoton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         PantallasMenu = new javax.swing.JMenu();
         InicioDeSesion = new javax.swing.JMenuItem();
@@ -43,26 +275,76 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
         CambiarContra = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(712, 367));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Alumnos"));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setViewportView(jList1);
+        TablaAlumnos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Nombre", "Apellidos", "Email", "Contraseña", "Tipo"
+            }
+        ));
+        jScrollPane3.setViewportView(TablaAlumnos);
 
-        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Materias"));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane2.setViewportView(jList2);
+        TablaMaterias.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Id", "Nombre"
+            }
+        ));
+        jScrollPane4.setViewportView(TablaMaterias);
 
-        jPanel2.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        jPanel2.add(jScrollPane4, java.awt.BorderLayout.CENTER);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setText("Contactar");
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, -1, 30));
+        jLabel1.setText("Apellido Alumno");
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+        jPanel3.add(ApellidoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 200, -1));
+
+        FiltrarBotón.setText("Filtrar");
+        FiltrarBotón.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FiltrarBotónActionPerformed(evt);
+            }
+        });
+        jPanel3.add(FiltrarBotón, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
+
+        ContactarBoton.setText("Contactar");
+        ContactarBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ContactarBotonActionPerformed(evt);
+            }
+        });
+        jPanel3.add(ContactarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 70, -1, -1));
+
+        ReiniciarBoton.setText("Reiniciar");
+        ReiniciarBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReiniciarBotonActionPerformed(evt);
+            }
+        });
+        jPanel3.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, -1, -1));
 
         PantallasMenu.setText("Pantallas");
 
@@ -116,24 +398,24 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -160,6 +442,19 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
         a.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_CambiarContraActionPerformed
+
+    private void ReiniciarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReiniciarBotonActionPerformed
+        Reiniciar();
+    }//GEN-LAST:event_ReiniciarBotonActionPerformed
+
+    private void FiltrarBotónActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FiltrarBotónActionPerformed
+       String apellidos = ApellidoTEXT.getText();
+       filtrarPorApellidoAlumno(apellidos);
+    }//GEN-LAST:event_FiltrarBotónActionPerformed
+
+    private void ContactarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContactarBotonActionPerformed
+       insertarAlumnoDesdeTabla(con);
+    }//GEN-LAST:event_ContactarBotonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -198,19 +493,23 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu AjustesMenu;
+    private javax.swing.JTextField ApellidoTEXT;
     private javax.swing.JMenuItem CambiarContra;
+    private javax.swing.JButton ContactarBoton;
+    private javax.swing.JButton FiltrarBotón;
     private javax.swing.JMenuItem InicioDeSesion;
     private javax.swing.JMenu PantallasMenu;
+    private javax.swing.JButton ReiniciarBoton;
     private javax.swing.JMenuItem SalirMenu;
+    private javax.swing.JTable TablaAlumnos;
+    private javax.swing.JTable TablaMaterias;
     private javax.swing.JMenuItem VerAlumnos;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     // End of variables declaration//GEN-END:variables
 }

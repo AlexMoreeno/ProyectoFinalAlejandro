@@ -61,7 +61,6 @@ public class PantallaPrincipalAlumno extends javax.swing.JFrame {
         java.sql.Statement statement = con.createStatement();
         var resultado = statement.executeQuery(sql);
 
-        // Agregar nombres de columnas al modelo de la tabla
         tm.addColumn("Id");
         tm.addColumn("Nombre");
         tm.addColumn("Apellidos");
@@ -69,7 +68,6 @@ public class PantallaPrincipalAlumno extends javax.swing.JFrame {
         tm.addColumn("Clave");
         tm.addColumn("Tipo");
 
-        // Iterar sobre el resultado y agregar filas al modelo de la tabla
         while(resultado.next()) {
             String id = resultado.getString("ID");
             String nombre = resultado.getString("NOMBRE");
@@ -78,12 +76,10 @@ public class PantallaPrincipalAlumno extends javax.swing.JFrame {
             String clave = resultado.getString("CLAVE");
             String tipo = resultado.getString("TIPO");
 
-            // Agregar fila al modelo de la tabla
             Object[] fila = {id, nombre, apellidos, email, clave, tipo};
             tm.addRow(fila);
         }
 
-        // Ocultar las columnas de Id, Clave y Tipo
         TableColumnModel columnModel = TablaProfesoresContratados.getColumnModel();
         columnModel.getColumn(0).setMinWidth(0);
         columnModel.getColumn(0).setMaxWidth(0);
@@ -92,17 +88,15 @@ public class PantallaPrincipalAlumno extends javax.swing.JFrame {
         columnModel.getColumn(5).setMinWidth(0);
         columnModel.getColumn(5).setMaxWidth(0);
 
-
     } catch(Exception e) {
         e.printStackTrace();
     }
 }
-    public void eliminaYAñadir(Connection con) {
+public void eliminaYAñadir(Connection con) {
     int filaSeleccionada = TablaProfesoresContratados.getSelectedRow();
     
     if (filaSeleccionada != -1) {
         try {
-            // Obtener los datos de la fila seleccionada, teniendo en cuenta las columnas ocultas
             String id = (String) TablaProfesoresContratados.getValueAt(filaSeleccionada, 0);
             String nombre = (String) TablaProfesoresContratados.getValueAt(filaSeleccionada, 1);
             String apellidos = (String) TablaProfesoresContratados.getValueAt(filaSeleccionada, 2);
@@ -112,32 +106,29 @@ public class PantallaPrincipalAlumno extends javax.swing.JFrame {
             
             System.out.println("Nombre: " + nombre + ", Apellidos: " + apellidos + ", Email: " + email);
 
-            // Insertar en la tabla de usuarios sin incluir las columnas ocultas
             String sqlInsert = "INSERT INTO usuarios (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
-                try (var insertStatement = con.prepareStatement(sqlInsert)) {
-                    insertStatement.setString(1, nombre);
-                    insertStatement.setString(2, apellidos);
-                    insertStatement.setString(3, email);
-                    insertStatement.setString(4, clave);
-                    insertStatement.setString(5, tipo);
-                    int rowsInserted = insertStatement.executeUpdate();
-                    System.out.println("Filas insertadas en usuarios: " + rowsInserted);
-                }
+            try (var insertStatement = con.prepareStatement(sqlInsert)) {
+                insertStatement.setString(1, nombre);
+                insertStatement.setString(2, apellidos);
+                insertStatement.setString(3, email);
+                insertStatement.setString(4, clave);
+                insertStatement.setString(5, tipo);
+                int rowsInserted = insertStatement.executeUpdate();
+                System.out.println("Filas insertadas en usuarios: " + rowsInserted);
+            }
 
-            // Eliminar la fila de la tabla de profesorescontratados
             String sqlDelete = "DELETE FROM profesorescontratados WHERE id = ? AND nombre = ? AND apellidos = ? AND email = ? AND clave = ? AND tipo = ?";
-                try (var deleteStatement = con.prepareStatement(sqlDelete)) {
-                    deleteStatement.setString(1, id);
-                    deleteStatement.setString(2, nombre);
-                    deleteStatement.setString(3, apellidos);
-                    deleteStatement.setString(4, email);
-                    deleteStatement.setString(5, clave);
-                    deleteStatement.setString(6, tipo);
-                    int rowsDeleted = deleteStatement.executeUpdate();
-                    System.out.println("Filas eliminadas de profesorescontratados: " + rowsDeleted);
-                }
+            try (var deleteStatement = con.prepareStatement(sqlDelete)) {
+                deleteStatement.setString(1, id);
+                deleteStatement.setString(2, nombre);
+                deleteStatement.setString(3, apellidos);
+                deleteStatement.setString(4, email);
+                deleteStatement.setString(5, clave);
+                deleteStatement.setString(6, tipo);
+                int rowsDeleted = deleteStatement.executeUpdate();
+                System.out.println("Filas eliminadas de profesorescontratados: " + rowsDeleted);
+            }
 
-            // Actualizar la tabla después de realizar los cambios
             actualizarTable(con);
             JOptionPane.showMessageDialog(null, "Se ha eliminado al profesor de tu lista", "Profesor Eliminado", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
@@ -314,14 +305,9 @@ public class PantallaPrincipalAlumno extends javax.swing.JFrame {
 
     private void DesapuntarseBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DesapuntarseBotonActionPerformed
     try {
-        // Obtener una conexión válida a la base de datos
         Class.forName("org.hsqldb.jdbc.JDBCDriver");
         conet = DriverManager.getConnection(bbdd, "SA", "SA");
-
-        // Llamar al método moverFila con la conexión
         eliminaYAñadir(conet);
-
-        // Cerrar la conexión después de utilizarla
         conet.close();
     } catch (ClassNotFoundException | SQLException e) {
         e.printStackTrace();
