@@ -87,57 +87,69 @@ public class PantallaAlumnosAdministrador extends javax.swing.JFrame {
         e.printStackTrace();
     }
 }
-    public void registrarUsuario(JTextField nombreTEXT, JTextField ApellidoTEXT, JTextField correoTEXT, JTextField contraTEXT) {
-      String nombre = nombreTEXT.getText();
-      String apellido = ApellidoTEXT.getText();
-      String correo = correoTEXT.getText();
-      String clave = contraTEXT.getText();
+  public void registrarUsuario(JTextField nombreTEXT, JTextField ApellidoTEXT, JTextField correoTEXT, JTextField contraTEXT) {
+    String nombre = nombreTEXT.getText();
+    String apellido = ApellidoTEXT.getText();
+    String correo = correoTEXT.getText();
+    String clave = contraTEXT.getText();
 
-      String tipo = "alumno"; // Tipo de usuario siempre será "alumno"
+    String tipo = "alumno"; // Tipo de usuario siempre será "alumno"
 
-      if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || clave.isEmpty()) {
-          JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+    if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || clave.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
 
-          if (nombre.isEmpty()) {
-              cambiarColorCampo(nombreTEXT, Color.RED);
-          }
-          if (apellido.isEmpty()) {
-              cambiarColorCampo(ApellidoTEXT, Color.RED);
-          }
-          if (correo.isEmpty()) {
-              cambiarColorCampo(correoTEXT, Color.RED);
-          }
-          if (clave.isEmpty()) {
-              cambiarColorCampo(contraTEXT, Color.RED);
-          }
-          return;
-      }
+        if (nombre.isEmpty()) {
+            cambiarColorCampo(nombreTEXT, Color.RED);
+        }
+        if (apellido.isEmpty()) {
+            cambiarColorCampo(ApellidoTEXT, Color.RED);
+        }
+        if (correo.isEmpty()) {
+            cambiarColorCampo(correoTEXT, Color.RED);
+        }
+        if (clave.isEmpty()) {
+            cambiarColorCampo(contraTEXT, Color.RED);
+        }
+        return;
+    }
 
-      try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
-          String consulta = "INSERT INTO usuarios (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
+    if (clave.length() < 5) {
+        JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 5 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+        cambiarColorCampo(contraTEXT, Color.RED);
+        return;
+    }
 
-          try (java.sql.PreparedStatement statement = conec.prepareStatement(consulta)) {
-              statement.setString(1, nombre);
-              statement.setString(2, apellido);
-              statement.setString(3, correo);
-              statement.setString(4, clave);
-              statement.setString(5, tipo);
+    try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
+        String consulta = "INSERT INTO usuarios (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
 
-              int filasInsertadas = statement.executeUpdate();
+        try (java.sql.PreparedStatement statement = conec.prepareStatement(consulta)) {
+            statement.setString(1, nombre);
+            statement.setString(2, apellido);
+            statement.setString(3, correo);
+            statement.setString(4, clave);
+            statement.setString(5, tipo);
 
-              if (filasInsertadas > 0) {
-                  JOptionPane.showMessageDialog(null, "Usuario registrado exitosamente.");
+            int filasInsertadas = statement.executeUpdate();
 
-                  // Llamar a ActualizarTablaAlumnos
-                  ActualizarTablaAlumnos(conec);
-              } else {
-                  JOptionPane.showMessageDialog(null, "Error al registrar el usuario.");
-              }
-          }
-      } catch (SQLException e) {
-          JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
-      }
-  }
+            if (filasInsertadas > 0) {
+                JOptionPane.showMessageDialog(null, "Usuario registrado exitosamente.");
+                
+                // Cambiar color de los campos a negro
+                cambiarColorCampo(contraTEXT, Color.BLACK);
+                cambiarColorCampo(nombreTEXT, Color.BLACK);
+                cambiarColorCampo(ApellidoTEXT, Color.BLACK);
+                cambiarColorCampo(correoTEXT, Color.BLACK);
+
+                // Llamar a ActualizarTablaAlumnos
+                ActualizarTablaAlumnos(conec);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al registrar el usuario.");
+            }
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
+    }
+}
     ////////////////////////////////////////////////////////////////////////////////
         public void eliminarUsuario(JTable tabla) {
         int filaSeleccionada = tabla.getSelectedRow();
@@ -237,6 +249,10 @@ public class PantallaAlumnosAdministrador extends javax.swing.JFrame {
            ApellidooTEXT.setText("");
            ContraTEXT.setText("");
            ActualizarTablaAlumnos(con);
+           cambiarColorCampo(EmailTEXT, Color.BLACK);
+           cambiarColorCampo(NombreTEXT, Color.BLACK);
+           cambiarColorCampo(ApellidooTEXT, Color.BLACK);
+           cambiarColorCampo(ContraTEXT, Color.BLACK);
        }
     /**
      * This method is called from within the constructor to initialize the form.
