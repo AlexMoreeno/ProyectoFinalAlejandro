@@ -78,15 +78,13 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
         if (filasActualizadas > 0) {
             JOptionPane.showMessageDialog(null, "Contraseña actualizada exitosamente.");
         } else {
-            JOptionPane.showMessageDialog(null, "No se pudo actualizar la contraseña.");
+            JOptionPane.showMessageDialog(null, "No se ha realizado ningún cambio.");
         }
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Error al actualizar la contraseña: " + e.getMessage());
     }
 }
 /* //comprobar al mismo tiempo si la nueva contraseña 1 y 2 es la misma pero que no sea igual a la contraseña que ya existe NO FUNCIONA //
-
-
 private void cambiarContrasena(String correo, String contrasenaActual, String nuevaContrasena1, String nuevaContrasena2) {
     if (nuevaContrasena1.equals(contrasenaActual)) {
         JOptionPane.showMessageDialog(null, "No puede repetir la contraseña actual.");
@@ -170,7 +168,12 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
         nuevaContra2.setText("");
         correoTEXT.setText("");
         nuevaContra2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        nuevaContra1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        correoTEXT.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         nuevaContra2.setForeground(Color.BLACK);
+        nuevaContra2.setForeground(Color.BLACK);
+        nuevaContra1.setForeground(Color.BLACK);
+        correoTEXT.setForeground(Color.BLACK);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -190,6 +193,7 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
         nuevaContra1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -199,6 +203,11 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
 
         nuevaContra2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         nuevaContra2.setText("Repite la contraseña");
+        nuevaContra2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                nuevaContra2MouseClicked(evt);
+            }
+        });
         nuevaContra2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nuevaContra2ActionPerformed(evt);
@@ -224,6 +233,11 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
 
         correoTEXT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         correoTEXT.setText("Correo");
+        correoTEXT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                correoTEXTMouseClicked(evt);
+            }
+        });
         correoTEXT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 correoTEXTActionPerformed(evt);
@@ -233,6 +247,11 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
 
         nuevaContra1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         nuevaContra1.setText("Nueva Contraseña");
+        nuevaContra1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                nuevaContra1MouseClicked(evt);
+            }
+        });
         nuevaContra1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nuevaContra1ActionPerformed(evt);
@@ -258,6 +277,7 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void nuevaContra2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevaContra2ActionPerformed
@@ -281,7 +301,20 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
     String contrasenaActual = nuevaContra1.getText();
     String nuevaContrasena = nuevaContra2.getText();
     cambiarContrasena(correo, contrasenaActual, contrasenaActual, nuevaContrasena);
+    this.dispose();
     }//GEN-LAST:event_cambiarContraBotonActionPerformed
+
+    private void correoTEXTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_correoTEXTMouseClicked
+       correoTEXT.setText("");
+    }//GEN-LAST:event_correoTEXTMouseClicked
+
+    private void nuevaContra1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nuevaContra1MouseClicked
+       nuevaContra1.setText("");
+    }//GEN-LAST:event_nuevaContra1MouseClicked
+
+    private void nuevaContra2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nuevaContra2MouseClicked
+       nuevaContra2.setText("");
+    }//GEN-LAST:event_nuevaContra2MouseClicked
 
     /**
      * @param args the command line arguments

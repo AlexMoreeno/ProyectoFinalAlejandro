@@ -4,7 +4,14 @@
  */
 package proyectofinalalejandro;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatCobalt2IJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatGradiantoDeepOceanIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatGradiantoMidnightBlueIJTheme;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -193,7 +200,6 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
             if (resultado.next()) {
                 String nombre = resultado.getString("nombre");
 
-                // Asignar el nombre a JTextField
                 NombreTEXT.setText(nombre);
             }
         }
@@ -243,6 +249,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ThemeGrupo = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         TablaMaterias = new javax.swing.JTable();
@@ -263,8 +270,15 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
         SalirMenu = new javax.swing.JMenuItem();
         AjustesMenu = new javax.swing.JMenu();
         CambiarContra = new javax.swing.JMenuItem();
+        menuApariencia = new javax.swing.JMenu();
+        menuDarkMode = new javax.swing.JCheckBoxMenuItem();
+        menuModoClaro = new javax.swing.JCheckBoxMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        menuModoAzul = new javax.swing.JCheckBoxMenuItem();
+        menuModoMorado = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Materias"));
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -293,8 +307,8 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Nombre de la materia");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, -1, -1));
-        jPanel2.add(NombreTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 50, 220, -1));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
+        jPanel2.add(NombreTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 220, -1));
 
         BuscarBoton.setText("Buscar");
         BuscarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -302,7 +316,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 BuscarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(BuscarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
+        jPanel2.add(BuscarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
 
         ReiniciarBoton.setText("Reiniciar");
         ReiniciarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -310,7 +324,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 ReiniciarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, -1, -1));
+        jPanel2.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 90, -1, -1));
 
         AnadirBoton.setText("Añadir");
         AnadirBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -318,7 +332,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 AnadirBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(AnadirBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, -1, -1));
+        jPanel2.add(AnadirBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 80, -1, -1));
 
         EliminarBoton.setText("Eliminar");
         EliminarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -326,7 +340,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 EliminarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(EliminarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 80, -1, -1));
+        jPanel2.add(EliminarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 120, -1, -1));
 
         EditarBoton.setText("Editar");
         EditarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -334,7 +348,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 EditarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(EditarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 110, -1, -1));
+        jPanel2.add(EditarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 40, -1, -1));
 
         PantallasMenu.setText("Pantallas");
 
@@ -398,6 +412,44 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
 
         jMenuBar1.add(AjustesMenu);
 
+        menuApariencia.setText("Apariencia");
+
+        menuDarkMode.setText("Modo oscuro");
+        menuDarkMode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuDarkModeActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuDarkMode);
+
+        menuModoClaro.setText("Modo claro");
+        menuModoClaro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoClaroActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoClaro);
+        menuApariencia.add(jSeparator1);
+
+        menuModoAzul.setText("Modo azul");
+        menuModoAzul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoAzulActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoAzul);
+
+        menuModoMorado.setSelected(true);
+        menuModoMorado.setText("Modo morado");
+        menuModoMorado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoMoradoActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoMorado);
+
+        jMenuBar1.add(menuApariencia);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -408,7 +460,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -416,12 +468,13 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void InicioDeSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InicioDeSesionActionPerformed
@@ -443,7 +496,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
     private void CambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContraActionPerformed
         PantallaCambiarContra a = new PantallaCambiarContra();
         a.setVisible(true);
-        this.dispose();
+     
     }//GEN-LAST:event_CambiarContraActionPerformed
 
     private void AlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlumnosActionPerformed
@@ -483,6 +536,46 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
     private void EditarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarBotonActionPerformed
        editarMateria(con, NombreTEXT);
     }//GEN-LAST:event_EditarBotonActionPerformed
+
+    private void menuDarkModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDarkModeActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatArcDarkIJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuDarkModeActionPerformed
+
+    private void menuModoClaroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoClaroActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatIntelliJLaf.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoClaroActionPerformed
+
+    private void menuModoAzulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoAzulActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatCobalt2IJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoAzulActionPerformed
+
+    private void menuModoMoradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoMoradoActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatGradiantoMidnightBlueIJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoMoradoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -534,11 +627,18 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
     private javax.swing.JButton ReiniciarBoton;
     private javax.swing.JMenuItem SalirMenu;
     private javax.swing.JTable TablaMaterias;
+    private javax.swing.ButtonGroup ThemeGrupo;
     private javax.swing.JMenuItem administradorVER;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenu menuApariencia;
+    private javax.swing.JCheckBoxMenuItem menuDarkMode;
+    private javax.swing.JCheckBoxMenuItem menuModoAzul;
+    private javax.swing.JCheckBoxMenuItem menuModoClaro;
+    private javax.swing.JCheckBoxMenuItem menuModoMorado;
     // End of variables declaration//GEN-END:variables
 }

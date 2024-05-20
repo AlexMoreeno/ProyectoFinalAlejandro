@@ -4,9 +4,17 @@
  */
 package proyectofinalalejandro;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatCobalt2IJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatGradiantoDeepOceanIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatGradiantoMidnightBlueIJTheme;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.List;
 import java.sql.Connection;
+import java.util.Random;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,7 +25,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
@@ -89,6 +96,7 @@ public void ActualizarTablaProfesores(Connection con) {
 
         TablaProfesores.setModel(tmProfesores);
 
+        // Ocultar columnas no necesarias
         TableColumnModel columnModel = TablaProfesores.getColumnModel();
         columnModel.getColumn(0).setMinWidth(0);
         columnModel.getColumn(0).setMaxWidth(0);
@@ -140,129 +148,220 @@ public void ActualizarTablaProfesores(Connection con) {
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void filtrarPorApellido(String apellidos) {
-        DefaultTableModel modelo = new DefaultTableModel() {};
-
-        String consultaSQL = "SELECT nombre, apellidos, email " +
-                            "FROM usuarios " +
-                            "WHERE tipo = 'profesor'";
-        if (!apellidos.isEmpty()) {
-            consultaSQL += " AND apellidos LIKE '%" + apellidos + "%'";
+ private void filtrarPorApellido(String apellidos) {
+    DefaultTableModel modeloProfesores = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
         }
-        consultaSQL += " LIMIT 2";
+    };
 
-        try {
-            Statement statement = con.createStatement();
-            ResultSet resultado = statement.executeQuery(consultaSQL);
+    String consultaSQLProfesores = "SELECT ID, NOMBRE, APELLIDOS, EMAIL, CLAVE, TIPO FROM usuarios WHERE tipo = 'profesor'";
+    if (!apellidos.isEmpty()) {
+        consultaSQLProfesores += " AND apellidos LIKE '%" + apellidos + "%'";
+    }
+    consultaSQLProfesores += " LIMIT 2";
 
-            modelo.addColumn("Nombre");
-            modelo.addColumn("Apellidos");
-            modelo.addColumn("Email");
+    try {
+        Statement statement = con.createStatement();
+        ResultSet resultadoProfesores = statement.executeQuery(consultaSQLProfesores);
 
-            while (resultado.next()) {
-                String nombre = resultado.getString("nombre");
-                String apellidosResultado = resultado.getString("apellidos");
-                String email = resultado.getString("email");
-                modelo.addRow(new Object[]{nombre, apellidosResultado, email});
-            }
+        modeloProfesores.addColumn("Id");
+        modeloProfesores.addColumn("Nombre");
+        modeloProfesores.addColumn("Apellidos");
+        modeloProfesores.addColumn("Email");
+        modeloProfesores.addColumn("Clave");
+        modeloProfesores.addColumn("Tipo");
 
-            TablaProfesores.setModel(modelo);
-
-            if (!apellidos.isEmpty()) {
-                obtenerMaterias();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        while (resultadoProfesores.next()) {
+            String id = resultadoProfesores.getString("ID");
+            String nombre = resultadoProfesores.getString("NOMBRE");
+            String apellidosResultado = resultadoProfesores.getString("APELLIDOS");
+            String email = resultadoProfesores.getString("EMAIL");
+            String clave = resultadoProfesores.getString("CLAVE");
+            String tipo = resultadoProfesores.getString("TIPO");
+            modeloProfesores.addRow(new Object[]{id, nombre, apellidosResultado, email, clave, tipo});
         }
+
+        TablaProfesores.setModel(modeloProfesores);
+
+        // Ocultar columnas no necesarias
+        TableColumnModel columnModel = TablaProfesores.getColumnModel();
+        columnModel.getColumn(0).setMinWidth(0);
+        columnModel.getColumn(0).setMaxWidth(0);
+        columnModel.getColumn(4).setMinWidth(0);
+        columnModel.getColumn(4).setMaxWidth(0);
+        columnModel.getColumn(5).setMinWidth(0);
+        columnModel.getColumn(5).setMaxWidth(0);
+
+        // Obtener y mostrar materias aleatorias
+        obtenerMaterias2();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+private void obtenerMaterias2() {
+    DefaultTableModel modeloMaterias = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    String consultaSQLMaterias = "SELECT nombre FROM materias ORDER BY RAND() LIMIT 2";
+    try {
+        Statement statement = con.createStatement();
+        ResultSet resultadoMaterias = statement.executeQuery(consultaSQLMaterias);
+
+        modeloMaterias.addColumn("Nombre");
+
+        while (resultadoMaterias.next()) {
+            String nombreMateria = resultadoMaterias.getString("nombre");
+            modeloMaterias.addRow(new Object[]{nombreMateria});
+        }
+
+        TablaMaterias.setModel(modeloMaterias);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+ private void obtenerMaterias() {
+    DefaultTableModel tm = new DefaultTableModel() {};
+
+    String consultaSQL = "SELECT nombre FROM materias ORDER BY RAND() LIMIT 2";
+
+    try {
+        Statement statement = con.createStatement();
+        ResultSet resultado = statement.executeQuery(consultaSQL);
+
+        ArrayList<String> materias = new ArrayList<>();
+        while (resultado.next()) {
+            materias.add(resultado.getString("nombre"));
+        }
+
+        tm.addColumn("Nombre");
+
+        for (String nombreMateria : materias) {
+            tm.addRow(new Object[]{nombreMateria});
+        }
+
+        TablaMaterias.setModel(tm);
+        ActualizarTablaMaterias(con);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+private void filtrarPorApellidoYMateria(String apellidos, String materia) {
+    DefaultTableModel modeloProfesores = new DefaultTableModel() {};
+    DefaultTableModel modeloMaterias = new DefaultTableModel() {};
+
+    String consultaSQLProfesores = "SELECT nombre, apellidos, email " +
+                                    "FROM usuarios " +
+                                    "WHERE tipo = 'profesor'";
+    if (!apellidos.isEmpty()) {
+        consultaSQLProfesores += " AND apellidos LIKE '%" + apellidos + "%'";
+    }
+    if (!materia.isEmpty() && apellidos.isEmpty()) {
+        consultaSQLProfesores += " ORDER BY RAND() LIMIT 2";
+    } else {
+        consultaSQLProfesores += " LIMIT 2";
     }
 
-    private void obtenerMaterias() {
-        DefaultTableModel tm = new DefaultTableModel() {};
+    try {
+        Statement statement = con.createStatement();
+        ResultSet resultadoProfesores = statement.executeQuery(consultaSQLProfesores);
 
-        String consultaSQL = "SELECT nombre FROM materias ORDER BY RAND() LIMIT 2";
+        modeloProfesores.addColumn("Nombre");
+        modeloProfesores.addColumn("Apellidos");
+        modeloProfesores.addColumn("Email");
 
-        try {
-            Statement statement = con.createStatement();
-            ResultSet resultado = statement.executeQuery(consultaSQL);
-
-            ArrayList<String> materias = new ArrayList<>();
-            while (resultado.next()) {
-                materias.add(resultado.getString("nombre"));
-            }
-
-            tm.addColumn("Nombre");
-
-            for (String nombreMateria : materias) {
-                tm.addRow(new Object[]{nombreMateria});
-            }
-
-            TablaMaterias.setModel(tm);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        while (resultadoProfesores.next()) {
+            String nombre = resultadoProfesores.getString("nombre");
+            String apellidosProfesor = resultadoProfesores.getString("apellidos");
+            String email = resultadoProfesores.getString("email");
+            modeloProfesores.addRow(new Object[]{nombre, apellidosProfesor, email});
         }
+
+        TablaProfesores.setModel(modeloProfesores);
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
 
-    private void filtrarPorApellidoYMateria(String apellidos, String materia) {
-        DefaultTableModel modeloProfesores = new DefaultTableModel() {};
-        DefaultTableModel modeloMaterias = new DefaultTableModel() {};
-
-        String consultaSQLProfesores = "SELECT nombre, apellidos, email " +
-                                        "FROM usuarios " +
-                                        "WHERE tipo = 'profesor'";
-        if (!apellidos.isEmpty()) {
-            consultaSQLProfesores += " AND apellidos LIKE '%" + apellidos + "%'";
-        }
-        if (!materia.isEmpty() && apellidos.isEmpty()) {
-            consultaSQLProfesores += " ORDER BY RAND() LIMIT 2";
-        } else {
-            consultaSQLProfesores += " LIMIT 2";
-        }
-
-        try {
-            Statement statement = con.createStatement();
-            ResultSet resultadoProfesores = statement.executeQuery(consultaSQLProfesores);
-
-            modeloProfesores.addColumn("Nombre");
-            modeloProfesores.addColumn("Apellidos");
-            modeloProfesores.addColumn("Email");
-
-            while (resultadoProfesores.next()) {
-                String nombre = resultadoProfesores.getString("nombre");
-                String apellidosProfesor = resultadoProfesores.getString("apellidos");
-                String email = resultadoProfesores.getString("email");
-                modeloProfesores.addRow(new Object[]{nombre, apellidosProfesor, email});
-            }
-
-            TablaProfesores.setModel(modeloProfesores);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        String consultaSQLMaterias = "SELECT nombre FROM materias";
-        if (!materia.isEmpty()) {
-            consultaSQLMaterias += " WHERE nombre LIKE '%" + materia + "%'";
-        }
-        consultaSQLMaterias += " LIMIT 2";
-
-        try {
-            Statement statement = con.createStatement();
-            ResultSet resultadoMaterias = statement.executeQuery(consultaSQLMaterias);
-
-            modeloMaterias.addColumn("Nombre");
-
-            while (resultadoMaterias.next()) {
-                String nombreMateria = resultadoMaterias.getString("nombre");
-                modeloMaterias.addRow(new Object[]{nombreMateria});
-            }
-            TablaMaterias.setModel(modeloMaterias);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    String consultaSQLMaterias = "SELECT nombre FROM materias";
+    if (!materia.isEmpty()) {
+        consultaSQLMaterias += " WHERE nombre LIKE '%" + materia + "%'";
     }
- /* PRUEBAS DE BUCLES CASI AL 100% 
+    consultaSQLMaterias += " LIMIT 2";
+
+    try {
+        Statement statement = con.createStatement();
+        ResultSet resultadoMaterias = statement.executeQuery(consultaSQLMaterias);
+
+        modeloMaterias.addColumn("Nombre");
+
+        while (resultadoMaterias.next()) {
+            String nombreMateria = resultadoMaterias.getString("nombre");
+            modeloMaterias.addRow(new Object[]{nombreMateria});
+        }
+        TablaMaterias.setModel(modeloMaterias);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+ 
+public void insertarProfesorDesdeTabla(Connection con) {
+    int filaSeleccionada = TablaProfesores.getSelectedRow();
+    
+    if (filaSeleccionada != -1) {
+        try {
+            String id = (String) TablaProfesores.getValueAt(filaSeleccionada, 0);
+            String nombre = (String) TablaProfesores.getValueAt(filaSeleccionada, 1);
+            String apellidos = (String) TablaProfesores.getValueAt(filaSeleccionada, 2);
+            String email = (String) TablaProfesores.getValueAt(filaSeleccionada, 3);
+            String clave = (String) TablaProfesores.getValueAt(filaSeleccionada, 4);
+            String tipo = (String) TablaProfesores.getValueAt(filaSeleccionada, 5);
+            
+            System.out.println("Nombre: " + nombre + ", Apellidos: " + apellidos + ", Email: " + email);
+
+            String sqlInsert = "INSERT INTO profesorescontratados (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
+            try (var insertStatement = con.prepareStatement(sqlInsert)) {
+                insertStatement.setString(1, nombre);
+                insertStatement.setString(2, apellidos);
+                insertStatement.setString(3, email);
+                insertStatement.setString(4, clave);
+                insertStatement.setString(5, tipo);
+                int rowsInserted = insertStatement.executeUpdate();
+                System.out.println("Filas insertadas en profesorescontratados: " + rowsInserted);
+            }
+
+            String sqlDelete = "DELETE FROM usuarios WHERE id = ? AND nombre = ? AND apellidos = ? AND email = ? AND clave = ? AND tipo = ?";
+            try (var deleteStatement = con.prepareStatement(sqlDelete)) {
+                deleteStatement.setString(1, id);
+                deleteStatement.setString(2, nombre);
+                deleteStatement.setString(3, apellidos);
+                deleteStatement.setString(4, email);
+                deleteStatement.setString(5, clave);
+                deleteStatement.setString(6, tipo);
+                int rowsDeleted = deleteStatement.executeUpdate();
+                System.out.println("Filas eliminadas de usuarios: " + rowsDeleted);
+            }
+
+            ActualizarTablaProfesores(con);
+            JOptionPane.showMessageDialog(null, "Se ha contratado al profesor", "Profesor Eliminado", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+/* PRUEBAS DE BUCLES CASI AL 100% 
  private void filtrarPorApellido(String apellidos) {
     DefaultTableModel modelo = new DefaultTableModel() {};
 
@@ -383,52 +482,6 @@ private void filtrarPorApellidoYMateria(String apellidos, String materia) {
         e.printStackTrace();
     }
 }*/
-public void insertarProfesorDesdeTabla(Connection con) {
-    int filaSeleccionada = TablaProfesores.getSelectedRow();
-    
-    if (filaSeleccionada != -1) {
-        try {
-            String id = (String) TablaProfesores.getValueAt(filaSeleccionada, 0);
-            String nombre = (String) TablaProfesores.getValueAt(filaSeleccionada, 1);
-            String apellidos = (String) TablaProfesores.getValueAt(filaSeleccionada, 2);
-            String email = (String) TablaProfesores.getValueAt(filaSeleccionada, 3);
-            String clave = (String) TablaProfesores.getValueAt(filaSeleccionada, 4);
-            String tipo = (String) TablaProfesores.getValueAt(filaSeleccionada, 5);
-            
-            System.out.println("Nombre: " + nombre + ", Apellidos: " + apellidos + ", Email: " + email);
-
-            String sqlInsert = "INSERT INTO profesorescontratados (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
-            try (var insertStatement = con.prepareStatement(sqlInsert)) {
-                insertStatement.setString(1, nombre);
-                insertStatement.setString(2, apellidos);
-                insertStatement.setString(3, email);
-                insertStatement.setString(4, clave);
-                insertStatement.setString(5, tipo);
-                int rowsInserted = insertStatement.executeUpdate();
-                System.out.println("Filas insertadas en profesorescontratados: " + rowsInserted);
-            }
-
-            String sqlDelete = "DELETE FROM usuarios WHERE id = ? AND nombre = ? AND apellidos = ? AND email = ? AND clave = ? AND tipo = ?";
-            try (var deleteStatement = con.prepareStatement(sqlDelete)) {
-                deleteStatement.setString(1, id);
-                deleteStatement.setString(2, nombre);
-                deleteStatement.setString(3, apellidos);
-                deleteStatement.setString(4, email);
-                deleteStatement.setString(5, clave);
-                deleteStatement.setString(6, tipo);
-                int rowsDeleted = deleteStatement.executeUpdate();
-                System.out.println("Filas eliminadas de usuarios: " + rowsDeleted);
-            }
-
-            ActualizarTablaProfesores(con);
-            JOptionPane.showMessageDialog(null, "Se ha contratado al profesor", "Profesor Eliminado", JOptionPane.INFORMATION_MESSAGE);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    } else {
-        JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
 ////////////////////////////////////////////////////////////////////////////////////////////////
     public void Reiniciar() {
         ApellidoTEXT.setText("");
@@ -446,6 +499,7 @@ public void insertarProfesorDesdeTabla(Connection con) {
     private void initComponents() {
 
         CursoAcademico = new javax.swing.ButtonGroup();
+        ThemeGrupo = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TablaProfesores = new javax.swing.JTable();
@@ -467,8 +521,15 @@ public void insertarProfesorDesdeTabla(Connection con) {
         SalirMenu = new javax.swing.JMenuItem();
         AjustesMenu = new javax.swing.JMenu();
         CambiarContra = new javax.swing.JMenuItem();
+        menuApariencia = new javax.swing.JMenu();
+        menuDarkMode = new javax.swing.JCheckBoxMenuItem();
+        menuModoClaro = new javax.swing.JCheckBoxMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        menuModoAzul = new javax.swing.JCheckBoxMenuItem();
+        menuModoMorado = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Tabla Profesores"));
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -587,6 +648,44 @@ public void insertarProfesorDesdeTabla(Connection con) {
 
         jMenuBar1.add(AjustesMenu);
 
+        menuApariencia.setText("Apariencia");
+
+        menuDarkMode.setText("Modo oscuro");
+        menuDarkMode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuDarkModeActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuDarkMode);
+
+        menuModoClaro.setText("Modo claro");
+        menuModoClaro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoClaroActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoClaro);
+        menuApariencia.add(jSeparator1);
+
+        menuModoAzul.setText("Modo azul");
+        menuModoAzul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoAzulActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoAzul);
+
+        menuModoMorado.setSelected(true);
+        menuModoMorado.setText("Modo morado");
+        menuModoMorado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoMoradoActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoMorado);
+
+        jMenuBar1.add(menuApariencia);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -616,6 +715,7 @@ public void insertarProfesorDesdeTabla(Connection con) {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void VerProfesoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerProfesoresActionPerformed
@@ -637,7 +737,7 @@ public void insertarProfesorDesdeTabla(Connection con) {
     private void CambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContraActionPerformed
         PantallaCambiarContra a = new PantallaCambiarContra();
         a.setVisible(true);
-        this.dispose();
+      
     }//GEN-LAST:event_CambiarContraActionPerformed
 
     private void ReiniciarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReiniciarBotonActionPerformed
@@ -656,7 +756,49 @@ public void insertarProfesorDesdeTabla(Connection con) {
 
     private void ContratarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContratarBotonActionPerformed
        insertarProfesorDesdeTabla(con);
+       ActualizarTablaProfesores(con);
+       ActualizarTablaMaterias(con);
     }//GEN-LAST:event_ContratarBotonActionPerformed
+
+    private void menuDarkModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDarkModeActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatArcDarkIJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuDarkModeActionPerformed
+
+    private void menuModoClaroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoClaroActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatIntelliJLaf.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoClaroActionPerformed
+
+    private void menuModoAzulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoAzulActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatCobalt2IJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoAzulActionPerformed
+
+    private void menuModoMoradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoMoradoActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatGradiantoMidnightBlueIJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoMoradoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -708,6 +850,7 @@ public void insertarProfesorDesdeTabla(Connection con) {
     private javax.swing.JMenuItem SalirMenu;
     private javax.swing.JTable TablaMaterias;
     private javax.swing.JTable TablaProfesores;
+    private javax.swing.ButtonGroup ThemeGrupo;
     private javax.swing.JMenuItem VerProfesores;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -717,5 +860,11 @@ public void insertarProfesorDesdeTabla(Connection con) {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenu menuApariencia;
+    private javax.swing.JCheckBoxMenuItem menuDarkMode;
+    private javax.swing.JCheckBoxMenuItem menuModoAzul;
+    private javax.swing.JCheckBoxMenuItem menuModoClaro;
+    private javax.swing.JCheckBoxMenuItem menuModoMorado;
     // End of variables declaration//GEN-END:variables
 }

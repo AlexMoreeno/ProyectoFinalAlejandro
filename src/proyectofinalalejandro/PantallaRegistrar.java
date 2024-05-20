@@ -151,16 +151,32 @@ public class PantallaRegistrar extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         correoTEXT.setText("Correo electronico");
         correoTEXT.setPreferredSize(new java.awt.Dimension(115, 20));
+        correoTEXT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                correoTEXTMouseClicked(evt);
+            }
+        });
         jPanel1.add(correoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 330, 30));
 
         nombreTEXT.setText("Nombre");
         nombreTEXT.setPreferredSize(new java.awt.Dimension(115, 20));
+        nombreTEXT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                nombreTEXTMouseClicked(evt);
+            }
+        });
+        nombreTEXT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nombreTEXTActionPerformed(evt);
+            }
+        });
         jPanel1.add(nombreTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 330, 30));
 
         registroBoton.setText("Registrar");
@@ -185,6 +201,11 @@ public class PantallaRegistrar extends javax.swing.JFrame {
 
         ApellidoTEXT.setText("Apellido");
         ApellidoTEXT.setPreferredSize(new java.awt.Dimension(115, 20));
+        ApellidoTEXT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ApellidoTEXTMouseClicked(evt);
+            }
+        });
         jPanel1.add(ApellidoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 330, 30));
 
         TipoUsuario.add(Alumno);
@@ -202,6 +223,11 @@ public class PantallaRegistrar extends javax.swing.JFrame {
 
         contraTEXT.setText("Contraseña");
         contraTEXT.setPreferredSize(new java.awt.Dimension(115, 20));
+        contraTEXT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                contraTEXTMouseClicked(evt);
+            }
+        });
         jPanel1.add(contraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 330, 30));
 
         jButton1.setText("Volver");
@@ -230,6 +256,7 @@ public class PantallaRegistrar extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -249,6 +276,26 @@ public class PantallaRegistrar extends javax.swing.JFrame {
         a.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void nombreTEXTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nombreTEXTMouseClicked
+       nombreTEXT.setText("");
+    }//GEN-LAST:event_nombreTEXTMouseClicked
+
+    private void ApellidoTEXTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ApellidoTEXTMouseClicked
+       ApellidoTEXT.setText("");
+    }//GEN-LAST:event_ApellidoTEXTMouseClicked
+
+    private void correoTEXTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_correoTEXTMouseClicked
+        correoTEXT.setText("");
+    }//GEN-LAST:event_correoTEXTMouseClicked
+
+    private void contraTEXTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contraTEXTMouseClicked
+        contraTEXT.setText("");
+    }//GEN-LAST:event_contraTEXTMouseClicked
+
+    private void nombreTEXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreTEXTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nombreTEXTActionPerformed
 
     /**
      * @param args the command line arguments

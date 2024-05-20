@@ -4,6 +4,13 @@
  */
 package proyectofinalalejandro;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatCobalt2IJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatGradiantoDeepOceanIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatGradiantoMidnightBlueIJTheme;
+import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -254,6 +261,7 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ThemeGrupo = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         TablaAlumnos = new javax.swing.JTable();
@@ -273,9 +281,16 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
         SalirMenu = new javax.swing.JMenuItem();
         AjustesMenu = new javax.swing.JMenu();
         CambiarContra = new javax.swing.JMenuItem();
+        menuApariencia = new javax.swing.JMenu();
+        menuDarkMode = new javax.swing.JCheckBoxMenuItem();
+        menuModoClaro = new javax.swing.JCheckBoxMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        menuModoAzul = new javax.swing.JCheckBoxMenuItem();
+        menuModoMorado = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(712, 367));
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Alumnos"));
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -390,6 +405,44 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
 
         jMenuBar1.add(AjustesMenu);
 
+        menuApariencia.setText("Apariencia");
+
+        menuDarkMode.setText("Modo oscuro");
+        menuDarkMode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuDarkModeActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuDarkMode);
+
+        menuModoClaro.setText("Modo claro");
+        menuModoClaro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoClaroActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoClaro);
+        menuApariencia.add(jSeparator1);
+
+        menuModoAzul.setText("Modo azul");
+        menuModoAzul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoAzulActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoAzul);
+
+        menuModoMorado.setSelected(true);
+        menuModoMorado.setText("Modo morado");
+        menuModoMorado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoMoradoActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoMorado);
+
+        jMenuBar1.add(menuApariencia);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -419,6 +472,7 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void VerAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerAlumnosActionPerformed
@@ -440,7 +494,6 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
     private void CambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContraActionPerformed
         PantallaCambiarContra a = new PantallaCambiarContra();
         a.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_CambiarContraActionPerformed
 
     private void ReiniciarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReiniciarBotonActionPerformed
@@ -455,6 +508,46 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
     private void ContactarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContactarBotonActionPerformed
        insertarAlumnoDesdeTabla(con);
     }//GEN-LAST:event_ContactarBotonActionPerformed
+
+    private void menuDarkModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDarkModeActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatArcDarkIJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuDarkModeActionPerformed
+
+    private void menuModoClaroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoClaroActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatIntelliJLaf.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoClaroActionPerformed
+
+    private void menuModoAzulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoAzulActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatCobalt2IJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoAzulActionPerformed
+
+    private void menuModoMoradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoMoradoActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatGradiantoMidnightBlueIJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoMoradoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -503,6 +596,7 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
     private javax.swing.JMenuItem SalirMenu;
     private javax.swing.JTable TablaAlumnos;
     private javax.swing.JTable TablaMaterias;
+    private javax.swing.ButtonGroup ThemeGrupo;
     private javax.swing.JMenuItem VerAlumnos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
@@ -511,5 +605,11 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenu menuApariencia;
+    private javax.swing.JCheckBoxMenuItem menuDarkMode;
+    private javax.swing.JCheckBoxMenuItem menuModoAzul;
+    private javax.swing.JCheckBoxMenuItem menuModoClaro;
+    private javax.swing.JCheckBoxMenuItem menuModoMorado;
     // End of variables declaration//GEN-END:variables
 }

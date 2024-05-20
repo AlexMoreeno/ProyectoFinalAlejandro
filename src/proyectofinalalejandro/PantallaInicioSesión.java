@@ -36,35 +36,30 @@ public class PantallaInicioSesión extends javax.swing.JFrame {
             }
     }
 ////////////////////////////////////////////////////////////////////
- private void intentoIniciarSesion1() {
-        
-        String correo = emailTEXT.getText();
-        String contrasena = new String(contraTEXT.getPassword());
+private void intentoIniciarSesion1() {
+    String correo = emailTEXT.getText();
+    String contrasena = new String(contraTEXT.getPassword());
 
-        
-        if (correo.isEmpty() || contrasena.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese el correo electrónico y la contraseña ");
-            return;
-        }
-
-        iniciarSesion(correo, contrasena);
+    if (correo.isEmpty() || contrasena.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Por favor, ingrese el correo electrónico y la contraseña ");
+        return;
     }
-    private void iniciarSesion(String correo, String contrasena) {
+
+    iniciarSesion(correo, contrasena);
+}
+
+private void iniciarSesion(String correo, String contrasena) {
     try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
-        
-        // Primero, comprobar si el correo y contraseña están en la tabla profesoresNOACEPTADOS
         String consultaNoAceptados = "SELECT id FROM profesoresNOACEPTADOS WHERE email = '" + correo + "' AND clave = '" + contrasena + "'";
         try (Statement statementNoAceptados = conec.createStatement()) {
             ResultSet resultSetNoAceptados = statementNoAceptados.executeQuery(consultaNoAceptados);
             
             if (resultSetNoAceptados.next()) {
-                // Si existe en profesoresNOACEPTADOS, mostrar mensaje y salir
                 JOptionPane.showMessageDialog(null, "Espere ser admitido.");
                 return;
             }
         }
 
-        // Si no está en profesoresNOACEPTADOS, comprobar en usuarios
         String consultaUsuarios = "SELECT id, nombre, apellidos, tipo FROM usuarios WHERE email = '" + correo + "' AND clave = '" + contrasena + "'";
         try (Statement statementUsuarios = conec.createStatement()) {
             ResultSet resultSetUsuarios = statementUsuarios.executeQuery(consultaUsuarios);
@@ -134,15 +129,14 @@ public void Reiniciar(){
         emailTEXT = new javax.swing.JTextField();
         inicioSe = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         contraTEXT = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         emailTEXT.setText("Escribe tu email");
@@ -156,7 +150,7 @@ public void Reiniciar(){
                 emailTEXTMouseClicked(evt);
             }
         });
-        jPanel1.add(emailTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 330, 30));
+        jPanel1.add(emailTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 330, 30));
 
         inicioSe.setText("Iniciar Sesión");
         inicioSe.addActionListener(new java.awt.event.ActionListener() {
@@ -164,7 +158,7 @@ public void Reiniciar(){
                 inicioSeActionPerformed(evt);
             }
         });
-        jPanel1.add(inicioSe, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
+        jPanel1.add(inicioSe, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
 
         jButton2.setText("Reiniciar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -172,14 +166,15 @@ public void Reiniciar(){
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 210, -1, -1));
-
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("DAME CLASES");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, 210, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, -1, -1));
 
         contraTEXT.setText("jPasswordField1");
-        jPanel1.add(contraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 330, 30));
+        contraTEXT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                contraTEXTMouseClicked(evt);
+            }
+        });
+        jPanel1.add(contraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 330, 30));
 
         jButton1.setText("Registrate");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -187,7 +182,7 @@ public void Reiniciar(){
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 210, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 180, -1, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/good_LogoSINFONDO.png"))); // NOI18N
         jLabel3.setText("jLabel3");
@@ -196,10 +191,11 @@ public void Reiniciar(){
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 630, 270));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void emailTEXTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_emailTEXTMouseClicked
-      
+        emailTEXT.setText("");
     }//GEN-LAST:event_emailTEXTMouseClicked
 
     private void emailTEXTFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_emailTEXTFocusLost
@@ -219,6 +215,10 @@ public void Reiniciar(){
         a.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void contraTEXTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contraTEXTMouseClicked
+       contraTEXT.setText("");
+    }//GEN-LAST:event_contraTEXTMouseClicked
 
     /**
      * @param args the command line arguments
@@ -243,7 +243,6 @@ public void Reiniciar(){
     private javax.swing.JButton inicioSe;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

@@ -4,7 +4,14 @@
  */
 package proyectofinalalejandro;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatCobalt2IJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatGradiantoDeepOceanIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatGradiantoMidnightBlueIJTheme;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -93,7 +100,7 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
     String correo = correoTEXT.getText();
     String clave = contraTEXT.getText();
 
-    String tipo = "profesor"; // Tipo de usuario ahora será "profesor"
+    String tipo = "profesor"; 
 
     if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || clave.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -134,13 +141,13 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
             if (filasInsertadas > 0) {
                 JOptionPane.showMessageDialog(null, "Profesor registrado exitosamente.");
                 
-                // Cambiar color de los campos a negro
+               
                 cambiarColorCampo(contraTEXT, Color.BLACK);
                 cambiarColorCampo(nombreTEXT, Color.BLACK);
                 cambiarColorCampo(ApellidoTEXT, Color.BLACK);
                 cambiarColorCampo(correoTEXT, Color.BLACK);
 
-                // Llamar a ActualizarTablaProfesores
+               
                 ActualizarTablaProfesores(conec);
             } else {
                 JOptionPane.showMessageDialog(null, "Error al registrar el profesor.");
@@ -159,7 +166,7 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
             return;
         }
 
-        // Obtener los datos de la fila seleccionada
+       
         String nombre = tabla.getValueAt(filaSeleccionada, 1).toString();
         String apellido = tabla.getValueAt(filaSeleccionada, 2).toString();
         String correo = tabla.getValueAt(filaSeleccionada, 3).toString();
@@ -179,10 +186,9 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
                 if (filasEliminadas > 0) {
                     JOptionPane.showMessageDialog(null, "Profesor eliminado exitosamente.");
 
-                    // Mostrar ventana emergente con los datos del profesor eliminado
                     JOptionPane.showMessageDialog(null, "Nombre: " + nombre + "\nApellido: " + apellido + "\nCorreo: " + correo);
 
-                    // Llamar a ActualizarTablaProfesores
+                 
                     ActualizarTablaProfesores(conec);
                 } else {
                     JOptionPane.showMessageDialog(null, "Error al eliminar el profesor.");
@@ -221,13 +227,13 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
          Statement statement = conec.createStatement();
          ResultSet resultSet = statement.executeQuery(consulta)) {
 
-        // Obtener el modelo de la tabla
+     
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
 
-        // Limpiar la tabla
+    
         model.setRowCount(0);
 
-        // Rellenar la tabla con los resultados de la consulta
+      
         while (resultSet.next()) {
             int id = resultSet.getInt("id");
             String nombreResultado = resultSet.getString("nombre");
@@ -342,6 +348,7 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ThemeGrupo = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         TablaProfesores = new javax.swing.JTable();
@@ -368,8 +375,15 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
         SalirMenu = new javax.swing.JMenuItem();
         AjustesMenu = new javax.swing.JMenu();
         CambiarContra = new javax.swing.JMenuItem();
+        menuApariencia = new javax.swing.JMenu();
+        menuDarkMode = new javax.swing.JCheckBoxMenuItem();
+        menuModoClaro = new javax.swing.JCheckBoxMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        menuModoAzul = new javax.swing.JCheckBoxMenuItem();
+        menuModoMorado = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Profesores"));
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -517,6 +531,44 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
 
         jMenuBar1.add(AjustesMenu);
 
+        menuApariencia.setText("Apariencia");
+
+        menuDarkMode.setText("Modo oscuro");
+        menuDarkMode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuDarkModeActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuDarkMode);
+
+        menuModoClaro.setText("Modo claro");
+        menuModoClaro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoClaroActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoClaro);
+        menuApariencia.add(jSeparator1);
+
+        menuModoAzul.setText("Modo azul");
+        menuModoAzul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoAzulActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoAzul);
+
+        menuModoMorado.setSelected(true);
+        menuModoMorado.setText("Modo morado");
+        menuModoMorado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoMoradoActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoMorado);
+
+        jMenuBar1.add(menuApariencia);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -541,6 +593,7 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void InicioDeSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InicioDeSesionActionPerformed
@@ -556,7 +609,7 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
     private void CambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContraActionPerformed
         PantallaCambiarContra a = new PantallaCambiarContra();
         a.setVisible(true);
-        this.dispose();
+        
     }//GEN-LAST:event_CambiarContraActionPerformed
 
     private void AlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlumnosActionPerformed
@@ -602,6 +655,46 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
     private void EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarActionPerformed
        editarProfesor(con, NombreTEXT, ApellidooTEXT, EmailTEXT, ContraTEXT);
     }//GEN-LAST:event_EditarActionPerformed
+
+    private void menuDarkModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDarkModeActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatArcDarkIJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuDarkModeActionPerformed
+
+    private void menuModoClaroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoClaroActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatIntelliJLaf.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoClaroActionPerformed
+
+    private void menuModoAzulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoAzulActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatCobalt2IJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoAzulActionPerformed
+
+    private void menuModoMoradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoMoradoActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatGradiantoMidnightBlueIJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoMoradoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -656,6 +749,7 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
     private javax.swing.JButton ReiniciarBoton;
     private javax.swing.JMenuItem SalirMenu;
     private javax.swing.JTable TablaProfesores;
+    private javax.swing.ButtonGroup ThemeGrupo;
     private javax.swing.JMenuItem administradorVER;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -665,5 +759,11 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenu menuApariencia;
+    private javax.swing.JCheckBoxMenuItem menuDarkMode;
+    private javax.swing.JCheckBoxMenuItem menuModoAzul;
+    private javax.swing.JCheckBoxMenuItem menuModoClaro;
+    private javax.swing.JCheckBoxMenuItem menuModoMorado;
     // End of variables declaration//GEN-END:variables
 }

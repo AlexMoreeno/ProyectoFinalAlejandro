@@ -4,6 +4,13 @@
  */
 package proyectofinalalejandro;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatCobalt2IJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatGradiantoDeepOceanIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatGradiantoMidnightBlueIJTheme;
+import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -95,16 +102,14 @@ public void InsertarEnTablaUsuarios(Connection con, ResultSet resultado) {
             String clave = resultado.getString("CLAVE");
             String tipo = resultado.getString("TIPO");
 
-            // Insertar en la tabla usuarios
             String sqlInsert = "INSERT INTO usuarios (nombre, apellidos, email, clave, tipo) " +
                     "VALUES ('" + nombre + "', '" + apellidos + "', '" + email + "', '" + clave + "', '" + tipo + "')";
             statement.executeUpdate(sqlInsert);
-
-            // Mostrar mensaje de aceptación del profesor
+           
             JOptionPane.showMessageDialog(null, "Se ha aceptado al profesor: " + nombre);
         }
 
-        // Eliminar filas de profesoresNOACEPTADOS
+        
         String sqlDelete = "DELETE FROM profesoresNOACEPTADOS WHERE tipo = 'profesor'";
         statement.executeUpdate(sqlDelete);
 
@@ -142,6 +147,7 @@ public void InsertarEnTablaUsuarios(Connection con, ResultSet resultado) {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ThemeGrupo = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TablaProfesorNOACEPTA = new javax.swing.JTable();
@@ -157,8 +163,15 @@ public void InsertarEnTablaUsuarios(Connection con, ResultSet resultado) {
         SalirMenu = new javax.swing.JMenuItem();
         AjustesMenu = new javax.swing.JMenu();
         CambiarContra = new javax.swing.JMenuItem();
+        menuApariencia = new javax.swing.JMenu();
+        menuDarkMode = new javax.swing.JCheckBoxMenuItem();
+        menuModoClaro = new javax.swing.JCheckBoxMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        menuModoAzul = new javax.swing.JCheckBoxMenuItem();
+        menuModoMorado = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(" Profesores Contratados"));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
@@ -261,6 +274,48 @@ public void InsertarEnTablaUsuarios(Connection con, ResultSet resultado) {
 
         jMenuBar1.add(AjustesMenu);
 
+        menuApariencia.setText("Apariencia");
+
+        ThemeGrupo.add(menuDarkMode);
+        menuDarkMode.setText("Modo oscuro");
+        menuDarkMode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuDarkModeActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuDarkMode);
+
+        ThemeGrupo.add(menuModoClaro);
+        menuModoClaro.setText("Modo claro");
+        menuModoClaro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoClaroActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoClaro);
+        menuApariencia.add(jSeparator1);
+
+        ThemeGrupo.add(menuModoAzul);
+        menuModoAzul.setText("Modo azul");
+        menuModoAzul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoAzulActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoAzul);
+
+        ThemeGrupo.add(menuModoMorado);
+        menuModoMorado.setSelected(true);
+        menuModoMorado.setText("Modo morado");
+        menuModoMorado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuModoMoradoActionPerformed(evt);
+            }
+        });
+        menuApariencia.add(menuModoMorado);
+
+        jMenuBar1.add(menuApariencia);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -287,6 +342,7 @@ public void InsertarEnTablaUsuarios(Connection con, ResultSet resultado) {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void AceptarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AceptarBotonActionPerformed
@@ -353,8 +409,48 @@ public void InsertarEnTablaUsuarios(Connection con, ResultSet resultado) {
     private void CambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContraActionPerformed
         PantallaCambiarContra a = new PantallaCambiarContra();
         a.setVisible(true);
-        this.dispose();
+        
     }//GEN-LAST:event_CambiarContraActionPerformed
+
+    private void menuDarkModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDarkModeActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatArcDarkIJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuDarkModeActionPerformed
+
+    private void menuModoClaroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoClaroActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatIntelliJLaf.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoClaroActionPerformed
+
+    private void menuModoAzulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoAzulActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatCobalt2IJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoAzulActionPerformed
+
+    private void menuModoMoradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuModoMoradoActionPerformed
+        EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                FlatGradiantoMidnightBlueIJTheme.setup();
+                FlatLaf.updateUI();
+            }
+        });
+    }//GEN-LAST:event_menuModoMoradoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -403,9 +499,16 @@ public void InsertarEnTablaUsuarios(Connection con, ResultSet resultado) {
     private javax.swing.JButton RechazarBoton;
     private javax.swing.JMenuItem SalirMenu;
     private javax.swing.JTable TablaProfesorNOACEPTA;
+    private javax.swing.ButtonGroup ThemeGrupo;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenu menuApariencia;
+    private javax.swing.JCheckBoxMenuItem menuDarkMode;
+    private javax.swing.JCheckBoxMenuItem menuModoAzul;
+    private javax.swing.JCheckBoxMenuItem menuModoClaro;
+    private javax.swing.JCheckBoxMenuItem menuModoMorado;
     // End of variables declaration//GEN-END:variables
 }
