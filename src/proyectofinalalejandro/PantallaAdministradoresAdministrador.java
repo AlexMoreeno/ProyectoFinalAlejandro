@@ -14,28 +14,28 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+
 /**
  *
  * @author Aleja
  */
-public class PantallaMateriasAdministrador extends javax.swing.JFrame {
+public class PantallaAdministradoresAdministrador extends javax.swing.JFrame {
         String bbdd = "jdbc:hsqldb:hsql://localhost/";
         Connection con = null;
         private String[] datos;
         String nombre1 = "";
         int FilSelect ;
         Connection conet;
-    public PantallaMateriasAdministrador() {
+    public PantallaAdministradoresAdministrador() {
         initComponents();
         try {
              Class.forName("org.hsqldb.jdbc.JDBCDriver");
@@ -48,62 +48,180 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
         } catch (ClassNotFoundException | SQLException e) {
              e.printStackTrace(System.out);
             }
-        ActualizarTablaMaterias(con);
+        ActualizarTablaAdministradores(con);
     }
-    public void ActualizarTablaMaterias(Connection con) {
-    DefaultTableModel tm = new DefaultTableModel() {
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-    };
-
-    TablaMaterias.setModel(tm);
-
+  public void ActualizarTablaAdministradores(Connection con) {
     try {
-        String sql = "SELECT * FROM materias";
+        String sql = "SELECT * FROM usuarios WHERE tipo = 'admin'";
         java.sql.Statement statement = con.createStatement();
-        var resultado = statement.executeQuery(sql);
+        ResultSet resultado = statement.executeQuery(sql);
 
-        tm.addColumn("Id");
-        tm.addColumn("Nombre");
-        tm.addColumn("IdNivel");
+        DefaultTableModel tmAdministradores = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        tmAdministradores.addColumn("Id");
+        tmAdministradores.addColumn("Nombre");
+        tmAdministradores.addColumn("Apellidos");
+        tmAdministradores.addColumn("Email");
+        tmAdministradores.addColumn("Clave");
+        tmAdministradores.addColumn("Tipo");
 
         while (resultado.next()) {
             String id = resultado.getString("ID");
             String nombre = resultado.getString("NOMBRE");
-            String idNivel = resultado.getString("ID_NIVEL");
+            String apellidos = resultado.getString("APELLIDOS");
+            String email = resultado.getString("EMAIL");
+            String clave = resultado.getString("CLAVE");
+            String tipo = resultado.getString("TIPO");
 
-            Object[] fila = {id, nombre, idNivel};
-            tm.addRow(fila);
+            Object[] fila = {id, nombre, apellidos, email, clave, tipo};
+            tmAdministradores.addRow(fila);
         }
 
-        TableColumnModel columnModel = TablaMaterias.getColumnModel();
+        TablaAdministradores.setModel(tmAdministradores);
+
+        TableColumnModel columnModel = TablaAdministradores.getColumnModel();
         columnModel.getColumn(0).setMinWidth(0);
         columnModel.getColumn(0).setMaxWidth(0);
-        columnModel.getColumn(2).setMinWidth(0);
-        columnModel.getColumn(2).setMaxWidth(0);
+        columnModel.getColumn(5).setMinWidth(0);
+        columnModel.getColumn(5).setMaxWidth(0);
 
     } catch (Exception e) {
         e.printStackTrace();
     }
 }
-////////////////////////////////////////////////
-    public void Reiniciar(){   
-           NombreTEXT.setText("");   
-           ActualizarTablaMaterias(con);   
-           cambiarColorCampo(NombreTEXT, Color.BLACK);
-       }
+
+public void registrarUsuario(JTextField nombreTEXT, JTextField ApellidoTEXT, JTextField correoTEXT, JTextField contraTEXT) {
+    String nombre = nombreTEXT.getText();
+    String apellido = ApellidoTEXT.getText();
+    String correo = correoTEXT.getText();
+    String clave = contraTEXT.getText();
+
+    String tipo = "admin"; 
+
+    if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || clave.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+
+        if (nombre.isEmpty()) {
+            cambiarColorCampo(nombreTEXT, Color.RED);
+        }
+        if (apellido.isEmpty()) {
+            cambiarColorCampo(ApellidoTEXT, Color.RED);
+        }
+        if (correo.isEmpty()) {
+            cambiarColorCampo(correoTEXT, Color.RED);
+        }
+        if (clave.isEmpty()) {
+            cambiarColorCampo(contraTEXT, Color.RED);
+        }
+        return;
+    }
+
+    if (clave.length() < 5) {
+        JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 5 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+        cambiarColorCampo(contraTEXT, Color.RED);
+        return;
+    }
+
+    try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
+        String consulta = "INSERT INTO usuarios (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
+
+        try (java.sql.PreparedStatement statement = conec.prepareStatement(consulta)) {
+            statement.setString(1, nombre);
+            statement.setString(2, apellido);
+            statement.setString(3, correo);
+            statement.setString(4, clave);
+            statement.setString(5, tipo);
+
+            int filasInsertadas = statement.executeUpdate();
+
+            if (filasInsertadas > 0) {
+                JOptionPane.showMessageDialog(null, "Usuario registrado exitosamente.");
+                
+                // Cambiar color de los campos a negro
+                cambiarColorCampo(contraTEXT, Color.BLACK);
+                cambiarColorCampo(nombreTEXT, Color.BLACK);
+                cambiarColorCampo(ApellidoTEXT, Color.BLACK);
+                cambiarColorCampo(correoTEXT, Color.BLACK);
+
+                // Llamar a ActualizarTablaAdministradores
+                ActualizarTablaAdministradores(conec);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al registrar el usuario.");
+            }
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
+    }
+}
+
+public void eliminarUsuario(JTable tabla) {
+    int filaSeleccionada = tabla.getSelectedRow();
+
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Obtener los datos de la fila seleccionada
+    String nombre = tabla.getValueAt(filaSeleccionada, 1).toString();
+    String apellido = tabla.getValueAt(filaSeleccionada, 2).toString();
+    String correo = tabla.getValueAt(filaSeleccionada, 3).toString();
+    String clave = tabla.getValueAt(filaSeleccionada, 4).toString();
+
+    try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
+        String consulta = "DELETE FROM usuarios WHERE nombre = ? AND apellidos = ? AND email = ? AND clave = ? AND tipo = 'admin'";
+
+        try (java.sql.PreparedStatement statement = conec.prepareStatement(consulta)) {
+            statement.setString(1, nombre);
+            statement.setString(2, apellido);
+            statement.setString(3, correo);
+            statement.setString(4, clave);
+
+            int filasEliminadas = statement.executeUpdate();
+
+            if (filasEliminadas > 0) {
+                JOptionPane.showMessageDialog(null, "Usuario eliminado exitosamente.");
+
+                JOptionPane.showMessageDialog(null, "Nombre: " + nombre + "\nApellido: " + apellido + "\nCorreo: " + correo);
+
+                ActualizarTablaAdministradores(conec);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al eliminar el usuario.");
+            }
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
+    }
+}
+
+    ///////////////////////////////////////////////////////////////////////////////////////
     private void cambiarColorCampo(JTextField campo, Color color) {
         campo.setBorder(BorderFactory.createLineBorder(color));
     }
-////////////////////////////////////////////////
-    public void buscarMateria(JTextField nombreTEXT, JTable tabla) {
+    /////////////////////////////////////////////////////////////////////////////////////
+ public void buscarUsuario(JTextField nombreTEXT, JTextField apellidoTEXT, JTextField emailTEXT, JTextField contraTEXT, JTable tabla) {
     String nombre = nombreTEXT.getText();
+    String apellido = apellidoTEXT.getText();
+    String correo = emailTEXT.getText();
+    String clave = contraTEXT.getText();
 
-    String consulta = "SELECT * FROM materias WHERE 1=1";
+    String consulta = "SELECT * FROM usuarios WHERE tipo = 'admin'";
     if (!nombre.isEmpty()) {
         consulta += " AND nombre LIKE '" + nombre + "%'";
+    }
+    if (!apellido.isEmpty()) {
+        consulta += " AND apellidos LIKE '" + apellido + "%'";
+    }
+    if (!correo.isEmpty()) {
+        consulta += " AND email LIKE '" + correo + "%'";
+    }
+    if (!clave.isEmpty()) {
+        consulta += " AND clave LIKE '" + clave + "%'";
     }
 
     try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA");
@@ -113,132 +231,102 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
         model.setRowCount(0);
 
-        if (resultSet.next()) {
+        while (resultSet.next()) {
             int id = resultSet.getInt("id");
             String nombreResultado = resultSet.getString("nombre");
+            String apellidosResultado = resultSet.getString("apellidos");
+            String emailResultado = resultSet.getString("email");
+            String claveResultado = resultSet.getString("clave");
+            String tipoResultado = resultSet.getString("tipo");
 
-            model.addRow(new Object[]{id, nombreResultado});
+            model.addRow(new Object[]{id, nombreResultado, apellidosResultado, emailResultado, claveResultado, tipoResultado});
         }
 
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
     }
 }
-////////////////////////////////////////////////
-    public void registrarMateria(JTextField nombreTEXT) {
-    String nombre = nombreTEXT.getText();
-
-    if (nombre.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Por favor, ingrese el nombre de la materia.", "Error", JOptionPane.ERROR_MESSAGE);
-        cambiarColorCampo(nombreTEXT, Color.RED);
-        return;
-    }
-    Random rand = new Random();
-    int idNivel = rand.nextInt(5);
-
-    try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
-        String consulta = "INSERT INTO materias (nombre, id_nivel) VALUES (?, ?)";
-
-        try (java.sql.PreparedStatement statement = conec.prepareStatement(consulta)) {
-            statement.setString(1, nombre);
-            statement.setInt(2, idNivel);
-
-            int filasInsertadas = statement.executeUpdate();
-
-            if (filasInsertadas > 0) {
-                JOptionPane.showMessageDialog(null, "Materia registrada exitosamente.");
-                cambiarColorCampo(nombreTEXT, Color.BLACK);
-                ActualizarTablaMaterias(conec);
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al registrar la materia.");
-            }
-        }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
-    }
-}
-//////////////////////////////////////////////////
-    public void eliminarMateria(JTable tabla) {
-    int filaSeleccionada = tabla.getSelectedRow();
-
-    if (filaSeleccionada == -1) {
-        JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    int idMateria = Integer.parseInt(tabla.getValueAt(filaSeleccionada, 0).toString());
-
-    try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
-        String consulta = "DELETE FROM materias WHERE id = ?";
-
-        try (java.sql.PreparedStatement statement = conec.prepareStatement(consulta)) {
-            statement.setInt(1, idMateria);
-
-            int filasEliminadas = statement.executeUpdate();
-
-            if (filasEliminadas > 0) {
-                JOptionPane.showMessageDialog(null, "Materia eliminada exitosamente.");
-                ActualizarTablaMaterias(conec);
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al eliminar la materia.");
-            }
-        }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
-    }
-}
-//////////////////////////////////////////////////
-   public void cargarDatosMateria(Connection con) {
+    public void Reiniciar(){
+           EmailTEXT.setText("");
+           NombreTEXT.setText("");
+           ApellidooTEXT.setText("");
+           ContraTEXT.setText("");
+           ActualizarTablaAdministradores(con);
+           cambiarColorCampo(EmailTEXT, Color.BLACK);
+           cambiarColorCampo(NombreTEXT, Color.BLACK);
+           cambiarColorCampo(ApellidooTEXT, Color.BLACK);
+           cambiarColorCampo(ContraTEXT, Color.BLACK);
+       }
+    ///////////////////////////////////////////////////////////
+ public void cargarDatosAdministrador(Connection con) {
     try {
-        int filaSeleccionada = TablaMaterias.getSelectedRow();
+        int filaSeleccionada = TablaAdministradores.getSelectedRow();
         if (filaSeleccionada != -1) {
-            String idSeleccionado = TablaMaterias.getValueAt(filaSeleccionada, 0).toString();
-            String sqlSelect = "SELECT nombre FROM materias WHERE id = '" + idSeleccionado + "'";
+            String idSeleccionado = TablaAdministradores.getValueAt(filaSeleccionada, 0).toString();
+            String sqlSelect = "SELECT * FROM usuarios WHERE ID = '" + idSeleccionado + "'";
             Statement statement = con.createStatement();
             ResultSet resultado = statement.executeQuery(sqlSelect);
 
             if (resultado.next()) {
-                String nombre = resultado.getString("nombre");
+                String nombre = resultado.getString("NOMBRE");
+                String apellido = resultado.getString("APELLIDOS");
+                String correo = resultado.getString("EMAIL");
+                String clave = resultado.getString("CLAVE");
 
                 NombreTEXT.setText(nombre);
+                ApellidooTEXT.setText(apellido);
+                EmailTEXT.setText(correo);
+                ContraTEXT.setText(clave);
             }
         }
+
     } catch (SQLException e) {
         e.printStackTrace();
     }
 }
-   ////////////////////////////////////////////
-   public void editarMateria(Connection con, JTextField nombreMateriaTEXT) {
-    String nuevoNombre = nombreMateriaTEXT.getText();
 
-    int filaSeleccionada = TablaMaterias.getSelectedRow();
+public void editarAdministrador(Connection con, JTextField nombreTEXT, JTextField ApellidoTEXT, JTextField correoTEXT, JTextField contraTEXT) {
+    String nombre = nombreTEXT.getText();
+    String apellido = ApellidoTEXT.getText();
+    String correo = correoTEXT.getText();
+    String clave = contraTEXT.getText();
+
+    int filaSeleccionada = TablaAdministradores.getSelectedRow();
     if (filaSeleccionada == -1) {
-        JOptionPane.showMessageDialog(null, "Por favor, seleccione una materia para editar.", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Por favor, seleccione un administrador para editar.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
-    String idSeleccionado = TablaMaterias.getValueAt(filaSeleccionada, 0).toString();
+    String idSeleccionado = TablaAdministradores.getValueAt(filaSeleccionada, 0).toString();
 
-    if (nuevoNombre.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Por favor, complete el campo del nombre.", "Error", JOptionPane.ERROR_MESSAGE);
+    if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || clave.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    if (clave.length() < 5) {
+        JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 5 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
     try (Connection conec = DriverManager.getConnection(bbdd, "SA", "SA")) {
-        String consulta = "UPDATE materias SET nombre = '" + nuevoNombre + "' WHERE ID = '" + idSeleccionado + "'";
+        String consulta = "UPDATE usuarios SET nombre = '" + nombre + "', apellidos = '" + apellido + "', email = '" + correo + "', clave = '" + clave + "' WHERE ID = '" + idSeleccionado + "'";
 
         try (Statement statement = conec.createStatement()) {
             int filasActualizadas = statement.executeUpdate(consulta);
 
             if (filasActualizadas > 0) {
-                JOptionPane.showMessageDialog(null, "Registro modificado exitosamente.");
+                JOptionPane.showMessageDialog(null, "Registro modificado.");
 
-                nombreMateriaTEXT.setText("");
+                nombreTEXT.setText("");
+                ApellidoTEXT.setText("");
+                correoTEXT.setText("");
+                contraTEXT.setText("");
 
-                cargarDatosMateria(con);
-                ActualizarTablaMaterias(conec);
+                cargarDatosAdministrador(con);
+                ActualizarTablaAdministradores(conec);
             } else {
-                JOptionPane.showMessageDialog(null, "Error al actualizar la materia.");
+                JOptionPane.showMessageDialog(null, "Error al actualizar el administrador.");
             }
         }
     } catch (SQLException e) {
@@ -251,11 +339,17 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
 
         ThemeGrupo = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        TablaMaterias = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        TablaAdministradores = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        ContraTEXT = new javax.swing.JTextField();
         NombreTEXT = new javax.swing.JTextField();
+        ApellidooTEXT = new javax.swing.JTextField();
+        EmailTEXT = new javax.swing.JTextField();
         BuscarBoton = new javax.swing.JButton();
         ReiniciarBoton = new javax.swing.JButton();
         AnadirBoton = new javax.swing.JButton();
@@ -265,8 +359,8 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
         PantallasMenu = new javax.swing.JMenu();
         InicioDeSesion = new javax.swing.JMenuItem();
         administradorVER = new javax.swing.JMenuItem();
-        Alumnos = new javax.swing.JMenuItem();
         Profesores = new javax.swing.JMenuItem();
+        Materias = new javax.swing.JMenuItem();
         SalirMenu = new javax.swing.JMenuItem();
         AjustesMenu = new javax.swing.JMenu();
         CambiarContra = new javax.swing.JMenuItem();
@@ -280,35 +374,49 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Materias"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Alumnos"));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        TablaMaterias.setModel(new javax.swing.table.DefaultTableModel(
+        TablaAdministradores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Nombre"
+                "Id", "Nombre", "Apellidos", "Email", "Contraseña", "Tipo"
             }
         ));
-        TablaMaterias.addMouseListener(new java.awt.event.MouseAdapter() {
+        TablaAdministradores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TablaMateriasMouseClicked(evt);
+                TablaAdministradoresMouseClicked(evt);
             }
         });
-        jScrollPane4.setViewportView(TablaMaterias);
+        jScrollPane3.setViewportView(TablaAdministradores);
 
-        jPanel1.add(jScrollPane4, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Formulario"));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("Nombre de la materia");
+        jLabel1.setText("Nombre");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-        jPanel2.add(NombreTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 220, -1));
+
+        jLabel2.setText("Apellido");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, -1, -1));
+
+        jLabel3.setText("Email");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
+
+        jLabel4.setText("Contraseña");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, -1, -1));
+        jPanel2.add(ContraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 100, 320, -1));
+        jPanel2.add(NombreTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 320, -1));
+        jPanel2.add(ApellidooTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 40, 320, -1));
+        jPanel2.add(EmailTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 320, -1));
 
         BuscarBoton.setText("Buscar");
         BuscarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -316,7 +424,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 BuscarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(BuscarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
+        jPanel2.add(BuscarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
         ReiniciarBoton.setText("Reiniciar");
         ReiniciarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -324,7 +432,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 ReiniciarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, -1, -1));
+        jPanel2.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, -1, -1));
 
         AnadirBoton.setText("Añadir");
         AnadirBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -332,7 +440,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 AnadirBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(AnadirBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, -1, -1));
+        jPanel2.add(AnadirBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 140, -1, -1));
 
         EliminarBoton.setText("Eliminar");
         EliminarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -340,7 +448,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 EliminarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(EliminarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 80, -1, -1));
+        jPanel2.add(EliminarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 140, -1, -1));
 
         EditarBoton.setText("Editar");
         EditarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -348,7 +456,7 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 EditarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(EditarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, -1, -1));
+        jPanel2.add(EditarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 140, -1, -1));
 
         PantallasMenu.setText("Pantallas");
 
@@ -370,15 +478,6 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
         });
         PantallasMenu.add(administradorVER);
 
-        Alumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/alumno.png"))); // NOI18N
-        Alumnos.setText("Alumnos");
-        Alumnos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AlumnosActionPerformed(evt);
-            }
-        });
-        PantallasMenu.add(Alumnos);
-
         Profesores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/profesor.png"))); // NOI18N
         Profesores.setText("Profesores");
         Profesores.addActionListener(new java.awt.event.ActionListener() {
@@ -387,6 +486,15 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
             }
         });
         PantallasMenu.add(Profesores);
+
+        Materias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/Libros.png"))); // NOI18N
+        Materias.setText("Materias");
+        Materias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MateriasActionPerformed(evt);
+            }
+        });
+        PantallasMenu.add(Materias);
 
         SalirMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos1/Salir (1).png"))); // NOI18N
         SalirMenu.setText("Salir");
@@ -460,17 +568,17 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -496,14 +604,14 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
     private void CambiarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarContraActionPerformed
         PantallaCambiarContra a = new PantallaCambiarContra();
         a.setVisible(true);
-     
+       
     }//GEN-LAST:event_CambiarContraActionPerformed
 
-    private void AlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlumnosActionPerformed
-        PantallaAlumnosAdministrador a = new PantallaAlumnosAdministrador();
+    private void MateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MateriasActionPerformed
+        PantallaMateriasAdministrador a = new PantallaMateriasAdministrador();
         a.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_AlumnosActionPerformed
+    }//GEN-LAST:event_MateriasActionPerformed
 
     private void administradorVERActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_administradorVERActionPerformed
         PantallaPrincipalAdministrador a = new PantallaPrincipalAdministrador();
@@ -511,30 +619,30 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_administradorVERActionPerformed
 
+    private void AnadirBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnadirBotonActionPerformed
+      registrarUsuario(NombreTEXT, ApellidooTEXT, EmailTEXT, ContraTEXT);
+      ActualizarTablaAdministradores(con);
+    }//GEN-LAST:event_AnadirBotonActionPerformed
+
     private void EliminarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarBotonActionPerformed
-      eliminarMateria(TablaMaterias);
-      ActualizarTablaMaterias(con);
+      eliminarUsuario(TablaAdministradores);
+      ActualizarTablaAdministradores(con);
     }//GEN-LAST:event_EliminarBotonActionPerformed
 
-    private void AnadirBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnadirBotonActionPerformed
-      registrarMateria(NombreTEXT);
-      ActualizarTablaMaterias(con);
-    }//GEN-LAST:event_AnadirBotonActionPerformed
+    private void BuscarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarBotonActionPerformed
+    buscarUsuario(NombreTEXT, ApellidooTEXT, EmailTEXT,ContraTEXT, TablaAdministradores);
+    }//GEN-LAST:event_BuscarBotonActionPerformed
 
     private void ReiniciarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReiniciarBotonActionPerformed
         Reiniciar();
     }//GEN-LAST:event_ReiniciarBotonActionPerformed
 
-    private void BuscarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarBotonActionPerformed
-       buscarMateria(NombreTEXT, TablaMaterias);
-    }//GEN-LAST:event_BuscarBotonActionPerformed
-
-    private void TablaMateriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaMateriasMouseClicked
-       cargarDatosMateria(con);
-    }//GEN-LAST:event_TablaMateriasMouseClicked
+    private void TablaAdministradoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaAdministradoresMouseClicked
+      cargarDatosAdministrador(con);
+    }//GEN-LAST:event_TablaAdministradoresMouseClicked
 
     private void EditarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarBotonActionPerformed
-       editarMateria(con, NombreTEXT);
+      editarAdministrador(con, NombreTEXT, ApellidooTEXT, EmailTEXT, ContraTEXT);
     }//GEN-LAST:event_EditarBotonActionPerformed
 
     private void menuDarkModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDarkModeActionPerformed
@@ -594,46 +702,52 @@ public class PantallaMateriasAdministrador extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PantallaMateriasAdministrador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PantallaAlumnosAdministrador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PantallaMateriasAdministrador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PantallaAlumnosAdministrador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PantallaMateriasAdministrador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PantallaAlumnosAdministrador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PantallaMateriasAdministrador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PantallaAlumnosAdministrador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PantallaMateriasAdministrador().setVisible(true);
+                new PantallaAdministradoresAdministrador().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu AjustesMenu;
-    private javax.swing.JMenuItem Alumnos;
     private javax.swing.JButton AnadirBoton;
+    private javax.swing.JTextField ApellidooTEXT;
     private javax.swing.JButton BuscarBoton;
     private javax.swing.JMenuItem CambiarContra;
+    private javax.swing.JTextField ContraTEXT;
     private javax.swing.JButton EditarBoton;
     private javax.swing.JButton EliminarBoton;
+    private javax.swing.JTextField EmailTEXT;
     private javax.swing.JMenuItem InicioDeSesion;
+    private javax.swing.JMenuItem Materias;
     private javax.swing.JTextField NombreTEXT;
     private javax.swing.JMenu PantallasMenu;
     private javax.swing.JMenuItem Profesores;
     private javax.swing.JButton ReiniciarBoton;
     private javax.swing.JMenuItem SalirMenu;
-    private javax.swing.JTable TablaMaterias;
+    private javax.swing.JTable TablaAdministradores;
     private javax.swing.ButtonGroup ThemeGrupo;
     private javax.swing.JMenuItem administradorVER;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu menuApariencia;
     private javax.swing.JCheckBoxMenuItem menuDarkMode;

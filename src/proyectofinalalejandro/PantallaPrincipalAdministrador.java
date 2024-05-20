@@ -133,6 +133,7 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         PantallasMenu = new javax.swing.JMenu();
         InicioDeSesion = new javax.swing.JMenuItem();
@@ -183,7 +184,7 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
         MostrarTotales.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel2.add(MostrarTotales, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 160, 20));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(313, 18, 220, 250));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, 220, 250));
 
         jLabel8.setIcon(new javax.swing.ImageIcon("C:\\Users\\Aleja\\OneDrive\\Documentos\\NetBeansProjects\\NetBeansProjects\\ProyectoFinalAlejandro\\src\\imagenes\\icons8-estudiante-masculino-100.png")); // NOI18N
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -209,7 +210,15 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
         });
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 540, 280));
+        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Aleja\\OneDrive\\Documentos\\NetBeansProjects\\NetBeansProjects\\ProyectoFinalAlejandro\\src\\imagenes\\adminFoto.png")); // NOI18N
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, -1, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 510, 280));
 
         PantallasMenu.setText("Pantallas");
 
@@ -409,6 +418,12 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel4MouseClicked
 
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        PantallaAdministradoresAdministrador a = new PantallaAdministradoresAdministrador();
+        a.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel2MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -459,6 +474,7 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
     private javax.swing.JMenuItem SalirMenu;
     private javax.swing.ButtonGroup ThemeGrupo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

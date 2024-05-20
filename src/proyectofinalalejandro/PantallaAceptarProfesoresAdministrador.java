@@ -353,10 +353,12 @@ public void InsertarEnTablaUsuarios(Connection con, ResultSet resultado) {
 
         ActualizarTablaProfesores(con); 
         InsertarEnTablaUsuarios(con, resultado); 
+        ActualizarTablaProfesores(con);
 
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage());
     }
+    ActualizarTablaProfesores(con);
     }//GEN-LAST:event_AceptarBotonActionPerformed
 
     private void RechazarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RechazarBotonActionPerformed
