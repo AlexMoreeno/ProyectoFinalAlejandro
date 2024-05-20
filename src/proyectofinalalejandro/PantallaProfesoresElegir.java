@@ -90,7 +90,7 @@ public class PantallaProfesoresElegir extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AceptarProfeBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AceptarProfeBotonActionPerformed
-      PantallaProfesoresElegir a = new PantallaProfesoresElegir();
+      PantallaAceptarProfesoresAdministrador a = new PantallaAceptarProfesoresAdministrador();
       a.setVisible(true);
       this.dispose();
     }//GEN-LAST:event_AceptarProfeBotonActionPerformed

@@ -4,16 +4,21 @@
  */
 package proyectofinalalejandro;
 
+import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+
 /**
  *
  * @author Aleja
  */
 public class ProyectoFinalAlejandro {
-
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String[] args) {
+         try {
+          //  UIManager.setLookAndFeel( new FlatLightLaf() );
+            FlatArcDarkIJTheme.setup();
+        } catch( Exception ex ) {
+            System.err.println( "Failed to initialize LaF" );
+        }
         PantallaInicioSesión p = new PantallaInicioSesión ();
         p.setVisible(true);
        
