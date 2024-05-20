@@ -48,96 +48,96 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
         ActualizarTablaAlumnos(con);
         ActualizarTablaMaterias(con);
     }
-    public void ActualizarTablaAlumnos(Connection con) {
-    try {
-        String sql = "SELECT * FROM usuarios WHERE tipo = 'alumno'";
-        java.sql.Statement statement = con.createStatement();
-        ResultSet resultado = statement.executeQuery(sql);
+   public void ActualizarTablaAlumnos(Connection con) {
+        try {
+            String sql = "SELECT * FROM usuarios WHERE tipo = 'alumno'";
+            Statement statement = con.createStatement();
+            ResultSet resultado = statement.executeQuery(sql);
 
-        DefaultTableModel tmProfesores = new DefaultTableModel() {
+            DefaultTableModel tmAlumnos = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+
+            tmAlumnos.addColumn("Id");
+            tmAlumnos.addColumn("Nombre");
+            tmAlumnos.addColumn("Apellidos");
+            tmAlumnos.addColumn("Email");
+            tmAlumnos.addColumn("Clave");
+            tmAlumnos.addColumn("Tipo");
+
+            while (resultado.next()) {
+                String id = resultado.getString("ID");
+                String nombre = resultado.getString("NOMBRE");
+                String apellidos = resultado.getString("APELLIDOS");
+                String email = resultado.getString("EMAIL");
+                String clave = resultado.getString("CLAVE");
+                String tipo = resultado.getString("TIPO");
+
+                Object[] fila = {id, nombre, apellidos, email, clave, tipo};
+                tmAlumnos.addRow(fila);
+            }
+
+            TablaAlumnos.setModel(tmAlumnos);
+
+            TableColumnModel columnModel = TablaAlumnos.getColumnModel();
+            columnModel.getColumn(0).setMinWidth(0);
+            columnModel.getColumn(0).setMaxWidth(0);
+            columnModel.getColumn(4).setMinWidth(0);
+            columnModel.getColumn(4).setMaxWidth(0);
+            columnModel.getColumn(5).setMinWidth(0);
+            columnModel.getColumn(5).setMaxWidth(0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void ActualizarTablaMaterias(Connection con) {
+        DefaultTableModel tmMaterias = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
 
-        tmProfesores.addColumn("Id");
-        tmProfesores.addColumn("Nombre");
-        tmProfesores.addColumn("Apellidos");
-        tmProfesores.addColumn("Email");
-        tmProfesores.addColumn("Clave");
-        tmProfesores.addColumn("Tipo");
+        TablaMaterias.setModel(tmMaterias);
 
-        while (resultado.next()) {
-            String id = resultado.getString("ID");
-            String nombre = resultado.getString("NOMBRE");
-            String apellidos = resultado.getString("APELLIDOS");
-            String email = resultado.getString("EMAIL");
-            String clave = resultado.getString("CLAVE");
-            String tipo = resultado.getString("TIPO");
+        try {
+            String sql = "SELECT * FROM materias";
+            Statement statement = con.createStatement();
+            ResultSet resultado = statement.executeQuery(sql);
 
-            Object[] fila = {id, nombre, apellidos, email, clave, tipo};
-            tmProfesores.addRow(fila);
+            tmMaterias.addColumn("Id");
+            tmMaterias.addColumn("Nombre");
+            tmMaterias.addColumn("IdNivel");
+
+            while (resultado.next()) {
+                String id = resultado.getString("ID");
+                String nombre = resultado.getString("NOMBRE");
+                String idNivel = resultado.getString("ID_NIVEL");
+
+                Object[] fila = {id, nombre, idNivel};
+                tmMaterias.addRow(fila);
+            }
+
+            TableColumnModel columnModel = TablaMaterias.getColumnModel();
+            columnModel.getColumn(0).setMinWidth(0);
+            columnModel.getColumn(0).setMaxWidth(0);
+            columnModel.getColumn(2).setMinWidth(0);
+            columnModel.getColumn(2).setMaxWidth(0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        TablaAlumnos.setModel(tmProfesores);
-
-        TableColumnModel columnModel = TablaAlumnos.getColumnModel();
-        columnModel.getColumn(0).setMinWidth(0);
-        columnModel.getColumn(0).setMaxWidth(0);
-        columnModel.getColumn(4).setMinWidth(0);
-        columnModel.getColumn(4).setMaxWidth(0);
-        columnModel.getColumn(5).setMinWidth(0);
-        columnModel.getColumn(5).setMaxWidth(0);
-
-    } catch (Exception e) {
-        e.printStackTrace();
     }
-}
-    public void ActualizarTablaMaterias(Connection con) {
-    DefaultTableModel tm = new DefaultTableModel() {
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-    };
 
-    TablaMaterias.setModel(tm);
-
-    try {
-        String sql = "SELECT * FROM materias";
-        java.sql.Statement statement = con.createStatement();
-        var resultado = statement.executeQuery(sql);
-
-        tm.addColumn("Id");
-        tm.addColumn("Nombre");
-        tm.addColumn("IdNivel");
-
-        while (resultado.next()) {
-            String id = resultado.getString("ID");
-            String nombre = resultado.getString("NOMBRE");
-            String idNivel = resultado.getString("ID_NIVEL");
-
-            Object[] fila = {id, nombre, idNivel};
-            tm.addRow(fila);
-        }
-
-        TableColumnModel columnModel = TablaMaterias.getColumnModel();
-        columnModel.getColumn(0).setMinWidth(0);
-        columnModel.getColumn(0).setMaxWidth(0);
-        columnModel.getColumn(2).setMinWidth(0);
-        columnModel.getColumn(2).setMaxWidth(0);
-
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-}
     private void filtrarPorApellidoAlumno(String apellidos) {
         DefaultTableModel modelo = new DefaultTableModel() {};
 
-        String consultaSQL = "SELECT nombre, apellidos, email " +
-                            "FROM usuarios " +
-                            "WHERE tipo = 'alumno'";
+        String consultaSQL = "SELECT nombre, apellidos, email FROM usuarios WHERE tipo = 'alumno'";
         if (!apellidos.isEmpty()) {
             consultaSQL += " AND apellidos LIKE '%" + apellidos + "%'";
         }
@@ -164,7 +164,7 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
                 obtenerMaterias();
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -191,56 +191,46 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
 
             TablaMaterias.setModel(tm);
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-        public void insertarAlumnoDesdeTabla(Connection con) {
-        int filaSeleccionada = TablaAlumnos.getSelectedRow();
 
-        if (filaSeleccionada != -1) {
-            try {
-                String id = (String) TablaAlumnos.getValueAt(filaSeleccionada, 0);
-                String nombre = (String) TablaAlumnos.getValueAt(filaSeleccionada, 1);
-                String apellidos = (String) TablaAlumnos.getValueAt(filaSeleccionada, 2);
-                String email = (String) TablaAlumnos.getValueAt(filaSeleccionada, 3);
-                String clave = (String) TablaAlumnos.getValueAt(filaSeleccionada, 4);
-                String tipo = (String) TablaAlumnos.getValueAt(filaSeleccionada, 5);
+public void insertarAlumnoDesdeTabla(Connection con) {
+    int filaSeleccionada = TablaAlumnos.getSelectedRow();
 
-                System.out.println("Nombre: " + nombre + ", Apellidos: " + apellidos + ", Email: " + email);
+    if (filaSeleccionada != -1) {
+        try {
+            String id = (String) TablaAlumnos.getValueAt(filaSeleccionada, 0);
+            String nombre = (String) TablaAlumnos.getValueAt(filaSeleccionada, 1);
+            String apellidos = (String) TablaAlumnos.getValueAt(filaSeleccionada, 2);
+            String email = (String) TablaAlumnos.getValueAt(filaSeleccionada, 3);
+            String tipo = (String) TablaAlumnos.getValueAt(filaSeleccionada, 5);
 
-                String sqlInsert = "INSERT INTO alumnoscontratados (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
-                try (var insertStatement = con.prepareStatement(sqlInsert)) {
-                    insertStatement.setString(1, nombre);
-                    insertStatement.setString(2, apellidos);
-                    insertStatement.setString(3, email);
-                    insertStatement.setString(4, clave);
-                    insertStatement.setString(5, tipo);
-                    int rowsInserted = insertStatement.executeUpdate();
-                    System.out.println("Filas insertadas en alumnoscontratados: " + rowsInserted);
-                }
+            System.out.println("Nombre: " + nombre + ", Apellidos: " + apellidos + ", Email: " + email);
 
-                String sqlDelete = "DELETE FROM usuarios WHERE id = ? AND nombre = ? AND apellidos = ? AND email = ? AND clave = ? AND tipo = ?";
-                try (var deleteStatement = con.prepareStatement(sqlDelete)) {
-                    deleteStatement.setString(1, id);
-                    deleteStatement.setString(2, nombre);
-                    deleteStatement.setString(3, apellidos);
-                    deleteStatement.setString(4, email);
-                    deleteStatement.setString(5, clave);
-                    deleteStatement.setString(6, tipo);
-                    int rowsDeleted = deleteStatement.executeUpdate();
-                    System.out.println("Filas eliminadas de usuarios: " + rowsDeleted);
-                }
+            String sqlInsert = "INSERT INTO alumnoscontratados (nombre, apellidos, email, clave, tipo) VALUES ('" + nombre + "', '" + apellidos + "', '" + email + "', 'clave_predeterminada', '" + tipo + "')";
 
-                ActualizarTablaAlumnos(con);
-                JOptionPane.showMessageDialog(null, "Se ha añadadido el alumno a tu lista", "Alumno Escogido", JOptionPane.INFORMATION_MESSAGE);
-            } catch (SQLException e) {
-                e.printStackTrace();
+            try (Statement statement = con.createStatement()) {
+                int rowsInserted = statement.executeUpdate(sqlInsert);
+                System.out.println("Filas insertadas en alumnoscontratados: " + rowsInserted);
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.", "Error", JOptionPane.ERROR_MESSAGE);
+
+            String sqlDelete = "DELETE FROM usuarios WHERE id = '" + id + "' AND nombre = '" + nombre + "' AND apellidos = '" + apellidos + "' AND email = '" + email + "' AND tipo = '" + tipo + "'";
+            try (Statement statement = con.createStatement()) {
+                int rowsDeleted = statement.executeUpdate(sqlDelete);
+                System.out.println("Filas eliminadas de usuarios: " + rowsDeleted);
+            }
+
+            ActualizarTablaAlumnos(con);
+            JOptionPane.showMessageDialog(null, "Se ha añadido el alumno a tu lista", "Alumno Escogido", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    } else {
+        JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila.", "Error", JOptionPane.ERROR_MESSAGE);
     }
+}
     public void Reiniciar() {
         ApellidoTEXT.setText("");
         try {

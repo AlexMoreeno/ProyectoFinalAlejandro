@@ -65,7 +65,7 @@ public class PantallaSecundariaAlumno extends javax.swing.JFrame {
 public void ActualizarTablaProfesores(Connection con) {
     try {
         String sql = "SELECT * FROM usuarios WHERE tipo = 'profesor'";
-        java.sql.Statement statement = con.createStatement();
+        Statement statement = con.createStatement();
         ResultSet resultado = statement.executeQuery(sql);
 
         DefaultTableModel tmProfesores = new DefaultTableModel() {
@@ -96,7 +96,6 @@ public void ActualizarTablaProfesores(Connection con) {
 
         TablaProfesores.setModel(tmProfesores);
 
-        // Ocultar columnas no necesarias
         TableColumnModel columnModel = TablaProfesores.getColumnModel();
         columnModel.getColumn(0).setMinWidth(0);
         columnModel.getColumn(0).setMaxWidth(0);
@@ -109,7 +108,8 @@ public void ActualizarTablaProfesores(Connection con) {
         e.printStackTrace();
     }
 }
- public void ActualizarTablaMaterias(Connection con) {
+
+public void ActualizarTablaMaterias(Connection con) {
     DefaultTableModel tm = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int row, int column) {
@@ -121,8 +121,8 @@ public void ActualizarTablaProfesores(Connection con) {
 
     try {
         String sql = "SELECT * FROM materias";
-        java.sql.Statement statement = con.createStatement();
-        var resultado = statement.executeQuery(sql);
+        Statement statement = con.createStatement();
+        ResultSet resultado = statement.executeQuery(sql);
 
         tm.addColumn("Id");
         tm.addColumn("Nombre");
@@ -147,8 +147,8 @@ public void ActualizarTablaProfesores(Connection con) {
         e.printStackTrace();
     }
 }
-////////////////////////////////////////////////////////////////////////////////////////////////
- private void filtrarPorApellido(String apellidos) {
+
+private void filtrarPorApellido(String apellidos) {
     DefaultTableModel modeloProfesores = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int row, int column) {
@@ -185,7 +185,6 @@ public void ActualizarTablaProfesores(Connection con) {
 
         TablaProfesores.setModel(modeloProfesores);
 
-        // Ocultar columnas no necesarias
         TableColumnModel columnModel = TablaProfesores.getColumnModel();
         columnModel.getColumn(0).setMinWidth(0);
         columnModel.getColumn(0).setMaxWidth(0);
@@ -194,22 +193,28 @@ public void ActualizarTablaProfesores(Connection con) {
         columnModel.getColumn(5).setMinWidth(0);
         columnModel.getColumn(5).setMaxWidth(0);
 
-        // Obtener y mostrar materias aleatorias
-        obtenerMaterias2();
+        obtenerMaterias2("");
 
     } catch (Exception e) {
         e.printStackTrace();
     }
 }
 
-private void obtenerMaterias2() {
+private void obtenerMaterias2(String filtro) {
     DefaultTableModel modeloMaterias = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }
     };
-    String consultaSQLMaterias = "SELECT nombre FROM materias ORDER BY RAND() LIMIT 2";
+
+    String consultaSQLMaterias = "SELECT nombre FROM materias";
+    if (!filtro.isEmpty()) {
+        consultaSQLMaterias += " WHERE nombre LIKE '%" + filtro + "%' LIMIT 2";
+    } else {
+        consultaSQLMaterias += " ORDER BY RAND() LIMIT 2";
+    }
+
     try {
         Statement statement = con.createStatement();
         ResultSet resultadoMaterias = statement.executeQuery(consultaSQLMaterias);
@@ -228,96 +233,60 @@ private void obtenerMaterias2() {
     }
 }
 
- private void obtenerMaterias() {
-    DefaultTableModel tm = new DefaultTableModel() {};
-
-    String consultaSQL = "SELECT nombre FROM materias ORDER BY RAND() LIMIT 2";
-
-    try {
-        Statement statement = con.createStatement();
-        ResultSet resultado = statement.executeQuery(consultaSQL);
-
-        ArrayList<String> materias = new ArrayList<>();
-        while (resultado.next()) {
-            materias.add(resultado.getString("nombre"));
+private void filtrarPorMateria(String materia) {
+    DefaultTableModel modeloProfesores = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
         }
+    };
 
-        tm.addColumn("Nombre");
-
-        for (String nombreMateria : materias) {
-            tm.addRow(new Object[]{nombreMateria});
-        }
-
-        TablaMaterias.setModel(tm);
-        ActualizarTablaMaterias(con);
-
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-}
-
-private void filtrarPorApellidoYMateria(String apellidos, String materia) {
-    DefaultTableModel modeloProfesores = new DefaultTableModel() {};
-    DefaultTableModel modeloMaterias = new DefaultTableModel() {};
-
-    String consultaSQLProfesores = "SELECT nombre, apellidos, email " +
-                                    "FROM usuarios " +
-                                    "WHERE tipo = 'profesor'";
-    if (!apellidos.isEmpty()) {
-        consultaSQLProfesores += " AND apellidos LIKE '%" + apellidos + "%'";
-    }
-    if (!materia.isEmpty() && apellidos.isEmpty()) {
+    String consultaSQLProfesores = "SELECT ID, NOMBRE, APELLIDOS, EMAIL, CLAVE, TIPO FROM usuarios WHERE tipo = 'profesor'";
+    if (!materia.isEmpty()) {
         consultaSQLProfesores += " ORDER BY RAND() LIMIT 2";
-    } else {
-        consultaSQLProfesores += " LIMIT 2";
     }
 
     try {
         Statement statement = con.createStatement();
         ResultSet resultadoProfesores = statement.executeQuery(consultaSQLProfesores);
 
+        modeloProfesores.addColumn("Id");
         modeloProfesores.addColumn("Nombre");
         modeloProfesores.addColumn("Apellidos");
         modeloProfesores.addColumn("Email");
+        modeloProfesores.addColumn("Clave");
+        modeloProfesores.addColumn("Tipo");
 
         while (resultadoProfesores.next()) {
-            String nombre = resultadoProfesores.getString("nombre");
-            String apellidosProfesor = resultadoProfesores.getString("apellidos");
-            String email = resultadoProfesores.getString("email");
-            modeloProfesores.addRow(new Object[]{nombre, apellidosProfesor, email});
+            String id = resultadoProfesores.getString("ID");
+            String nombre = resultadoProfesores.getString("NOMBRE");
+            String apellidos = resultadoProfesores.getString("APELLIDOS");
+            String email = resultadoProfesores.getString("EMAIL");
+            String clave = resultadoProfesores.getString("CLAVE");
+            String tipo = resultadoProfesores.getString("TIPO");
+            modeloProfesores.addRow(new Object[]{id, nombre, apellidos, email, clave, tipo});
         }
 
         TablaProfesores.setModel(modeloProfesores);
 
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+        TableColumnModel columnModel = TablaProfesores.getColumnModel();
+        columnModel.getColumn(0).setMinWidth(0);
+        columnModel.getColumn(0).setMaxWidth(0);
+        columnModel.getColumn(4).setMinWidth(0);
+        columnModel.getColumn(4).setMaxWidth(0);
+        columnModel.getColumn(5).setMinWidth(0);
+        columnModel.getColumn(5).setMaxWidth(0);
 
-    String consultaSQLMaterias = "SELECT nombre FROM materias";
-    if (!materia.isEmpty()) {
-        consultaSQLMaterias += " WHERE nombre LIKE '%" + materia + "%'";
-    }
-    consultaSQLMaterias += " LIMIT 2";
+        obtenerMaterias2(materia);
 
-    try {
-        Statement statement = con.createStatement();
-        ResultSet resultadoMaterias = statement.executeQuery(consultaSQLMaterias);
-
-        modeloMaterias.addColumn("Nombre");
-
-        while (resultadoMaterias.next()) {
-            String nombreMateria = resultadoMaterias.getString("nombre");
-            modeloMaterias.addRow(new Object[]{nombreMateria});
-        }
-        TablaMaterias.setModel(modeloMaterias);
     } catch (Exception e) {
         e.printStackTrace();
     }
 }
- 
+
 public void insertarProfesorDesdeTabla(Connection con) {
     int filaSeleccionada = TablaProfesores.getSelectedRow();
-    
+
     if (filaSeleccionada != -1) {
         try {
             String id = (String) TablaProfesores.getValueAt(filaSeleccionada, 0);
@@ -326,8 +295,6 @@ public void insertarProfesorDesdeTabla(Connection con) {
             String email = (String) TablaProfesores.getValueAt(filaSeleccionada, 3);
             String clave = (String) TablaProfesores.getValueAt(filaSeleccionada, 4);
             String tipo = (String) TablaProfesores.getValueAt(filaSeleccionada, 5);
-            
-            System.out.println("Nombre: " + nombre + ", Apellidos: " + apellidos + ", Email: " + email);
 
             String sqlInsert = "INSERT INTO profesorescontratados (nombre, apellidos, email, clave, tipo) VALUES (?, ?, ?, ?, ?)";
             try (var insertStatement = con.prepareStatement(sqlInsert)) {
@@ -751,7 +718,7 @@ private void filtrarPorApellidoYMateria(String apellidos, String materia) {
         filtrarPorApellido(apellidos);
         return; 
     }
-    filtrarPorApellidoYMateria(apellidos, materia);
+    filtrarPorMateria(materia);
     }//GEN-LAST:event_FiltrarBotonActionPerformed
 
     private void ContratarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContratarBotonActionPerformed
