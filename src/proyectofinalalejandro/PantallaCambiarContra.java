@@ -191,8 +191,9 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
         ReinicarBoton = new javax.swing.JButton();
         correoTEXT = new javax.swing.JTextField();
         nuevaContra1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -229,7 +230,7 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
                 ReinicarBotonActionPerformed(evt);
             }
         });
-        jPanel1.add(ReinicarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, -1, -1));
+        jPanel1.add(ReinicarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, -1, -1));
 
         correoTEXT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         correoTEXT.setText("Correo");
@@ -258,6 +259,14 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
             }
         });
         jPanel1.add(nuevaContra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 210, -1));
+
+        jButton1.setText("Volver");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -301,7 +310,6 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
     String contrasenaActual = nuevaContra1.getText();
     String nuevaContrasena = nuevaContra2.getText();
     cambiarContrasena(correo, contrasenaActual, contrasenaActual, nuevaContrasena);
-    this.dispose();
     }//GEN-LAST:event_cambiarContraBotonActionPerformed
 
     private void correoTEXTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_correoTEXTMouseClicked
@@ -315,6 +323,10 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
     private void nuevaContra2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nuevaContra2MouseClicked
        nuevaContra2.setText("");
     }//GEN-LAST:event_nuevaContra2MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -355,6 +367,7 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
     private javax.swing.JButton ReinicarBoton;
     private javax.swing.JButton cambiarContraBoton;
     private javax.swing.JTextField correoTEXT;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField nuevaContra1;
