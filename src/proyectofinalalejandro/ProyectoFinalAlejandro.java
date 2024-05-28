@@ -15,6 +15,7 @@ public class ProyectoFinalAlejandro {
     public static void main(String[] args) {
          try {
           //  UIManager.setLookAndFeel( new FlatLightLaf() );
+          //  tema añadido
             FlatArcDarkIJTheme.setup();
         } catch( Exception ex ) {
             System.err.println( "Failed to initialize LaF" );
