@@ -49,6 +49,9 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
              e.printStackTrace(System.out);
             }
         ActualizarTablaProfesores(con);
+         Editar.setVisible(false);
+            AnadirBoton.setVisible(false);
+            EliminarBoton.setVisible(false);
     }
         public void ActualizarTablaProfesores(Connection con) {
         try {
@@ -366,6 +369,7 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
         AnadirBoton = new javax.swing.JButton();
         EliminarBoton = new javax.swing.JButton();
         Editar = new javax.swing.JButton();
+        EditarCB = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         PantallasMenu = new javax.swing.JMenu();
         InicioDeSesion = new javax.swing.JMenuItem();
@@ -413,21 +417,25 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Formulario"));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Nombre");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
         jPanel2.add(NombreTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 320, -1));
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Apellido");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, -1, -1));
-        jPanel2.add(ApellidooTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 40, 320, -1));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 20, -1, -1));
+        jPanel2.add(ApellidooTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 40, 320, -1));
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Email");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
         jPanel2.add(EmailTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 320, -1));
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Contraseña");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, -1, -1));
-        jPanel2.add(ContraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, 320, -1));
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 70, -1, -1));
+        jPanel2.add(ContraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, 320, -1));
 
         BuscarBoton.setText("Buscar");
         BuscarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -435,7 +443,7 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
                 BuscarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(BuscarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
+        jPanel2.add(BuscarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 80, 30));
 
         ReiniciarBoton.setText("Reiniciar");
         ReiniciarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -443,7 +451,7 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
                 ReiniciarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, -1, -1));
+        jPanel2.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 80, 30));
 
         AnadirBoton.setText("Añadir");
         AnadirBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -451,7 +459,7 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
                 AnadirBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(AnadirBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 130, -1, -1));
+        jPanel2.add(AnadirBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 130, 80, 30));
 
         EliminarBoton.setText("Eliminar");
         EliminarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -459,7 +467,7 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
                 EliminarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(EliminarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 130, -1, -1));
+        jPanel2.add(EliminarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 130, 80, 30));
 
         Editar.setText("Editar");
         Editar.addActionListener(new java.awt.event.ActionListener() {
@@ -467,7 +475,23 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
                 EditarActionPerformed(evt);
             }
         });
-        jPanel2.add(Editar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 130, -1, -1));
+        jPanel2.add(Editar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 130, 80, 30));
+
+        EditarCB.setText("¿Editar?");
+        EditarCB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        EditarCB.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        EditarCB.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        EditarCB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                EditarCBMouseClicked(evt);
+            }
+        });
+        EditarCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarCBActionPerformed(evt);
+            }
+        });
+        jPanel2.add(EditarCB, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 130, 70, 30));
 
         PantallasMenu.setText("Pantallas");
 
@@ -578,8 +602,8 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -588,8 +612,8 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -696,6 +720,22 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_menuModoMoradoActionPerformed
 
+    private void EditarCBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EditarCBMouseClicked
+        // EditarBoton.setVisible(true);
+    }//GEN-LAST:event_EditarCBMouseClicked
+
+    private void EditarCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarCBActionPerformed
+        if (EditarCB.isSelected()) {
+            Editar.setVisible(true);
+            AnadirBoton.setVisible(true);
+            EliminarBoton.setVisible(true);
+        } else {
+            Editar.setVisible(false);
+            AnadirBoton.setVisible(false);
+            EliminarBoton.setVisible(false);
+        }
+    }//GEN-LAST:event_EditarCBActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -740,6 +780,7 @@ public class PantallaProfesoresAdministrador extends javax.swing.JFrame {
     private javax.swing.JMenuItem CambiarContra;
     private javax.swing.JTextField ContraTEXT;
     private javax.swing.JButton Editar;
+    private javax.swing.JCheckBox EditarCB;
     private javax.swing.JButton EliminarBoton;
     private javax.swing.JTextField EmailTEXT;
     private javax.swing.JMenuItem InicioDeSesion;

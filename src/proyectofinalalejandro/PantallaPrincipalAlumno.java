@@ -199,24 +199,26 @@ public void eliminaYAñadir(Connection con) {
 
         jPanel1.add(jScrollPane2);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel2.setLayout(new java.awt.GridBagLayout());
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Opciones"));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        DesapuntarseBoton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         DesapuntarseBoton.setText("Desapuntarse");
         DesapuntarseBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DesapuntarseBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(DesapuntarseBoton, new java.awt.GridBagConstraints());
+        jPanel2.add(DesapuntarseBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 180, 40));
 
+        EnocntrarProfesorr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         EnocntrarProfesorr.setText("Encontrar Profesor");
         EnocntrarProfesorr.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EnocntrarProfesorrActionPerformed(evt);
             }
         });
-        jPanel2.add(EnocntrarProfesorr, new java.awt.GridBagConstraints());
+        jPanel2.add(EnocntrarProfesorr, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, 180, 40));
 
         PantallasMenu.setText("Pantallas");
 
@@ -308,21 +310,19 @@ public void eliminaYAñadir(Connection con) {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 627, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(93, 93, 93)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();

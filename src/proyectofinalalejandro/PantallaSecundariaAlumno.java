@@ -521,9 +521,10 @@ private void filtrarPorApellidoYMateria(String apellidos, String materia) {
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jLabel2.setText("Apellido Profesor");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
-        jPanel2.add(ApellidoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 180, -1));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 170, -1));
+        jPanel2.add(ApellidoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 210, 30));
 
         FiltrarBoton.setText("Filtrar");
         FiltrarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -531,7 +532,7 @@ private void filtrarPorApellidoYMateria(String apellidos, String materia) {
                 FiltrarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(FiltrarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
+        jPanel2.add(FiltrarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 100, 40));
 
         ReiniciarBoton.setText("Reiniciar");
         ReiniciarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -539,7 +540,7 @@ private void filtrarPorApellidoYMateria(String apellidos, String materia) {
                 ReiniciarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, -1, -1));
+        jPanel2.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 100, 40));
 
         ContratarBoton.setText("Contratar");
         ContratarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -547,11 +548,12 @@ private void filtrarPorApellidoYMateria(String apellidos, String materia) {
                 ContratarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(ContratarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 80, -1, -1));
+        jPanel2.add(ContratarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 80, 100, 40));
 
-        jLabel4.setText("Materia");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, -1, -1));
-        jPanel2.add(MateriaTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 30, 180, -1));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jLabel4.setText("Materias");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 10, 90, 20));
+        jPanel2.add(MateriaTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 40, 210, 30));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Materias"));
         jPanel3.setLayout(new java.awt.BorderLayout());
@@ -664,7 +666,7 @@ private void filtrarPorApellidoYMateria(String apellidos, String materia) {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 585, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -674,10 +676,10 @@ private void filtrarPorApellidoYMateria(String apellidos, String materia) {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 

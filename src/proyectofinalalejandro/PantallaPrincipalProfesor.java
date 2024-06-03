@@ -152,7 +152,6 @@ public class PantallaPrincipalProfesor extends javax.swing.JFrame {
         TablaAlumnosContratados = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         QuitarBoton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         EncontrarAlumnoss = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         PantallasMenu = new javax.swing.JMenu();
@@ -191,27 +190,26 @@ public class PantallaPrincipalProfesor extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane2);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Opciones"));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        QuitarBoton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         QuitarBoton.setText("Quitar alumno");
         QuitarBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 QuitarBotonActionPerformed(evt);
             }
         });
-        jPanel2.add(QuitarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
+        jPanel2.add(QuitarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
 
-        jLabel1.setText("Administrar Alumnos");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, -1, -1));
-
+        EncontrarAlumnoss.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         EncontrarAlumnoss.setText("Encontrar Alumnos");
         EncontrarAlumnoss.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EncontrarAlumnossActionPerformed(evt);
             }
         });
-        jPanel2.add(EncontrarAlumnoss, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, -1, -1));
+        jPanel2.add(EncontrarAlumnoss, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, -1, -1));
 
         PantallasMenu.setText("Pantallas");
 
@@ -304,17 +302,17 @@ public class PantallaPrincipalProfesor extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -446,7 +444,6 @@ public class PantallaPrincipalProfesor extends javax.swing.JFrame {
     private javax.swing.JMenuItem SalirMenu;
     private javax.swing.JTable TablaAlumnosContratados;
     private javax.swing.ButtonGroup ThemeGrupo;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

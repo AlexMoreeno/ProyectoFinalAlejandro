@@ -149,6 +149,8 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menuModoAzul = new javax.swing.JCheckBoxMenuItem();
         menuModoMorado = new javax.swing.JCheckBoxMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -160,31 +162,43 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos"));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Alumnos Totales");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 24, -1, -1));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Profesores Totales");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 74, -1, -1));
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Materias Totales");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 130, -1, -1));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Usuarios Totales");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 186, -1, -1));
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, -1));
 
-        MostrarAlumnos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel2.add(MostrarAlumnos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 160, 20));
+        MostrarAlumnos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MostrarAlumnos.setForeground(new java.awt.Color(255, 51, 51));
+        MostrarAlumnos.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.darkGray, null));
+        jPanel2.add(MostrarAlumnos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 170, 20));
 
-        MostrarProfesores.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel2.add(MostrarProfesores, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 160, 20));
+        MostrarProfesores.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MostrarProfesores.setForeground(new java.awt.Color(255, 51, 51));
+        MostrarProfesores.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.darkGray, null));
+        jPanel2.add(MostrarProfesores, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 170, 20));
 
-        MostrarMaterias.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel2.add(MostrarMaterias, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 160, 20));
+        MostrarMaterias.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MostrarMaterias.setForeground(new java.awt.Color(255, 51, 51));
+        MostrarMaterias.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.darkGray, null));
+        jPanel2.add(MostrarMaterias, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 170, 20));
 
-        MostrarTotales.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel2.add(MostrarTotales, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 160, 20));
+        MostrarTotales.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MostrarTotales.setForeground(new java.awt.Color(255, 51, 51));
+        MostrarTotales.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.darkGray, null));
+        jPanel2.add(MostrarTotales, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 170, 20));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, 220, 250));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, 220, 300));
 
         jLabel8.setIcon(new javax.swing.ImageIcon("C:\\Users\\Aleja\\OneDrive\\Documentos\\NetBeansProjects\\NetBeansProjects\\ProyectoFinalAlejandro\\src\\imagenes\\icons8-estudiante-masculino-100.png")); // NOI18N
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -192,7 +206,7 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
                 jLabel8MouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 110, 90));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 120, 100));
 
         jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Aleja\\OneDrive\\Documentos\\NetBeansProjects\\NetBeansProjects\\ProyectoFinalAlejandro\\src\\imagenes\\icons8-teachers-100.png")); // NOI18N
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -200,7 +214,7 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
                 jLabel1MouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 30, 100, 90));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 100, 90));
 
         jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Aleja\\OneDrive\\Documentos\\NetBeansProjects\\NetBeansProjects\\ProyectoFinalAlejandro\\src\\imagenes\\icons8-libros-100.png")); // NOI18N
         jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -208,7 +222,7 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
                 jLabel4MouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Aleja\\OneDrive\\Documentos\\NetBeansProjects\\NetBeansProjects\\ProyectoFinalAlejandro\\src\\imagenes\\adminFoto.png")); // NOI18N
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -216,9 +230,9 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
                 jLabel2MouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 170, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 510, 280));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 580, 330));
 
         PantallasMenu.setText("Pantallas");
 
@@ -319,6 +333,21 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
         menuApariencia.add(menuModoMorado);
 
         jMenuBar1.add(menuApariencia);
+
+        jMenu1.setText("Acerda de");
+        jMenu1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jMenu1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jMenu1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
+        jMenuItem1.setText("Información");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -424,6 +453,11 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        PantallaAcercaDe a = new PantallaAcercaDe();
+        a.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -471,7 +505,9 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu.Separator jSeparator1;

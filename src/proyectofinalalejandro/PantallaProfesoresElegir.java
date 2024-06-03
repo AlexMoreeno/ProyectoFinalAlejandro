@@ -31,6 +31,7 @@ public class PantallaProfesoresElegir extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         AceptarProfeBoton = new javax.swing.JButton();
         PantallaProfesorBoton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -38,23 +39,23 @@ public class PantallaProfesoresElegir extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Opciones "));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Aceptar Profesores");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         jLabel1.setMaximumSize(new java.awt.Dimension(59, 20));
         jLabel1.setMinimumSize(new java.awt.Dimension(59, 20));
         jLabel1.setPreferredSize(new java.awt.Dimension(59, 20));
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 180, 110));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 180, 110));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Alumnos");
         jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         jLabel2.setMaximumSize(new java.awt.Dimension(59, 20));
         jLabel2.setMinimumSize(new java.awt.Dimension(59, 20));
         jLabel2.setPreferredSize(new java.awt.Dimension(59, 20));
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, 170, 110));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, 170, 110));
 
         AceptarProfeBoton.setText("Acceder");
         AceptarProfeBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -62,7 +63,7 @@ public class PantallaProfesoresElegir extends javax.swing.JFrame {
                 AceptarProfeBotonActionPerformed(evt);
             }
         });
-        jPanel1.add(AceptarProfeBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, -1, -1));
+        jPanel1.add(AceptarProfeBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 180, 30));
 
         PantallaProfesorBoton.setText("Acceder");
         PantallaProfesorBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -70,7 +71,11 @@ public class PantallaProfesoresElegir extends javax.swing.JFrame {
                 PantallaProfesorBotonActionPerformed(evt);
             }
         });
-        jPanel1.add(PantallaProfesorBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, -1, -1));
+        jPanel1.add(PantallaProfesorBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 150, 170, 30));
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Aleja\\OneDrive\\Documentos\\NetBeansProjects\\NetBeansProjects\\ProyectoFinalAlejandro\\src\\iconosPropios\\iconoElegir.png")); // NOI18N
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, 110, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -78,15 +83,15 @@ public class PantallaProfesoresElegir extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -145,6 +150,7 @@ public class PantallaProfesoresElegir extends javax.swing.JFrame {
     private javax.swing.JButton PantallaProfesorBoton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

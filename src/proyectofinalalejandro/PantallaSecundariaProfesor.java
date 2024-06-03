@@ -279,7 +279,6 @@ public void insertarAlumnoDesdeTabla(Connection con) {
         menuModoMorado = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(712, 367));
         setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Alumnos"));
@@ -323,9 +322,10 @@ public void insertarAlumnoDesdeTabla(Connection con) {
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Apellido Alumno");
-        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
-        jPanel3.add(ApellidoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 200, -1));
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, -1, -1));
+        jPanel3.add(ApellidoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 40, 240, 30));
 
         FiltrarBotón.setText("Filtrar");
         FiltrarBotón.addActionListener(new java.awt.event.ActionListener() {
@@ -333,7 +333,7 @@ public void insertarAlumnoDesdeTabla(Connection con) {
                 FiltrarBotónActionPerformed(evt);
             }
         });
-        jPanel3.add(FiltrarBotón, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
+        jPanel3.add(FiltrarBotón, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 100, 30));
 
         ContactarBoton.setText("Contactar");
         ContactarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -341,7 +341,7 @@ public void insertarAlumnoDesdeTabla(Connection con) {
                 ContactarBotonActionPerformed(evt);
             }
         });
-        jPanel3.add(ContactarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 70, -1, -1));
+        jPanel3.add(ContactarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 80, 100, 30));
 
         ReiniciarBoton.setText("Reiniciar");
         ReiniciarBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -349,7 +349,7 @@ public void insertarAlumnoDesdeTabla(Connection con) {
                 ReiniciarBotonActionPerformed(evt);
             }
         });
-        jPanel3.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, -1, -1));
+        jPanel3.add(ReiniciarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 100, 30));
 
         PantallasMenu.setText("Pantallas");
 
@@ -441,13 +441,13 @@ public void insertarAlumnoDesdeTabla(Connection con) {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -457,8 +457,7 @@ public void insertarAlumnoDesdeTabla(Connection con) {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
         );
 
         pack();

@@ -132,6 +132,7 @@ public void Reiniciar(){
         contraTEXT = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -150,7 +151,7 @@ public void Reiniciar(){
                 emailTEXTMouseClicked(evt);
             }
         });
-        jPanel1.add(emailTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 330, 30));
+        jPanel1.add(emailTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 340, 40));
 
         inicioSe.setText("Iniciar Sesión");
         inicioSe.addActionListener(new java.awt.event.ActionListener() {
@@ -158,7 +159,7 @@ public void Reiniciar(){
                 inicioSeActionPerformed(evt);
             }
         });
-        jPanel1.add(inicioSe, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
+        jPanel1.add(inicioSe, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 110, 30));
 
         jButton2.setText("Reiniciar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -166,7 +167,7 @@ public void Reiniciar(){
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, -1, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 100, 30));
 
         contraTEXT.setText("jPasswordField1");
         contraTEXT.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -174,7 +175,7 @@ public void Reiniciar(){
                 contraTEXTMouseClicked(evt);
             }
         });
-        jPanel1.add(contraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 330, 30));
+        jPanel1.add(contraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 340, 40));
 
         jButton1.setText("Registrate");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -182,13 +183,17 @@ public void Reiniciar(){
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 180, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 270, 100, 30));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/good_LogoSINFONDO.png"))); // NOI18N
-        jLabel3.setText("jLabel3");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, 170, 170));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 60, 180, 210));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 630, 270));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 40)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("DAMe Clases");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 330, 40));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 770, 340));
 
         pack();
         setLocationRelativeTo(null);
@@ -243,6 +248,7 @@ public void Reiniciar(){
     private javax.swing.JButton inicioSe;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

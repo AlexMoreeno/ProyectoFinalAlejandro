@@ -163,7 +163,7 @@ public class PantallaRegistrar extends javax.swing.JFrame {
                 correoTEXTMouseClicked(evt);
             }
         });
-        jPanel1.add(correoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 330, 30));
+        jPanel1.add(correoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 330, 40));
 
         nombreTEXT.setText("Nombre");
         nombreTEXT.setPreferredSize(new java.awt.Dimension(115, 20));
@@ -177,7 +177,7 @@ public class PantallaRegistrar extends javax.swing.JFrame {
                 nombreTEXTActionPerformed(evt);
             }
         });
-        jPanel1.add(nombreTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 330, 30));
+        jPanel1.add(nombreTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 330, 40));
 
         registroBoton.setText("Registrar");
         registroBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -185,7 +185,7 @@ public class PantallaRegistrar extends javax.swing.JFrame {
                 registroBotonActionPerformed(evt);
             }
         });
-        jPanel1.add(registroBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
+        jPanel1.add(registroBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 90, 30));
 
         jButton2.setText("Reiniciar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -193,11 +193,12 @@ public class PantallaRegistrar extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, -1, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 280, 90, 30));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Registro");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 120, 20));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, 120, 30));
 
         ApellidoTEXT.setText("Apellido");
         ApellidoTEXT.setPreferredSize(new java.awt.Dimension(115, 20));
@@ -206,20 +207,22 @@ public class PantallaRegistrar extends javax.swing.JFrame {
                 ApellidoTEXTMouseClicked(evt);
             }
         });
-        jPanel1.add(ApellidoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 330, 30));
+        jPanel1.add(ApellidoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 330, 40));
 
         TipoUsuario.add(Alumno);
+        Alumno.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Alumno.setText("Alumno");
-        jPanel1.add(Alumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
+        jPanel1.add(Alumno, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 80, 30));
 
         TipoUsuario.add(Profesor);
+        Profesor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Profesor.setText("Profesor");
         Profesor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ProfesorActionPerformed(evt);
             }
         });
-        jPanel1.add(Profesor, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, -1, -1));
+        jPanel1.add(Profesor, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 240, 80, 30));
 
         contraTEXT.setText("Contraseña");
         contraTEXT.setPreferredSize(new java.awt.Dimension(115, 20));
@@ -228,7 +231,7 @@ public class PantallaRegistrar extends javax.swing.JFrame {
                 contraTEXTMouseClicked(evt);
             }
         });
-        jPanel1.add(contraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 330, 30));
+        jPanel1.add(contraTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 330, 40));
 
         jButton1.setText("Volver");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -236,7 +239,7 @@ public class PantallaRegistrar extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 280, 90, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -244,15 +247,15 @@ public class PantallaRegistrar extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();

@@ -200,9 +200,11 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Cambiar Contraseña");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 180, -1));
 
+        nuevaContra2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         nuevaContra2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         nuevaContra2.setText("Repite la contraseña");
         nuevaContra2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -215,24 +217,27 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
                 nuevaContra2ActionPerformed(evt);
             }
         });
-        jPanel1.add(nuevaContra2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 210, -1));
+        jPanel1.add(nuevaContra2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 260, 30));
 
+        cambiarContraBoton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cambiarContraBoton.setText("Cambiar Contraseña");
         cambiarContraBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cambiarContraBotonActionPerformed(evt);
             }
         });
-        jPanel1.add(cambiarContraBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
+        jPanel1.add(cambiarContraBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 160, 40));
 
+        ReinicarBoton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ReinicarBoton.setText("Reiniciar");
         ReinicarBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ReinicarBotonActionPerformed(evt);
             }
         });
-        jPanel1.add(ReinicarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, -1, -1));
+        jPanel1.add(ReinicarBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 190, 90, 40));
 
+        correoTEXT.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         correoTEXT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         correoTEXT.setText("Correo");
         correoTEXT.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -245,8 +250,9 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
                 correoTEXTActionPerformed(evt);
             }
         });
-        jPanel1.add(correoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 210, -1));
+        jPanel1.add(correoTEXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 260, 30));
 
+        nuevaContra1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         nuevaContra1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         nuevaContra1.setText("Nueva Contraseña");
         nuevaContra1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -259,18 +265,19 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
                 nuevaContra1ActionPerformed(evt);
             }
         });
-        jPanel1.add(nuevaContra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 210, -1));
+        jPanel1.add(nuevaContra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 260, 30));
 
+        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton1.setText("Volver");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 160, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 190, 80, 40));
 
         jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Aleja\\OneDrive\\Documentos\\NetBeansProjects\\NetBeansProjects\\ProyectoFinalAlejandro\\src\\imagenes\\imagenContraLogo.png")); // NOI18N
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 40, 100, 110));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -278,13 +285,13 @@ private void actualizarContrasena(Connection conexion, String correo, String nue
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
