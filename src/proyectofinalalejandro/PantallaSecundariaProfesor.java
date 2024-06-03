@@ -17,6 +17,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
+import javax.help.HelpSetException;
+import javax.help.JHelp;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -47,6 +51,18 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
             }
         ActualizarTablaAlumnos(con);
         ActualizarTablaMaterias(con);
+        String AYUDA_HS = "Ayudaa/conayuda/ayudaPF/helpset.hs";
+        try {
+         ClassLoader cl = getClass().getClassLoader();
+         HelpSet helpset = new HelpSet(cl, cl.getResource(AYUDA_HS));
+         HelpBroker hb = helpset.createHelpBroker();
+         JHelp jhelp = new JHelp(helpset);
+         //jhelp.setCurrentID("inicio");
+         hb.enableHelpOnButton(ayuda1, "primero", helpset);
+
+        } catch (HelpSetException ex) {
+         System.err.println("Error al cargar la ayuda: " + ex);
+        }
     }
    public void ActualizarTablaAlumnos(Connection con) {
         try {
@@ -277,6 +293,10 @@ public void insertarAlumnoDesdeTabla(Connection con) {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menuModoAzul = new javax.swing.JCheckBoxMenuItem();
         menuModoMorado = new javax.swing.JCheckBoxMenuItem();
+        Ayuda = new javax.swing.JMenu();
+        ayuda1 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -433,6 +453,34 @@ public void insertarAlumnoDesdeTabla(Connection con) {
 
         jMenuBar1.add(menuApariencia);
 
+        Ayuda.setText("Dudas");
+
+        ayuda1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyectofinalalejandro/pregunta.png"))); // NOI18N
+        ayuda1.setText("Ayuda");
+        ayuda1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ayuda1ActionPerformed(evt);
+            }
+        });
+        Ayuda.add(ayuda1);
+
+        jMenuBar1.add(Ayuda);
+
+        jMenu1.setText("Acerca de");
+        jMenu1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jMenu1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jMenu1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
+        jMenuItem1.setText("Información");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu1);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -457,7 +505,7 @@ public void insertarAlumnoDesdeTabla(Connection con) {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))
         );
 
         pack();
@@ -538,6 +586,15 @@ public void insertarAlumnoDesdeTabla(Connection con) {
         });
     }//GEN-LAST:event_menuModoMoradoActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        PantallaAcercaDe a = new PantallaAcercaDe();
+        a.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void ayuda1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayuda1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ayuda1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -576,6 +633,7 @@ public void insertarAlumnoDesdeTabla(Connection con) {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu AjustesMenu;
     private javax.swing.JTextField ApellidoTEXT;
+    private javax.swing.JMenu Ayuda;
     private javax.swing.JMenuItem CambiarContra;
     private javax.swing.JButton ContactarBoton;
     private javax.swing.JButton FiltrarBotón;
@@ -587,8 +645,11 @@ public void insertarAlumnoDesdeTabla(Connection con) {
     private javax.swing.JTable TablaMaterias;
     private javax.swing.ButtonGroup ThemeGrupo;
     private javax.swing.JMenuItem VerAlumnos;
+    private javax.swing.JMenuItem ayuda1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

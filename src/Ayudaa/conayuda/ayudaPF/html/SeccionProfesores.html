@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventana Principal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #004080;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        ol {
+            counter-reset: item;
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        li {
+            counter-increment: item;
+            margin-bottom: 20px;
+        }
+
+        li::before {
+            content: counter(item) ".";
+            font-weight: bold;
+            margin-right: 5px;
+            color: #004080;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pantalla Profesores</h1>
+<p>En este proyecto la parte de los profesores se divide en 2 partes. La primera parte es una pantalla en las que se ven los alumnos a tu cargo y en la segunda parte nos encontraremos con un cuestionario para filtrar en la tabla de arriba.Por último habra otra tabla pero de materias </p>
+<ol>
+    <li>
+        <p><span style="color: blueviolet; font-weight: bold;">Pantalla Principal Profesores:</span> En esta pantalla tendremos una tabla con los alumnos que te han contratado y abajo habra 2 botones uno para "Quitar Alumno" y habra otro boton para encontrar mas alumnos</p>
+    </li>
+    <li>
+        <p><span style="color: blueviolet; font-weight: bold;">Pantalla Secundaria Profesores:</span> En esta pantalla habra 2 tablas: Una tabla de Alumnos donde aparecan todos los alumnos tambien habra una tabla de materias. Debajo habra un formulario con el que se filtrara tanto en la parte de alumnos y materias, al lado habra botones con los cuales filtrar,reiniciar y contactar</p>
+    </li>
+</ol>
+    </div>
+</body>
+</html>
+
+
+
+

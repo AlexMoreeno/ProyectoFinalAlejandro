@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<toc version="1.0">
+ <tocitem text="Principal" target="primero">
+ <tocitem text="Sección Alumnos" target="alumnos" />
+ <tocitem text="Sección Profesores" target="profesores" />
+ <tocitem text="Sección Administradores" target="admin" />
+ <tocitem text="Sección Cambio Contraseña" target="contra" />
+ <tocitem text="Sección Base Datos" target="bd" />
+ </tocitem>
+</toc>
+

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventana Principal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #004080;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        ol {
+            counter-reset: item;
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        li {
+            counter-increment: item;
+            margin-bottom: 20px;
+        }
+
+        li::before {
+            content: counter(item) ".";
+            font-weight: bold;
+            margin-right: 5px;
+            color: #004080;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pantalla Cambiar Contrasena</h1>
+<p>En esta pantalla habra un formulario con el que la aplicacion identificara al usuario al cual quiere cambiar la contrasena</p>
+<ol>
+    <li>
+        <p><span style="color: blueviolet; font-weight: bold;">Cambio de Contrasena</span> En esta pantalla tendremos que rellenar el correo y posteriormente poner la nueva contrasena 2 veces para confirmar que quieres cambiarla</p>
+    </li>
+</ol>
+    </div>
+</body>
+</html>
+
+
+
+

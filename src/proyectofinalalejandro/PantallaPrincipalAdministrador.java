@@ -22,6 +22,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
+import javax.help.HelpSetException;
+import javax.help.JHelp;
 
 /**
  *
@@ -62,6 +66,18 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
             MostrarTotales.setText(String.valueOf(numeroTotales));
         } catch (SQLException ex) {
             ex.printStackTrace();
+        }
+        String AYUDA_HS = "Ayudaa/conayuda/ayudaPF/helpset.hs";
+        try {
+         ClassLoader cl = getClass().getClassLoader();
+         HelpSet helpset = new HelpSet(cl, cl.getResource(AYUDA_HS));
+         HelpBroker hb = helpset.createHelpBroker();
+         JHelp jhelp = new JHelp(helpset);
+         //jhelp.setCurrentID("inicio");
+         hb.enableHelpOnButton(ayuda1, "primero", helpset);
+
+        } catch (HelpSetException ex) {
+         System.err.println("Error al cargar la ayuda: " + ex);
         }
     }
 
@@ -149,6 +165,8 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menuModoAzul = new javax.swing.JCheckBoxMenuItem();
         menuModoMorado = new javax.swing.JCheckBoxMenuItem();
+        Ayuda = new javax.swing.JMenu();
+        ayuda1 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -334,7 +352,20 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
 
         jMenuBar1.add(menuApariencia);
 
-        jMenu1.setText("Acerda de");
+        Ayuda.setText("Dudas");
+
+        ayuda1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/pregunta.png"))); // NOI18N
+        ayuda1.setText("Ayuda");
+        ayuda1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ayuda1ActionPerformed(evt);
+            }
+        });
+        Ayuda.add(ayuda1);
+
+        jMenuBar1.add(Ayuda);
+
+        jMenu1.setText("Acerca de");
         jMenu1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jMenu1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jMenu1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -458,6 +489,10 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
         a.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void ayuda1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayuda1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ayuda1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -486,6 +521,7 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu AjustesMenu;
     private javax.swing.JMenuItem Alumnos;
+    private javax.swing.JMenu Ayuda;
     private javax.swing.JMenuItem CambiarContra;
     private javax.swing.JMenuItem InicioDeSesion;
     private javax.swing.JMenuItem Materias;
@@ -497,6 +533,7 @@ public class PantallaPrincipalAdministrador extends javax.swing.JFrame {
     private javax.swing.JMenuItem Profesores;
     private javax.swing.JMenuItem SalirMenu;
     private javax.swing.ButtonGroup ThemeGrupo;
+    private javax.swing.JMenuItem ayuda1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

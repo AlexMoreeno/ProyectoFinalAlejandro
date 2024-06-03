@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<index version="1.0">
+ <indexitem text="Principal" target="primero" />
+ <indexitem text="Sección Alumnos" target="alumnos" />
+ <indexitem text="Sección Profesores" target="profesores" />
+ <indexitem text="Sección Administradores" target="admin" />
+ <indexitem text="Sección Cambio Contraseña" target="contra" />
+ <indexitem text="Sección Base Datos" target="bd" />
+</index> 
+
