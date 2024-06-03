@@ -49,8 +49,6 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
         } catch (ClassNotFoundException | SQLException e) {
              e.printStackTrace(System.out);
             }
-        ActualizarTablaAlumnos(con);
-        ActualizarTablaMaterias(con);
         String AYUDA_HS = "Ayudaa/conayuda/ayudaPF/helpset.hs";
         try {
          ClassLoader cl = getClass().getClassLoader();
@@ -63,6 +61,9 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
         } catch (HelpSetException ex) {
          System.err.println("Error al cargar la ayuda: " + ex);
         }
+        ActualizarTablaAlumnos(con);
+        ActualizarTablaMaterias(con);
+        
     }
    public void ActualizarTablaAlumnos(Connection con) {
         try {
