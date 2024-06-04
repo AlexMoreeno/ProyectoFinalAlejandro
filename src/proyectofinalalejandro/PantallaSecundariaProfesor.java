@@ -17,13 +17,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import javax.help.HelpSetException;
 import javax.help.JHelp;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -62,8 +62,7 @@ public class PantallaSecundariaProfesor extends javax.swing.JFrame {
          System.err.println("Error al cargar la ayuda: " + ex);
         }
         ActualizarTablaAlumnos(con);
-        ActualizarTablaMaterias(con);
-        
+        ActualizarTablaMaterias(con); 
     }
    public void ActualizarTablaAlumnos(Connection con) {
         try {
@@ -456,7 +455,7 @@ public void insertarAlumnoDesdeTabla(Connection con) {
 
         Ayuda.setText("Dudas");
 
-        ayuda1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyectofinalalejandro/pregunta.png"))); // NOI18N
+        ayuda1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconosPropios/pregunta.png"))); // NOI18N
         ayuda1.setText("Ayuda");
         ayuda1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

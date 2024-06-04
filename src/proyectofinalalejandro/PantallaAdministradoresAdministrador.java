@@ -287,7 +287,7 @@ public void eliminarUsuario(JTable tabla) {
         e.printStackTrace();
     }
 }
-
+/////////////////////////////////////////////////////////
 public void editarAdministrador(Connection con, JTextField nombreTEXT, JTextField ApellidoTEXT, JTextField correoTEXT, JTextField contraTEXT) {
     String nombre = nombreTEXT.getText();
     String apellido = ApellidoTEXT.getText();
